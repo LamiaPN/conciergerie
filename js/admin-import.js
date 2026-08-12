@@ -118,81 +118,86 @@
   }
 
   /* ═══ SECTION 4 — TRANSFORMATION CSV → data.json ════════════════════════
-     Règles validées : id = Conciergerie_ID ; partenaire = "Nombre contact
-     conciergerie" non vide (quota = ce nombre) ; propositions vides. */
+     Les champs standard restent stables. Toute autre colonne Airtable
+     non personnelle est conservée dans organisation.extra. Les coordonnées
+     personnelles sont toujours exclues du vivier public. */
   function buildData(rows) {
-  const COL = {
-    nom: "Nom de l'organisation / Délégation / F",
-    nb: "Nombre contact conciergerie",
-    site: "Site web de l'organisation /F",
-    secteur: "Secteur d'activité /F",
-    type: "Type d'organisation /F",
-    pays: "Pays /F",
-    taille: "Taille de l'organisation",
-    ville: "Ville",
-    statut: "Statut_Conciergerie",
-    cid: "Conciergerie _ID",
+    const COL = {
+      nom: "Nom de l'organisation / Délégation / F",
+      nb: "Nombre contact conciergerie",
+      site: "Site web de l'organisation /F",
+      secteur: "Secteur d'activité /F",
+      type: "Type d'organisation /F",
+      pays: "Pays /F",
+      taille: "Taille de l'organisation",
+      ville: "Ville",
+      statut: "Statut_Conciergerie",
+      cid: "Conciergerie _ID"
+    };
 
-    contactNom: "Contact principal",
-    contactPoste: "Fonction (from Contact principal)",
-    contactTel: "Téléphone (from Contact principal)",
-    contactEmail: "Courriel (from Contact principal)"
-  };
+    if (!rows.length || !(COL.cid in rows[0])) {
+      throw new Error("Colonne « Conciergerie _ID » introuvable — vérifiez l'export.");
+    }
 
-  if (!rows.length || !(COL.cid in rows[0])) {
-    throw new Error("Colonne « Conciergerie _ID » introuvable — vérifiez l'export.");
-  }
+    const descriptionCol = Object.keys(rows[0]).find(
+      h => h.trim().toLowerCase().startsWith("description")
+    );
+    const keyColumns = new Set([...Object.values(COL), descriptionCol].filter(Boolean));
+    const organisations = [];
+    const partenaires = [];
 
-  // Recherche automatiquement la colonne Description ajoutée dans Airtable.
-  const descriptionCol = Object.keys(rows[0]).find(
-    h => h.trim().toLowerCase().startsWith("description")
-  );
+    for (const r of rows) {
+      const cid = (r[COL.cid] || "").trim();
+      const nom = (r[COL.nom] || "").trim();
+      if (!cid || !nom) continue;
 
-  const organisations = [];
-  const partenaires = [];
+      const extra = {};
+      Object.keys(r).forEach(header => {
+        if (keyColumns.has(header) || isPersonalColumn_(header)) return;
+        extra[header] = (r[header] || "").trim();
+      });
 
-  for (const r of rows) {
-    const cid = (r[COL.cid] || "").trim();
-    const nom = (r[COL.nom] || "").trim();
-
-    if (!cid || !nom) continue;
-
-    organisations.push({
-      id: cid,
-      nom,
-      secteur: clean(r[COL.secteur]),
-      type: clean(r[COL.type]),
-      taille: clean(r[COL.taille]),
-      localisation: clean(r[COL.pays]) || clean(r[COL.ville]),
-      description: descriptionCol ? (r[descriptionCol] || "").trim() : "",
-      site_web: (r[COL.site] || "").trim(),
-
-      contact_nom: (r[COL.contactNom] || "").trim(),
-      contact_poste: (r[COL.contactPoste] || "").trim(),
-      contact_email: (r[COL.contactEmail] || "").trim(),
-      contact_tel: (r[COL.contactTel] || "").trim()
-    });
-
-    const nb = (r[COL.nb] || "").trim();
-    const statut = (r[COL.statut] || "").trim();
-    const meetingQuota = quota(nb);
-
-    if (statut === "Partenaire Conciergerie" && meetingQuota > 0) {
-      partenaires.push({
+      organisations.push({
         id: cid,
         nom,
-        meeting_quota: meetingQuota
+        secteur: clean(r[COL.secteur]),
+        type: clean(r[COL.type]),
+        taille: clean(r[COL.taille]),
+        localisation: clean(r[COL.pays]) || clean(r[COL.ville]),
+        description: descriptionCol ? (r[descriptionCol] || "").trim() : "",
+        site_web: (r[COL.site] || "").trim(),
+        extra
       });
+
+      const nb = (r[COL.nb] || "").trim();
+      const statut = (r[COL.statut] || "").trim();
+      const meetingQuota = quota(nb);
+
+      if (statut === "Partenaire Conciergerie" && meetingQuota > 0) {
+        partenaires.push({ id: cid, nom, meeting_quota: meetingQuota });
+      }
     }
+
+    return {
+      _comment: "Vivier MTLC conciergerie généré depuis Airtable. id = Conciergerie_ID. Tokens gérés dans le Google Sheet.",
+      partenaires,
+      organisations,
+      propositions: []
+    };
   }
 
-  return {
-    _comment: "Vivier MTLC conciergerie généré depuis Airtable. id = Conciergerie_ID. Tokens gérés dans le Google Sheet.",
-    partenaires,
-    organisations,
-    propositions: []
-  };
-}
+  function isPersonalColumn_(header) {
+    const h = String(header || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim()
+      .toLowerCase();
+    return h.startsWith("courriel") ||
+      h.startsWith("email") ||
+      h.startsWith("telephone") ||
+      h.startsWith("fonction") ||
+      h.startsWith("contact principal");
+  }
 
   /* ═══ SECTION 5 — NETTOYAGE DES VALEURS ═════════════════════════════════ */
   function clean(s) {

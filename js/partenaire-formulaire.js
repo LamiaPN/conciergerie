@@ -34,95 +34,80 @@
   const $$ = s => Array.from(document.querySelectorAll(s));
 
   /* ═══ SECTION 3 — PRÉ-REMPLISSAGE DEPUIS LE VIVIER ══════════════════════
-     Charge data.json, retrouve le partenaire, pré-remplit le nom d'org. */
+     Charge data.json, retrouve le partenaire et sa fiche organisation.
+     Pré-remplit uniquement les données organisationnelles publiques.
+     Les coordonnées du contact restent volontairement vides. */
   async function prefill() {
-  if (!pid) return;
+    if (!pid) return;
 
-  try {
-    const v = await API.loadVivier();
+    try {
+      const v = await API.loadVivier();
+      const partenaire = API.getPartenaire(v, pid);
+      const fiche = v.organisations.find(o => o.id === pid);
 
-    const partenaire = API.getPartenaire(v, pid);
-    const fiche = v.organisations.find(o => o.id === pid);
-
-    if (!partenaire) {
-      console.error("Partenaire introuvable :", pid);
-      return;
-    }
-
-    const p = { ...fiche, ...partenaire };
-
-    $("#partnerTag").textContent = "MTL connecte 2026 — Service conciergerie";
-
-    if (p.nom) {
-      $("#f_org").value = p.nom;
-      $("#orgPrefill").hidden = false;
-    }
-
-    if (p.site_web) {
-      $("#f_site").value = p.site_web;
-    }
-
-    if (p.description) {
-      $("#f_desc").value = p.description;
-    }
-
-    if (p.localisation) {
-      $("#f_lieu").value = p.localisation;
-    }
-
-    if (p.type) {
-      const type = $("#f_type");
-      const option = Array.from(type.options).find(o =>
-        o.value.toLowerCase() === p.type.toLowerCase()
-      );
-
-      if (option) type.value = option.value;
-    }
-
-    if (p.taille) {
-      const tailles = {
-        "Micro entreprise": "Micro (1-9)",
-        "Petite entreprise": "Petite (10-49)",
-        "Moyenne entreprise": "Moyenne (50-249)",
-        "Grande entreprise": "Grande (250+)",
-        "Très Grande entreprise": "Grande (250+)"
-      };
-
-      if (tailles[p.taille]) {
-        $("#f_taille").value = tailles[p.taille];
+      if (!partenaire) {
+        console.error("Partenaire introuvable :", pid);
+        return;
       }
+
+      const p = { ...(fiche || {}), ...partenaire };
+
+      $("#partnerTag").textContent = "MTL connecte 2026 — Service conciergerie";
+
+      if (p.nom) {
+        $("#f_org").value = p.nom;
+        $("#orgPrefill").hidden = false;
+      }
+
+      if (p.site_web) $("#f_site").value = p.site_web;
+      if (p.description) $("#f_desc").value = p.description;
+      if (p.localisation) $("#f_lieu").value = p.localisation;
+
+      if (p.type) {
+        const type = $("#f_type");
+        const option = Array.from(type.options).find(o =>
+          o.value.toLowerCase() === p.type.toLowerCase()
+        );
+        if (option) type.value = option.value;
+      }
+
+      if (p.taille) {
+        const tailles = {
+          "Micro entreprise": "Micro (1-9)",
+          "Petite entreprise": "Petite (10-49)",
+          "Moyenne entreprise": "Moyenne (50-249)",
+          "Grande entreprise": "Grande (250+)",
+          "Très Grande entreprise": "Grande (250+)"
+        };
+        if (tailles[p.taille]) $("#f_taille").value = tailles[p.taille];
+      }
+
+      if (p.secteur) {
+        const secteur = p.secteur.toLowerCase();
+
+        $$("#f_secteurs .choice-chip").forEach(chip => {
+          const valeur = chip.dataset.val.toLowerCase();
+          let match = secteur.includes(valeur);
+
+          if (valeur === "éducation" && secteur.includes("enseignement")) {
+            match = true;
+          }
+
+          if (match) {
+            chip.classList.add("selected");
+            const icon = chip.querySelector("i");
+            if (icon) icon.className = "fas fa-check";
+          }
+        });
+      }
+
+      updateRecap();
+
+    } catch (e) {
+      console.error("Erreur pré-remplissage :", e);
     }
-
-    if (p.secteur) {
-      const secteur = p.secteur.toLowerCase();
-
-      $$("#f_secteurs .choice-chip").forEach(chip => {
-        const valeur = chip.dataset.val.toLowerCase();
-
-        let match = secteur.includes(valeur);
-
-        if (valeur === "éducation" && secteur.includes("enseignement")) {
-          match = true;
-        }
-
-        if (match) {
-          chip.classList.add("selected");
-
-          const icon = chip.querySelector("i");
-          if (icon) icon.className = "fas fa-check";
-        }
-      });
-    }
-      if (p.contact_nom) $("#f_nom").value = p.contact_nom;
-      if (p.contact_poste) $("#f_poste").value = p.contact_poste;
-      if (p.contact_email) $("#f_email").value = p.contact_email;
-      if (p.contact_tel) $("#f_tel").value = p.contact_tel;
-    updateRecap();
-
-  } catch (e) {
-    console.error("Erreur pré-remplissage :", e);
   }
-}
+
   /* ═══ SECTION 4 — CHIPS & SELECTS : SÉLECTION & ÉCOUTE ══════════════════
      Clic sur un chip = bascule sélectionné ; selects écoutés ;
      chaque changement rafraîchit le récap. */
@@ -243,18 +228,43 @@
   }
 
   /* ═══ SECTION 10 — ENVOI DU FORMULAIRE ══════════════════════════════════
-     Valide le minimum (nom d'org), puis enverra vers le Sheet (à brancher). */
+     Convertit les multi-valeurs en chaînes puis enregistre réellement
+     le formulaire dans le Google Sheet via API.saveFormulaire(). */
+  function toReponses(data) {
+    const join = v => Array.isArray(v) ? v.join(", ") : (v || "");
+    return {
+      organisation: data.organisation,
+      secteurs: join(data.secteurs),
+      type: data.type,
+      taille: data.taille,
+      site: data.site,
+      description: data.description,
+      lieu: data.lieu,
+      contact_nom: data.contact_nom,
+      contact_poste: data.contact_poste,
+      contact_email: data.contact_email,
+      contact_tel: data.contact_tel,
+      langues: join(data.langues),
+      type_recherche: join(data.type_recherche),
+      secteurs_cibles: join(data.secteurs_cibles),
+      taille_recherchee: join(data.taille_recherchee),
+      roles: data.roles,
+      objectifs: join(data.objectifs),
+      objectifs_libre: data.objectifs_libre,
+      contacts_identifies: data.contacts_identifies
+    };
+  }
+
   function bindSubmit() {
     $("#submitForm").addEventListener("click", async () => {
       const data = collect();
       if (!data.organisation) { toast("Merci d'indiquer le nom de votre organisation.", true); return; }
+      if (!pid || !token) { toast("Lien invalide : identifiant ou jeton manquant.", true); return; }
       const btn = $("#submitForm");
       btn.disabled = true; const orig = btn.innerHTML;
       btn.innerHTML = `<span class="spinner"></span> Enregistrement…`;
       try {
-        // À BRANCHER : envoi vers le Google Sheet (feuille "Formulaires").
-        // await API.saveFormulaire(data, token);
-        await new Promise(r => setTimeout(r, 500)); // simulation
+        await API.saveFormulaire(pid, token, toReponses(data));
         $("#formStatus").textContent = "Merci — vos informations ont bien été enregistrées.";
         toast("Vos préférences ont bien été enregistrées. Notre équipe préparera votre sélection.");
       } catch (e) {

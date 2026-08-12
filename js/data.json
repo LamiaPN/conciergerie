@@ -1,5 +1,5 @@
 {
-  "_comment": "Vivier MTLC conciergerie généré depuis Airtable. id = Conciergerie_ID. Tokens gérés dans le Google Sheet.",
+  "_comment": "Vivier MTLC conciergerie public généré depuis Airtable. Aucune coordonnée personnelle. id = Conciergerie_ID. Tokens gérés dans le Google Sheet.",
   "partenaires": [
     {
       "id": "recmi5WqB79fMzG9O",
@@ -102,10 +102,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "contact_nom": "Delphine  Yeo",
-      "contact_poste": "Coordinnatrice des affaires et partenariats",
-      "contact_email": "dyeo@actionti.com",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recsCzoKYT8oTtIRK",
@@ -116,10 +113,7 @@
       "localisation": "",
       "description": "",
       "site_web": "https://afria.global/",
-      "contact_nom": "Éric Adja",
-      "contact_poste": "Président AFRIA",
-      "contact_email": "eric.adja@afria.org",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recP5cx1LG5BbtXdu",
@@ -128,12 +122,9 @@
       "type": "Privé",
       "taille": "Petite entreprise",
       "localisation": "Canada",
-      "description": "ALEIA is a consulting agency specialized in providing digital services and solutions. Aleia carries out every single step of a digital project: Branding (logo, graphic charter...), UX, web, or mobile design and development.",
+      "description": "",
       "site_web": "https://www.aleia.io/",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recpmDSkDidFE4xe3",
@@ -144,10 +135,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "contact_nom": "Magali  Lasnes",
-      "contact_poste": "",
-      "contact_email": "mlasnes@aqiii.org",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recrcKceOZSe7mQ0j",
@@ -158,10 +146,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "Hugo Berger",
-      "contact_poste": "CEO",
-      "contact_email": "hberger@atelierb2b.ca",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recwAsQ3y9hIavsQu",
@@ -170,12 +155,20 @@
       "type": "Gouvernement, secteur public, parapublique",
       "taille": "Moyenne entreprise",
       "localisation": "Canada",
-      "description": "Nous prévoyons un contingence de participation à MTL Connect. Considérant que BAnQ est très engagé sur les questions de souveraineté numérique, nous voudrions voir les commandites possibles selon le nombre de billets et participation Panel. Merci!",
+      "description": "",
       "site_web": "banq.qc.ca",
-      "contact_nom": "Grégory  Kunz",
-      "contact_poste": "Directeur, Bureau de la présidence et des affaires institutionnelles",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
+    },
+    {
+      "id": "recF6QgZ2EvVRNNXT",
+      "nom": "Behaviour Interactive",
+      "secteur": "Manufacture",
+      "type": "PME",
+      "taille": "Petite entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "bhvr.com",
+      "extra": {}
     },
     {
       "id": "rec2VchDLt2pW9YQ9",
@@ -186,10 +179,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "Kaven  Gauthier",
-      "contact_poste": "Public Relations Manager",
-      "contact_email": "Kaven.Gauthier@bhvr.com",
-      "contact_tel": "(438) 357-0387"
+      "extra": {}
     },
     {
       "id": "recNgYONgZiNsw0bf",
@@ -200,10 +190,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recpoMlfpG8W7s2CX",
@@ -214,10 +201,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "concordia.ca",
-      "contact_nom": "Johanne Pelletier,Ursula  Eicker",
-      "contact_poste": "",
-      "contact_email": "johanne.pelletier@concordia.ca, ursula.eicker@concordia.ca",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recJVnIVrRxZTj8Ap",
@@ -228,10 +212,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "Anne-Marie Hubert",
-      "contact_poste": "East market manager",
-      "contact_email": "anne-marie.j.hubert@ca.ey.com",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recHsqzQ2n5PRzz9K",
@@ -242,10 +223,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "contact_nom": "Gérard  Pelletier",
-      "contact_poste": "",
-      "contact_email": "gdpelletier@datafranca.org",
-      "contact_tel": "(514) 573-7779"
+      "extra": {}
     },
     {
       "id": "recE4ZuRfxqUZKi08",
@@ -254,12 +232,9 @@
       "type": "PME",
       "taille": "",
       "localisation": "Canada",
-      "description": "Dialog Insight est une entreprise canadienne spécialisée dans les solutions de marketing relationnel et d’automatisation marketing, offrant une plateforme technologique permettant aux organisations de mieux exploiter leurs données clients.\n\nElle accompagne les entreprises dans la gestion, la segmentation et l’activation de leurs bases de données afin de créer des communications personnalisées et performantes. Son positionnement repose sur une approche data-driven, combinant collecte de données, intelligence marketing et orchestration multicanale.\n\nDialog Insight se distingue particulièrement dans les secteurs où la relation client est stratégique (médias, retail, divertissement), en permettant d’optimiser l’engagement, la fidélisation et la conversion.",
+      "description": "",
       "site_web": "https://www.dialoginsight.com",
-      "contact_nom": "Lisa-Marie Tanguay",
-      "contact_poste": "Directrice développement des affaires",
-      "contact_email": "lmtanguay@dialoginsight.com",
-      "contact_tel": "15142492595"
+      "extra": {}
     },
     {
       "id": "rec3IzJJjOBKpcG83",
@@ -268,12 +243,9 @@
       "type": "OBNL-OSBL",
       "taille": "Moyenne entreprise",
       "localisation": "Canada",
-      "description": "Données Souveraines Québec (DSQ) est un regroupement d'organisations québécoises créé pour promouvoir la souveraineté des données et une gouvernance responsable des actifs numériques au Québec.\n\nSa mission est de rassembler des organisations qui considèrent les données comme un actif stratégique et qui souhaitent favoriser un modèle où les données sont gouvernées conformément aux lois, aux valeurs et aux intérêts du Québec et du Canada. DSQ agit également comme voix collective auprès des gouvernements et des décideurs afin d'influencer les politiques publiques liées à la souveraineté numérique, à l'hébergement des données et à leur gouvernance.\nIl ne s'agit pas d'une entreprise technologique, mais d'un organisme de représentation et de mobilisation autour des enjeux de souveraineté numérique.",
+      "description": "",
       "site_web": "https://donneessouveraines.quebec",
-      "contact_nom": "Gilbert  Ouellette",
-      "contact_poste": "Directeur général",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recIIP2zSKhHVHfOU",
@@ -284,10 +256,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "druide.com",
-      "contact_nom": "Marie-Pier  Favreau-Chalifour",
-      "contact_poste": "",
-      "contact_email": "partenariat@druide.com",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recChbaT2G2CuK6Gr",
@@ -298,10 +267,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "Anita Cyr",
-      "contact_poste": "Coordonnatrice ventes et marketing",
-      "contact_email": "a.cyr@eficio.ca",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recVtW9CfkGTfCvLW",
@@ -310,12 +276,9 @@
       "type": "OBNL-OSBL",
       "taille": "Moyenne entreprise",
       "localisation": "Canada",
-      "description": "La mission de l’ÉIAS est de développer la relève et les acteurs de la santé dans leur capacité à intégrer l’IA en milieu réel, pour améliorer la santé de la population et ce, de façon éthique et responsable.",
+      "description": "",
       "site_web": "https://eiaschum.ca/",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recLX7lhIRkLZ17VA",
@@ -326,10 +289,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "contact_nom": "Sven Buridans",
-      "contact_poste": "Directeur de l'innovation et des partenariats numériques",
-      "contact_email": "Sven.Buridans@fccf.ca",
-      "contact_tel": "(514) 349-5877"
+      "extra": {}
     },
     {
       "id": "recn1NQZtTDHs7nBK",
@@ -340,10 +300,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "rec7rvXKfNbkOZj3B",
@@ -354,10 +311,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "glmconseil.com",
-      "contact_nom": "Benoit Cormier,Nicolas Quintin",
-      "contact_poste": "",
-      "contact_email": "benoit@glmconseil.com, nquintin@glmconseil.com",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recl7XIlU6lt7ojVA",
@@ -366,12 +320,9 @@
       "type": "OBNL-OSBL",
       "taille": "Petite entreprise",
       "localisation": "Canada",
-      "description": "L’IRIU est un organisme à but non lucratif (OBNL) agissant comme catalyseur de la résilience des collectivités locales. Il accompagne les gouvernements de proximité et les acteurs territoriaux dans l'amélioration de leur capacité organisationnelle face aux crises, en misant sur la planification stratégique, des outils d’aide à la décision, l’intelligence artificielle, et une gouvernance des données à la fois éthique, souveraine et frugale. L’IRIU favorise l’innovation ouverte, la recherche appliquée et l’intelligence collective, toujours au service de transformations durables.",
+      "description": "",
       "site_web": "https://www.iriu.ca/",
-      "contact_nom": "François William Croteau",
-      "contact_poste": "",
-      "contact_email": "fwcroteau@iriu.ca",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "receNnX3JU0JPqQGd",
@@ -382,10 +333,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "lienmultimedia.com",
-      "contact_nom": "Steeve Laprise",
-      "contact_poste": "Rédacteur en chef",
-      "contact_email": "slaprise@lienmultimedia.com",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "rec3YbJSc2sPbh8tR",
@@ -396,10 +344,18 @@
       "localisation": "France",
       "description": "",
       "site_web": "",
-      "contact_nom": "Sonia Jouneau,Marianne Brédard",
-      "contact_poste": "Directrice adjointe des partenariats et évènements éditoriaux, Responsable Médias & Communication",
-      "contact_email": "jouneau@lemonde.fr, bredard@lemonde.fr",
-      "contact_tel": ""
+      "extra": {}
+    },
+    {
+      "id": "rec6j53SqJjyNsvcy",
+      "nom": "Le Monde",
+      "secteur": "",
+      "type": "",
+      "taille": "",
+      "localisation": "France",
+      "description": "",
+      "site_web": "",
+      "extra": {}
     },
     {
       "id": "recp6SCngjMicnxEC",
@@ -408,12 +364,9 @@
       "type": "PME",
       "taille": "Petite entreprise",
       "localisation": "Canada",
-      "description": "Le Wagon est un des leaders mondiaux des formations Tech immersives.\n\nNotre mission est de former des personnes de tous horizons au Développement Web et à la Data et de les aider à accélérer leur carrière grâce à une méthode d’apprentissage reconnue et personnalisée.\n\nFondé à Paris en 2013, Le Wagon possède des campus dans +27 villes, incluant Montréal.\n\nLe Wagon, c’est aussi une communauté internationale de 31 000+ alumni, constituées des personnes qui veulent changer de carrière ou monter en compétences, des entrepreneurs, des travailleurs autonomes ou des digital nomades.",
+      "description": "",
       "site_web": "https://www.lewagon.com/montreal",
-      "contact_nom": "Marie-Gabrielle Ayoub",
-      "contact_poste": "",
-      "contact_email": "mg.ayoub@lewagon.org",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "rec7C6p8Ry3N0sj5C",
@@ -424,10 +377,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "makila.ai",
-      "contact_nom": "salma lamrini",
-      "contact_poste": "analyste produit",
-      "contact_email": "salma.lamrini@makila.ai",
-      "contact_tel": "(581) 994-9034"
+      "extra": {}
     },
     {
       "id": "recPeJt1GFUJsHCN4",
@@ -438,10 +388,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "mamh.gouv.qc.ca",
-      "contact_nom": "Laurence Harton",
-      "contact_poste": "Conseillère en communication Direction des communications Ministère des Affaires municipales et de l’Habitation",
-      "contact_email": "laurence.harton@mamh.gouv.qc.ca",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recrIofsIhv3DsNX6",
@@ -452,10 +399,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "contact_nom": "Mathieu Rocheleau,Alexandre Naud,Veronique Rocheleau,Marika Laforest,Bruno Sarra-Bournet",
-      "contact_poste": "",
-      "contact_email": "Mathieu.Rocheleau@mcc.gouv.qc.ca, Alexandre.Naud@mcc.gouv.qc.ca, Veronique.Rocheleau-Brosseau@mcc.gouv.qc.ca, Marika.Laforest@mcc.gouv.qc.ca, Bruno.Sarra-Bournet@mcc.gouv.qc.ca",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recmmEQbUXvYNgMeJ",
@@ -466,10 +410,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recGrvifPdIoARM5k",
@@ -480,10 +421,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "https://momentfactory.com/fr",
-      "contact_nom": "Catherine Deschatelets,Maïté Godin",
-      "contact_poste": "",
-      "contact_email": "catherinede@momentfactory.com, maiteg@momentfactory.com",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recOfE9BXZwZfMFXP",
@@ -494,10 +432,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "Mark Maclean",
-      "contact_poste": "Directeur principal Amériques, Asie & Entrepreneuriat Investissements étrangers",
-      "contact_email": "mark.maclean@mtlintl.com",
-      "contact_tel": "5149879349 // 514 9692976(cell)"
+      "extra": {}
     },
     {
       "id": "rec2miixBgR9fWCs4",
@@ -508,10 +443,7 @@
       "localisation": "France",
       "description": "",
       "site_web": "nantes-saintnazaire.fr",
-      "contact_nom": "Flavie Martin",
-      "contact_poste": "",
-      "contact_email": "Flavie.MARTIN@nantesmetropole.fr",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recpFvx21dv0c3iqB",
@@ -522,10 +454,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "https://www.pairconnex.com/fr/en-savoir-plus/mobile",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recIdlSmcuIbFpgd0",
@@ -534,12 +463,9 @@
       "type": "PME",
       "taille": "Petite entreprise",
       "localisation": "Canada",
-      "description": "paysages studio est un studio de création multimédia montréalais spécialisé dans les expériences immersives et contemplatives pour le bien-être. Il conçoit des environnements où le son, l’image et la lumière transforment un lieu en expérience sensible, avec une approche centrée sur le calme, la présence et le ralentissement",
+      "description": "",
       "site_web": "https://paysages.studio",
-      "contact_nom": "\"Charles Montambault\n\"",
-      "contact_poste": "Conception sonore, entrepreneur, médiation",
-      "contact_email": "charles@paysages.studio",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recYDJOonMBJBhefl",
@@ -550,10 +476,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "www.pixsenses.com",
-      "contact_nom": "Abderrahman Ourahou,Myriam  Benkhelifa,Irina Dufaud,Myriam Ben khelifa",
-      "contact_poste": "Directeur numérique et chef de l'innovation, Responsable dévelopement d'affaire, Responsable dévelopement d'affaire",
-      "contact_email": "oa@pixsenses.com, myriam.benkhelifa@pixsenses.com, irina.dufaud@pixsenses.com, myriam.benkhelifa@pixsenses.com",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recFRQ2QIuWUjM0KH",
@@ -562,12 +485,9 @@
       "type": "PME",
       "taille": "Petite entreprise",
       "localisation": "Canada",
-      "description": "Plumfind est une entreprise montréalaise spécialisée dans le marketing numérique assisté par intelligence artificielle. Elle propose des solutions sur mesure — notamment pour l’hôtellerie et l’e‑commerce — permettant d’analyser les tendances, optimiser les campagnes, automatiser la création de contenu et anticiper les comportements clients.",
+      "description": "",
       "site_web": "plumfind.com",
-      "contact_nom": "OZ Gurtuna",
-      "contact_poste": "",
-      "contact_email": "oz@plumfind.com",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recW9onKA84kSuijI",
@@ -576,12 +496,9 @@
       "type": "Gouvernement, secteur public, parapublique",
       "taille": "Grande entreprise",
       "localisation": "Canada",
-      "description": "PME MTL est un réseau d'accompagnement et de financement dédié aux petites et moyennes entreprises (PME) de la région de Montréal. Créé en 2016, il regroupe six pôles territoriaux pour offrir des services adaptés aux besoins locaux des entrepreneurs .\n\nMission : Soutenir la création, la croissance et la pérennité des PME montréalaises.\nChiffres clés :\n12 000 entreprises accompagnées depuis sa création.\n1,5 milliard $ en retombées économiques générées.\n1 000+ emplois créés ou maintenus annuellement.",
+      "description": "",
       "site_web": "https://pmemtl.com/",
-      "contact_nom": "Xavier Paillon,Marie-Claude Dauray,Sarah Dahmani",
-      "contact_poste": "Directeur à la coordination des innovations PME MTL Centre-Ouest Conseiller en innovation du CIQ , Directrice générale, Directrice adjointe et directrice des communications",
-      "contact_email": "xpaillon@pmemtlco.com, mcdauray@pmemtl.com, sdahmani@pmemtl.com",
-      "contact_tel": "514 318 21 60"
+      "extra": {}
     },
     {
       "id": "rec9nJ2eGmiBvNCbS",
@@ -592,10 +509,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "contact_nom": "Kim  Boisseau‑Chin",
-      "contact_poste": "Directrice Marketing et Communication",
-      "contact_email": "kim.boisseauchin@r2i.ca",
-      "contact_tel": "514 312‑3007 Ext. 407"
+      "extra": {}
     },
     {
       "id": "reczr8Fpe2aT8E7w7",
@@ -606,10 +520,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recIzzeITTBwUWFlI",
@@ -620,10 +531,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "contact_nom": "Lyne Bergeron",
-      "contact_poste": "Conseillère, Développement Réseau d’affaires",
-      "contact_email": "Lyne.bergeron@servicesquebec.gouv.qc.ca",
-      "contact_tel": "514 725-5221, poste 84416"
+      "extra": {}
     },
     {
       "id": "recjzPmAY3HmHOpBD",
@@ -632,12 +540,9 @@
       "type": "PME",
       "taille": "Petite entreprise",
       "localisation": "Canada",
-      "description": "Sterling North Partners est une firme canadienne de conseil stratégique spécialisée dans l’accompagnement des organisations sur des enjeux complexes liés à la croissance, à la transformation et au financement.\n\nL’entreprise intervient auprès de dirigeants, d’investisseurs et d’entreprises en phase de développement pour structurer des initiatives stratégiques, faciliter des partenariats et soutenir des décisions d’investissement. Elle se positionne comme un partenaire de haut niveau, à l’intersection du conseil, du capital et du développement d’affaires.\n\nSterling North Partners évolue dans un environnement où les enjeux financiers, technologiques et stratégiques sont étroitement liés, avec une approche orientée vers la création de valeur à long terme.",
+      "description": "",
       "site_web": "https://sterlingnorth.partners",
-      "contact_nom": "Philippe Marcotte",
-      "contact_poste": "Managing Director",
-      "contact_email": "Philippe.Marcotte@sterlingnorth.partners",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recVR0Mp84aH2nGEF",
@@ -648,10 +553,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "contact_nom": "Camille Aria",
-      "contact_poste": "",
-      "contact_email": "caria@taxelco.com",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "reckLm70wK9XavhjF",
@@ -662,10 +564,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "contact_nom": "Florence Vitali",
-      "contact_poste": "",
-      "contact_email": "FVitali@mtl.org",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recy6pbHLhLSwJQ02",
@@ -676,10 +575,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "contact_nom": "Samir Touhami",
-      "contact_poste": "Commissaire au développement économique   | Affaires économiques internationales Direction développement des marchés Service du développement économique | Ville de Montréal",
-      "contact_email": "samir.touhami@montreal.ca",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recHByYQJay8qdfrr",
@@ -690,10 +586,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "contact_nom": "Mureille OBAYA",
-      "contact_poste": "Team Leader",
-      "contact_email": "mureilleobaya@gmail.com",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recZ6k2Vacjl4P9Xi",
@@ -704,10 +597,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "contact_nom": "Jeanne Dompierre",
-      "contact_poste": "Directrice générale",
-      "contact_email": "jeanne@xnquebec.co",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recmi5WqB79fMzG9O",
@@ -718,10 +608,7 @@
       "localisation": "Sénégal",
       "description": "",
       "site_web": "",
-      "contact_nom": "El Hadj Diop",
-      "contact_poste": "PDG",
-      "contact_email": "elhadj@akassaa.com",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "reciIX5Ta28EDeNh1",
@@ -732,10 +619,7 @@
       "localisation": "Belgique",
       "description": "",
       "site_web": "",
-      "contact_nom": "Anne  Defourny",
-      "contact_poste": "",
-      "contact_email": "a.defourny@awex-wallonia.com",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recfxaGlX1FD54jtO",
@@ -746,10 +630,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "https://culturemonteregie.qc.ca/",
-      "contact_nom": "Katherine  Lachance Lavergne",
-      "contact_poste": "",
-      "contact_email": "numerique@culturemonteregie.qc.ca",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recjuRolApPFbdYAR",
@@ -760,10 +641,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "desjardins.com",
-      "contact_nom": "Dr. Samir Mounir",
-      "contact_poste": "Directeur développement des affaires Tech & innovation",
-      "contact_email": "samir.mounir@desjardins.com",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recWJkjbunA7OzbDY",
@@ -774,10 +652,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "Ndeye Seynabou POUYE",
-      "contact_poste": "",
-      "contact_email": "seynabou.pouye@faadev.org",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recHcnLWeHGgXC5xi",
@@ -788,10 +663,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "isaca.org",
-      "contact_nom": "Alex  Dos Santos",
-      "contact_poste": "Président",
-      "contact_email": "adossantos@isaca-montreal.ca",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recRNIxrsNubaEn2M",
@@ -802,10 +674,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "lojiq.org",
-      "contact_nom": "Astrid LAYE,Frédérique Bouyx,Helen Steiman,David  Brassard-Potvin,Francoise Thomas,Stéphane Carrier,Maïssane MANSOUR",
-      "contact_poste": "Chargée de projet entrepreneuriat et développement économique, Coordinatrice auprès de la direction des programmes, Chargée des communications - Graphic Designer, 1-800 465-4255",
-      "contact_email": "alaye@ofqj.org, fbouyx@ofqj.org, hsteiman@lojiq.org, dbrassard-potvin@lojiq.org, scarrier@lojiq.org, mmansour@lojiq.org",
-      "contact_tel": "01 49 33 28 83, 01 49 33 28 60"
+      "extra": {}
     },
     {
       "id": "receSr9qRN9X3TMsP",
@@ -816,10 +685,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "contact_nom": "Martin Caron",
-      "contact_poste": "Directeur",
-      "contact_email": "mcaron@mit.quebec",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "rec423rFD3HWS1UDY",
@@ -830,10 +696,7 @@
       "localisation": "France",
       "description": "",
       "site_web": "",
-      "contact_nom": "Bonnie GILLES",
-      "contact_poste": "Chargée de mission Développement International",
-      "contact_email": "bonnie.gilles@montpellier.fr",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recsnCx0xx4GkdVrD",
@@ -844,10 +707,7 @@
       "localisation": "Cameroun",
       "description": "",
       "site_web": "",
-      "contact_nom": "Daniel ASSIENE",
-      "contact_poste": "",
-      "contact_email": "promotafrica@gmail.com",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recM8ivXKX8At3AlL",
@@ -858,10 +718,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "contact_nom": "Maryse  GERVAIS",
-      "contact_poste": "",
-      "contact_email": "maryse@projetcollectif.ca",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recImcHlmxPUnGPMs",
@@ -872,10 +729,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "contact_nom": "Paul Muamba",
-      "contact_poste": "Directeur adjoint de la concertation nationale et des partenariats",
-      "contact_email": "paul.muamba@rdee.ca",
-      "contact_tel": "(613) 244-7308"
+      "extra": {}
     },
     {
       "id": "recMtq0R2up0qp2il",
@@ -886,10 +740,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "Zahra Kamil Ali",
-      "contact_poste": "Représentante de l'OIF pour les Amériques",
-      "contact_email": "zahra.kamil@francophonie.org",
-      "contact_tel": "+418 6925604"
+      "extra": {}
     },
     {
       "id": "recSMGJlwXpPy4opT",
@@ -900,10 +751,7 @@
       "localisation": "Tunisie",
       "description": "",
       "site_web": "",
-      "contact_nom": "Walid SIALA",
-      "contact_poste": "Fondateur",
-      "contact_email": "walid.siala@rtca.com.tn",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recg9xoXmljSim91m",
@@ -914,10 +762,7 @@
       "localisation": "Sénégal",
       "description": "",
       "site_web": "",
-      "contact_nom": "Rokhaya Solange Ndir",
-      "contact_poste": "Directrice générale",
-      "contact_email": "rokhayasolange.ndir@gmail.com",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recsjWZG9REX5unKV",
@@ -926,12 +771,9 @@
       "type": "PME",
       "taille": "Moyenne entreprise",
       "localisation": "Canada",
-      "description": "L’UM6P est une université privée à but non lucratif marocaine axée sur la recherche appliquée, l’innovation et le développement durable, avec une forte orientation vers l’Afrique. Fondée par la Fondation OCP, elle propose une approche pluridisciplinaire et expérimentale dans de nombreux domaines scientifiques et techniques .",
+      "description": "",
       "site_web": "https://um6p.ma/fr",
-      "contact_nom": "Fatiha  Charradi",
-      "contact_poste": "Directrice UMP6 Canada",
-      "contact_email": "Fatiha.CHARRADI@um6p.ca",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "rec8o9RmF6HgLUYSl",
@@ -942,10 +784,7 @@
       "localisation": "Belgique",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recrZFbmpGNNTR2dM",
@@ -956,10 +795,7 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "contact_nom": "Marie-France Audet,Manuelle Freire",
-      "contact_poste": "Responsable Service des communications et des relations publiques",
-      "contact_email": "marie-france.audet@uqac.ca, manuelle.freire@uqac.ca",
-      "contact_tel": "418 545-5011, poste 2274 //  418 290-1259"
+      "extra": {}
     },
     {
       "id": "recoe37yXMSw9Ui4j",
@@ -970,10 +806,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recNL0oN9FVzjI7bn",
@@ -984,10 +817,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recPIYMfOHr134I1X",
@@ -998,10 +828,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recYuCt16qiuJQt9H",
@@ -1012,10 +839,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recUuWkHNkPla8dMr",
@@ -1026,10 +850,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recWD7NA1sGP6M3n3",
@@ -1040,10 +861,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "rec0xMCLQzNJIMBBN",
@@ -1054,10 +872,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recQu64jtclAkQoUr",
@@ -1068,10 +883,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recRUMZe1GcQkOppq",
@@ -1082,10 +894,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recmoWXAUjADDqHmx",
@@ -1096,10 +905,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recscWjbNwiNjuvxf",
@@ -1110,10 +916,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "reczuCKrfTs3Zwr1d",
@@ -1124,10 +927,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recNntVr3AmaNKuMM",
@@ -1138,10 +938,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "reco8O88P20cd7oEM",
@@ -1152,10 +949,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recR5tvRcH5vA4eEv",
@@ -1166,10 +960,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recOcvLOCqqm9kNCa",
@@ -1180,10 +971,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recV2MKZPKNOqlgxk",
@@ -1194,10 +982,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recw8w7E0v1aEMTIt",
@@ -1208,10 +993,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recKz4miYN25bfUP0",
@@ -1222,10 +1004,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recgeyNQpAWr6Nj3G",
@@ -1236,10 +1015,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recndaYWiLD4lSNvz",
@@ -1250,10 +1026,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "rececYJHzDrNIGVLU",
@@ -1264,10 +1037,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recSE7ICFOLuMfIu2",
@@ -1278,10 +1048,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recZWVaepztWxzW8f",
@@ -1292,10 +1059,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     },
     {
       "id": "recvTIk7phOD0Ytwz",
@@ -1306,10 +1070,7 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "contact_nom": "",
-      "contact_poste": "",
-      "contact_email": "",
-      "contact_tel": ""
+      "extra": {}
     }
   ],
   "propositions": [

@@ -1,7 +1,7 @@
 /* ============================================================
    api.js — Couche d'accès aux données
    - Vivier (organisations, partenaires, propositions) : data.json, LECTURE SEULE
-   - Sélections des partenaires : Google Sheet via Apps Script, LECTURE + ÉCRITURE
+   - Sélections + formulaires partenaires : Google Sheet via Apps Script, LECTURE + ÉCRITURE
    Aucune clé Airtable n'apparaît ici : le vivier vient d'un JSON statique.
    ============================================================ */
 const API = (() => {
@@ -52,6 +52,18 @@ const API = (() => {
     return res;
   }
 
+  // Enregistre ou met à jour le formulaire de besoins d'un partenaire.
+  async function saveFormulaire(partenaireId, token, reponses) {
+    if (!CONFIG.SHEET_API_URL) return { ok: true, demo: true };
+    const res = await _fetchJSON(CONFIG.SHEET_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" }, // évite le pre-flight CORS
+      body: JSON.stringify({ action: "save_formulaire", p: partenaireId, token, reponses })
+    });
+    if (res.error) throw new Error(res.error);
+    return res;
+  }
+
   // Pour l'admin : toutes les sélections d'un partenaire (lecture, jeton admin).
   async function getSelectionsAdmin(partenaireId, adminToken) {
     if (!CONFIG.SHEET_API_URL) return _local.get(partenaireId);
@@ -78,5 +90,5 @@ const API = (() => {
     set(p, arr) { this._m[p] = [...arr]; }
   };
 
-  return { loadVivier, getPartenaire, organisationsProposees, getSelections, saveSelections, getSelectionsAdmin };
+  return { loadVivier, getPartenaire, organisationsProposees, getSelections, saveSelections, saveFormulaire, getSelectionsAdmin };
 })();
