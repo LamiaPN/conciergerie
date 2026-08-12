@@ -899,13 +899,13 @@
       "secteur": "Evénementiel",
       "type": "OBNL-OSBL",
       "taille": "Petite entreprise",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
+      "localisation": "Canada",
+      "description": "Le Printemps numérique (PN) est un organisme à but non lucratif montréalais dont la mission est de stimuler et soutenir l’intelligence numérique, en favorisant l’appropriation des technologies, le développement des compétences numériques et les rencontres entre les différents acteurs de l’écosystème.\n\nIl agit à la croisée de la technologie, de l’innovation, de la culture et de la société, notamment à travers des événements, des programmes de littératie numérique et des initiatives de maillage.\n\nLe Printemps numérique est notamment l’organisateur de MTL connecte – la Semaine numérique de Montréal, son événement international phare consacré aux grands enjeux de la transformation numérique.",
+      "site_web": "https://www.printempsnumerique.ca/?utm_source=chatgpt.com",
       "extra": {
         "Nom de l'organisation/ Délégation": "Printemps numérique",
-        "Type de partenaire": "",
-        "Conciergerie": ""
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
       }
     },
     {
