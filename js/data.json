@@ -110,7 +110,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Action TI",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -125,7 +127,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "AFRIA - Agence internationale pour la Formation et la Recherche en Intelligence Artificielle (AFRIA)",
         "Type de partenaire": "Délégation",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable"
       }
     },
     {
@@ -140,7 +144,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Aleia",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -155,7 +161,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "AQIII (L’Association québécoise des informaticiennes et informaticiens indépendants)",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable"
       }
     },
     {
@@ -170,7 +178,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Atelier B2B",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -185,7 +195,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "BAnQ",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -200,7 +212,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Behaviour Interactive",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -215,7 +229,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Capital numérique",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable"
       }
     },
     {
@@ -230,7 +246,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Concordia University",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable"
       }
     },
     {
@@ -245,7 +263,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Cybereco",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -260,7 +280,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "DataFranca",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -275,7 +297,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Dialog Insight",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -290,7 +314,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Données SOUVERAINES QUÉBEC",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -305,7 +331,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Druide",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable"
       }
     },
     {
@@ -320,7 +348,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Eficio",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -335,7 +365,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "EIAS (École de l'intelligence artificielle en santé) -CHUM",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -350,7 +382,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Fédération culturelle canadienne-française FCCF",
         "Type de partenaire": "Délégation",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -365,7 +399,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Felix & Paul Studios",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -380,7 +416,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "GLM Conseil",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable"
       }
     },
     {
@@ -395,7 +433,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "IRIU",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -410,7 +450,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Le lien multimédia",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable"
       }
     },
     {
@@ -425,7 +467,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Le Monde",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable"
       }
     },
     {
@@ -440,7 +484,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Le Wagon",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -455,7 +501,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "makila ai",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -470,7 +518,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "MAMH - Ministère des Affaires municipales et de l'Habitation 1",
         "Type de partenaire": "Public",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -485,7 +535,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Ministère de la Culture et des Communications",
         "Type de partenaire": "Public",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -500,7 +552,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Ministère du tourisme (FSTAI)",
         "Type de partenaire": "Public",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -515,7 +569,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Moment Factory",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -530,7 +586,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Montreal International",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -545,7 +603,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Nantes Métropole / Nantes St Nazaire Développement / Nantes Digitale week",
         "Type de partenaire": "Délégation",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -560,7 +620,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "PairConnex",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -575,7 +637,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "paysages.studio X",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -590,7 +654,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Pixsenses",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Formulaire rempli"
       }
     },
     {
@@ -605,7 +671,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Plumfind",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -620,7 +688,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "PME MTL",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable"
       }
     },
     {
@@ -635,7 +705,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "R2i",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -650,7 +722,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Royal Photo",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -665,7 +739,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Services Québec - Ministère de l’Emploi et de la Solidarité sociale",
         "Type de partenaire": "Public",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable"
       }
     },
     {
@@ -680,7 +756,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Sterling North Partners",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -695,7 +773,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Taxelco",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -710,7 +790,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Tourisme Montréal",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -725,7 +807,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Ville de Montréal",
         "Type de partenaire": "Public",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -740,7 +824,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Women Tech Makers",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable"
       }
     },
     {
@@ -755,7 +841,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Xn Québec",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -770,7 +858,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Akassaa (Partenaire de Festic)",
         "Type de partenaire": "Délégation",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -785,7 +875,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "AWEX - Agence Wallonne à l’Exportation et aux Investissements étrangers",
         "Type de partenaire": "Délégation",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -800,7 +892,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Culture Montérégie",
         "Type de partenaire": "Délégation",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable"
       }
     },
     {
@@ -815,7 +909,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Desjardins Caisse des Technologies",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -830,7 +926,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "FAADEV - Femmes Africaines Actives pour le Développement",
         "Type de partenaire": "Délégation",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -845,7 +943,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "ISACA",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "En attente"
       }
     },
     {
@@ -860,7 +960,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "LOJIQ - Les Offices jeunesse internationaux du Québec",
         "Type de partenaire": "Délégation",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -875,7 +977,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Maison de l'innovation Technologique - MiT",
         "Type de partenaire": "Délégation",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -890,7 +994,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Montpellier Méditérranée Métropole",
         "Type de partenaire": "Délégation",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -905,7 +1011,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Printemps numérique",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -920,7 +1028,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Promot Africa,Promot Africa",
         "Type de partenaire": "Délégation",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -935,7 +1045,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "RADN - Projet Collectif",
         "Type de partenaire": "Délégation",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable"
       }
     },
     {
@@ -950,7 +1062,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "RDÉE Canada",
         "Type de partenaire": "Délégation",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -965,7 +1079,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Représentation de l’OIF pour les Amériques (REPAM)",
         "Type de partenaire": "Public",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -980,7 +1096,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "RTCA - Réseau Tuniso-Canadien des Affaires,RTCA - Réseau Tuniso-Canadien des Affaires",
         "Type de partenaire": "Délégation",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Formulaire rempli"
       }
     },
     {
@@ -995,7 +1113,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Festic",
         "Type de partenaire": "Délégation",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Formulaire transmis"
       }
     },
     {
@@ -1010,7 +1130,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "UMP6",
         "Type de partenaire": "Privé",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Formulaire rempli"
       }
     },
     {
@@ -1025,7 +1147,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "AWEX - Agence Wallonne à l’Exportation et aux Investissements étrangers",
         "Type de partenaire": "Délégation",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1040,7 +1164,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "UQAC - Université du Québec à Chicoutimi",
         "Type de partenaire": "Public",
-        "Conciergerie": "checked"
+        "Conciergerie": "checked",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1055,7 +1181,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Consulat général de Belgique à Montréal",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1070,7 +1198,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Deloitte",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1085,7 +1215,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Drakkar",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1100,7 +1232,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "École Polytechnique de Montréal",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1115,7 +1249,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "EIAS (École de l'intelligence artificielle en santé) -CHUM",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1130,7 +1266,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Futurpreneur",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1145,7 +1283,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Hydro-Québec",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1160,7 +1300,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "LUQIA (Ex-Crim)",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1175,7 +1317,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Ministère de l'Éducation du Québec (MÉQ)",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1190,7 +1334,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Montreal International",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1205,7 +1351,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Onepoint",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1220,7 +1368,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "OVH cloud",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1235,7 +1385,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Petal",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1250,7 +1402,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Prompt Innov",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1265,7 +1419,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Technovation Montréal",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1280,7 +1436,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Bradley & Rollins Inc",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1295,7 +1453,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "CAE Inc",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1310,7 +1470,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "CDPQ - Caisse de dépôt et placement du Québec",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1325,7 +1487,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "CEIMIA",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1340,7 +1504,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Centech",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1355,7 +1521,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Conseil de l'Innovation du Québec",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1370,7 +1538,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Consulat Général d'Allemagne à Montréal",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1385,7 +1555,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "IVADO",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1400,7 +1572,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Mila - Institut québécois d'intelligence artificielle",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     },
     {
@@ -1415,7 +1589,9 @@
       "extra": {
         "Nom de l'organisation/ Délégation": "Technum Québec",
         "Type de partenaire": "",
-        "Conciergerie": ""
+        "Conciergerie": "",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": ""
       }
     }
   ],
