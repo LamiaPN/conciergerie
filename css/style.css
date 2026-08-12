@@ -1,0 +1,964 @@
+/* ════════════════════════════════════════════════════════════════════════
+   FICHIER : style.css
+   RÔLE    : Charte PN + composants COMMUNS à toutes les pages partenaire
+             (formulaire, portail sélection). L'admin ajoute admin.css par-dessus.
+
+   ┌─ SOMMAIRE ───────────────────────────────────────────────────────────┐
+   │  1 — Variables & charte (:root)                                       │
+   │  2 — Reset & base (html, body, *)                                     │
+   │  3 — Écrans & mise en page (screen, screen-inner)                     │
+   │  4 — En-tête & hero (brand, tag-label, hero-*)                        │
+   │  5 — Progression (progress-bar, step-label)                           │
+   │  6 — Formulaire de base (form-grid, form-group, inputs)               │
+   │  7 — Choix (choice-chip, pill-btn)                                    │
+   │  8 — Boutons (btn, btn-primary, btn-large…)                           │
+   │  9 — Divers composants communs (toast, spinner…)                      │
+   │  10 — PAGE FORMULAIRE (form-page, sections, récap) ← fusionné ici     │
+   └──────────────────────────────────────────────────────────────────────┘
+   Convention : styles COMMUNS ici ; spécifique admin dans admin.css.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* ================================================================
+   style.css — Styles publics génériques
+   Diagnostic IA + futurs formulaires publics
+
+   Sections :
+   01 — Variables
+   02 — Reset et base
+   03 — Système d’écrans et conteneurs
+   04 — Logo et étiquettes
+   05 — Accueil / Hero
+   06 — Navigation, retour et progression
+   07 — Corps d’écran et textes
+   08 — Grilles, champs et erreurs de formulaire
+   09 — Consentement et checkbox personnalisé
+   10 — Boutons pills
+   11 — Choix simples et choix multiples
+   12 — Actions et boutons
+   13 — Spinners et chargement
+   14 — Écran de résultat / feedback
+   15 — Modale
+   16 — Pied de page
+   17 — États d’erreur et scrollbar
+   18 — Responsive tablette et mobile
+   19 — Optimisations tactile / kiosque
+================================================================ */
+
+/* ================================================================
+   01 — Variables
+================================================================ */
+:root {
+  --noir:        #0B0D0C;
+  --vert:        #6FBF4A;
+  --vert-dark:   #58a038;
+  --vert-light:  #e9f7e3;
+  --blanc:       #FFFFFF;
+  --gris-text:   #8E9490;
+  --gris-light:  #F4F5F4;
+  --gris-border: #DDE0DC;
+  --danger:      #D64045;
+  --danger-bg:   #FFF0F0;
+  --radius-sm:   8px;
+  --radius-md:   14px;
+  --radius-lg:   22px;
+  --shadow-sm:   0 2px 8px rgba(0,0,0,.06);
+  --shadow-md:   0 6px 24px rgba(0,0,0,.10);
+  --shadow-lg:   0 16px 48px rgba(0,0,0,.14);
+  --transition:  0.22s cubic-bezier(.4,0,.2,1);
+  --font-main:   'Inter', sans-serif;
+  --font-title:  'Space Grotesk', 'Inter', sans-serif;
+}
+
+/* ================================================================
+   02 — Reset et base
+================================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-main);
+  background: var(--gris-light);
+  color: var(--noir);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ================================================================
+   03 — Système d’écrans et conteneurs
+================================================================ */
+.screen {
+  display: none;
+  min-height: 100vh;
+  width: 100%;
+  animation: fadeIn 0.35s ease;
+}
+.screen-active { display: flex; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.screen-inner {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 32px 28px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.screen-inner.screen-center {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100vh;
+  gap: 28px;
+}
+
+/* ================================================================
+   04 — Logo et étiquettes
+================================================================ */
+
+/* 04.1 — Logo */
+.brand-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.brand-logo-img {
+  height: 52px;
+  width: auto;
+  max-width: 280px;
+  display: block;
+  /* Le logo est noir sur fond blanc — il s'affiche parfaitement sur fond clair */
+  object-fit: contain;
+}
+
+/* 04.2 — Étiquette / tag */
+.tag-label {
+  display: inline-block;
+  background: var(--vert-light);
+  color: var(--vert-dark);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-bottom: 4px;
+}
+
+/* ================================================================
+   05 — Accueil / Hero
+================================================================ */
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  max-width: 640px;
+  text-align: center;
+}
+
+.hero-title {
+  font-family: var(--font-title);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--noir);
+  letter-spacing: -.02em;
+}
+
+.hero-title span.accent { color: var(--vert); }
+
+.hero-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-weight: 500;
+  color: var(--noir);
+  line-height: 1.5;
+}
+
+.hero-description {
+  font-size: 0.95rem;
+  color: var(--gris-text);
+  line-height: 1.6;
+  max-width: 520px;
+}
+
+.privacy-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--gris-light);
+  border: 1.5px solid var(--gris-border);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  font-size: 0.82rem;
+  color: var(--gris-text);
+  text-align: left;
+  max-width: 520px;
+}
+.privacy-note i { color: var(--vert); margin-top: 2px; flex-shrink: 0; }
+
+/* ================================================================
+   06 — Navigation, retour et progression
+================================================================ */
+.screen-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 0 28px;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  color: var(--gris-text);
+  font-size: 0.88rem;
+  font-family: var(--font-main);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition), color var(--transition);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn-back:hover { background: var(--gris-border); color: var(--noir); }
+
+.progress-bar-wrap {
+  flex: 1;
+  height: 6px;
+  background: var(--gris-border);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background: var(--vert);
+  border-radius: 100px;
+  transition: width 0.5s cubic-bezier(.4,0,.2,1);
+}
+
+.step-label {
+  font-size: 0.78rem;
+  color: var(--gris-text);
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ================================================================
+   07 — Corps d’écran et textes
+================================================================ */
+.screen-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.screen-title {
+  font-family: var(--font-title);
+  font-size: clamp(1.5rem, 4vw, 2.1rem);
+  font-weight: 700;
+  color: var(--noir);
+  letter-spacing: -.02em;
+  line-height: 1.2;
+}
+
+.screen-intro {
+  font-size: 1rem;
+  color: var(--noir);
+  line-height: 1.6;
+}
+
+.hint {
+  color: var(--gris-text);
+  font-size: 0.88rem;
+  font-style: italic;
+}
+
+/* ================================================================
+   08 — Grilles, champs et erreurs de formulaire
+================================================================ */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  position: relative;
+}
+
+.form-group.full-width { grid-column: 1 / -1; }
+.form-group.mt-2 { margin-top: 24px; }
+
+.form-group label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--noir);
+}
+
+.required { color: var(--vert-dark); }
+.optional { color: var(--gris-text); font-weight: 400; font-size: 0.82rem; }
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid var(--gris-border);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-family: var(--font-main);
+  color: var(--noir);
+  background: var(--blanc);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline: none;
+  appearance: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--vert);
+  box-shadow: 0 0 0 3px rgba(111,191,74,0.15);
+}
+
+.form-group input.error,
+.form-group textarea.error,
+.form-group select.error {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(214,64,69,0.12);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+.char-count {
+  font-size: 0.75rem;
+  color: var(--gris-text);
+  text-align: right;
+  margin-top: -4px;
+}
+
+.field-error {
+  display: none;
+  font-size: 0.8rem;
+  color: var(--danger);
+  font-weight: 500;
+}
+.field-error.visible { display: block; }
+
+/* ================================================================
+   09 — Consentement et checkbox personnalisé
+================================================================ */
+.consent-block {
+  background: var(--vert-light);
+  border: 1.5px solid #b8e0a0;
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.checkbox-custom {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  border: 2px solid var(--vert);
+  border-radius: 5px;
+  background: var(--blanc);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.checkbox-label input:checked + .checkbox-custom {
+  background: var(--vert);
+  border-color: var(--vert);
+}
+
+.checkbox-label input:checked + .checkbox-custom::after {
+  content: '';
+  width: 6px;
+  height: 10px;
+  border: 2px solid var(--blanc);
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg) translate(-1px, -1px);
+  display: block;
+}
+
+.checkbox-text {
+  font-size: 0.92rem;
+  color: var(--noir);
+  line-height: 1.5;
+}
+
+/* ================================================================
+   10 — Boutons pills
+================================================================ */
+.pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pill-btn {
+  padding: 10px 18px;
+  border: 2px solid var(--gris-border);
+  border-radius: 100px;
+  background: var(--blanc);
+  color: var(--noir);
+  font-size: 0.9rem;
+  font-family: var(--font-main);
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition), color var(--transition), box-shadow var(--transition);
+}
+
+.pill-btn:hover {
+  border-color: var(--vert);
+  background: var(--vert-light);
+}
+
+.pill-btn.selected {
+  border-color: var(--vert);
+  background: var(--vert);
+  color: var(--blanc);
+  box-shadow: 0 2px 10px rgba(111,191,74,0.3);
+}
+
+/* ================================================================
+   11 — Choix simples et choix multiples
+================================================================ */
+
+/* 11.1 — Choix simple en liste */
+.choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.choice-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 18px 22px;
+  background: var(--blanc);
+  border: 2px solid var(--gris-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-main);
+  transition: border-color var(--transition), background var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+.choice-btn:hover {
+  border-color: var(--vert);
+  background: var(--vert-light);
+  transform: translateX(4px);
+}
+
+.choice-btn.selected {
+  border-color: var(--vert);
+  background: var(--vert-light);
+  box-shadow: 0 2px 12px rgba(111,191,74,0.18);
+}
+
+.choice-icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  background: var(--gris-light);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gris-text);
+  font-size: 1.1rem;
+  transition: background var(--transition), color var(--transition);
+}
+
+.choice-btn.selected .choice-icon {
+  background: var(--vert);
+  color: var(--blanc);
+}
+
+.choice-text {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--noir);
+  line-height: 1.4;
+}
+
+/* 11.2 — Choix multiples en chips */
+.choice-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.choice-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 18px;
+  border: 2px solid var(--gris-border);
+  border-radius: var(--radius-md);
+  background: var(--blanc);
+  color: var(--noir);
+  font-size: 0.9rem;
+  font-family: var(--font-main);
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition), color var(--transition), box-shadow var(--transition);
+}
+
+.choice-chip i {
+  color: var(--gris-text);
+  font-size: 0.9rem;
+  transition: color var(--transition);
+}
+
+.choice-chip:hover {
+  border-color: var(--vert);
+  background: var(--vert-light);
+}
+
+.choice-chip.selected {
+  border-color: var(--vert);
+  background: var(--vert);
+  color: var(--blanc);
+  box-shadow: 0 2px 10px rgba(111,191,74,0.28);
+}
+
+.choice-chip.selected i { color: var(--blanc); }
+
+/* ================================================================
+   12 — Actions et boutons
+================================================================ */
+
+/* 12.1 — Zone d’actions */
+.screen-actions {
+  padding: 24px 0 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* 12.2 — Boutons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-weight: 600;
+  border-radius: var(--radius-lg);
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition), color var(--transition), border-color var(--transition);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: var(--vert);
+  color: var(--blanc);
+  box-shadow: 0 4px 18px rgba(111,191,74,0.35);
+}
+.btn-primary:hover {
+  background: var(--vert-dark);
+  box-shadow: 0 6px 22px rgba(111,191,74,0.45);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--blanc);
+  color: var(--noir);
+  border: 2px solid var(--gris-border);
+}
+.btn-secondary:hover {
+  border-color: var(--vert);
+  color: var(--vert-dark);
+  background: var(--vert-light);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--gris-text);
+  border: 2px solid var(--gris-border);
+}
+.btn-ghost:hover {
+  background: var(--gris-light);
+  color: var(--noir);
+}
+
+.btn-large  { padding: 16px 36px; font-size: 1.05rem; }
+.btn-medium { padding: 13px 26px; font-size: 0.95rem; }
+.btn-small  { padding: 9px 18px;  font-size: 0.82rem; }
+
+/* ================================================================
+   13 — Spinners et chargement
+================================================================ */
+
+/* 13.1 — Spinner simple */
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255,255,255,0.4);
+  border-top-color: var(--blanc);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ================================================================
+   14 — Écran de résultat / feedback
+================================================================ */
+.feedback-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.checkmark-anim {
+  font-size: 3.2rem;
+  color: var(--vert);
+  animation: popIn 0.5s cubic-bezier(.17,.67,.32,1.28);
+}
+
+@keyframes popIn {
+  from { transform: scale(0.4); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.feedback-card {
+  background: var(--blanc);
+  border: 1.5px solid var(--gris-border);
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  box-shadow: var(--shadow-md);
+  width: 100%;
+  max-width: 680px;
+  text-align: left;
+}
+
+.feedback-text {
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: var(--noir);
+  margin-bottom: 24px;
+}
+
+.feedback-reco h3 {
+  font-family: var(--font-title);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--vert-dark);
+  margin-bottom: 12px;
+}
+
+.feedback-reco ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.feedback-reco ul li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.95rem;
+  color: var(--noir);
+}
+
+.feedback-reco ul li::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  border-radius: 50%;
+  background: var(--vert);
+  margin-top: 7px;
+}
+
+.feedback-thankyou {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--vert-light);
+  border: 1.5px solid #b8e0a0;
+  border-radius: var(--radius-md);
+  padding: 16px 22px;
+  max-width: 680px;
+  width: 100%;
+  text-align: left;
+}
+
+.feedback-thankyou i {
+  color: var(--vert-dark);
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.feedback-thankyou p {
+  font-size: 0.92rem;
+  color: var(--noir);
+  line-height: 1.5;
+}
+
+.feedback-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  max-width: 680px;
+  width: 100%;
+}
+
+.kiosk-reset {
+  margin-top: 12px;
+}
+
+/* ================================================================
+   15 — Modale
+================================================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11,13,12,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-box {
+  background: var(--blanc);
+  border-radius: var(--radius-lg);
+  padding: 40px 36px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.modal-icon {
+  font-size: 2.8rem;
+  color: var(--vert);
+}
+
+.modal-box h3 {
+  font-family: var(--font-title);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--noir);
+}
+
+.modal-box p {
+  font-size: 0.95rem;
+  color: var(--gris-text);
+  line-height: 1.6;
+}
+
+/* 13.2 — Overlay de chargement */
+#loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11,13,12,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  color: var(--blanc);
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(255,255,255,0.25);
+  border-top-color: var(--vert);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+.loading-content p {
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+/* ================================================================
+   16 — Pied de page
+================================================================ */
+.screen-footer {
+  font-size: 0.75rem;
+  color: var(--gris-text);
+  margin-top: 8px;
+}
+
+/* ================================================================
+   17 — États d’erreur et scrollbar
+================================================================ */
+
+/* 17.1 — États d’erreur sur groupes de choix */
+.pill-group.has-error .pill-btn:not(.selected),
+.choice-list.has-error .choice-btn:not(.selected),
+.choice-grid.has-error .choice-chip:not(.selected) {
+  border-color: #e8b8ba;
+}
+
+/* 17.2 — Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--gris-border); border-radius: 3px; }
+
+/* ================================================================
+   18 — Responsive tablette et mobile
+================================================================ */
+
+@media (max-width: 860px) {
+  .screen-inner { padding: 24px 20px 40px; }
+  .form-grid { grid-template-columns: 1fr; gap: 16px; }
+  .form-group.full-width { grid-column: 1; }
+  .screen-inner.screen-center { padding: 32px 20px 40px; }
+  .feedback-card { padding: 22px 20px; }
+}
+
+@media (max-width: 600px) {
+  .screen-inner { padding: 16px 14px 32px; }
+  .hero-title { font-size: 1.8rem; }
+  .btn-large  { padding: 14px 24px; font-size: 1rem; width: 100%; justify-content: center; }
+  .btn-medium { width: 100%; justify-content: center; }
+  .screen-actions { justify-content: stretch; }
+  .screen-actions .btn { width: 100%; justify-content: center; }
+  .choice-btn { padding: 14px 16px; }
+  .choice-icon { width: 34px; height: 34px; min-width: 34px; }
+  .feedback-cta { flex-direction: column; }
+  .screen-header { flex-wrap: wrap; gap: 10px; }
+  .step-label { width: 100%; text-align: center; }
+  .progress-bar-wrap { order: 3; width: 100%; }
+  .btn-back { order: 1; }
+  .step-label { order: 2; }
+  .modal-box { padding: 28px 20px; }
+}
+
+/* ================================================================
+   19 — Optimisations tactile / kiosque
+================================================================ */
+@media (pointer: coarse) {
+  .btn-large  { min-height: 58px; }
+  .choice-btn { min-height: 64px; }
+  .choice-chip { min-height: 48px; }
+  .pill-btn   { min-height: 44px; }
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   SECTION 10 — PAGE FORMULAIRE (partenaire-formulaire.html)
+   Styles spécifiques à la page de besoins, regroupés ici pour n'avoir
+   qu'un seul CSS commun. Repères internes : en-tête, progression collante,
+   sections, grille 2 colonnes, cases à pastilles, barre d'envoi, récap.
+   ════════════════════════════════════════════════════════════════════════ */
+.form-page { max-width: 860px; margin: 0 auto; padding: 36px 24px 120px; }
+.form-hero { margin-bottom: 16px; }
+.form-kicker { display:block; font-family: var(--font-title); font-weight:700; font-size: clamp(26px,4vw,34px); letter-spacing:-.02em; color: var(--vert-dark); margin-bottom: 6px; }
+.form-hero h1 { font-family: var(--font-title); font-size: clamp(18px,2.6vw,22px); font-weight:600; letter-spacing:-.01em; margin:2px 0 10px; color: var(--noir); }
+.form-hero p { color: var(--gris-text); max-width: 62ch; }
+
+.progress-sticky { position: sticky; top: 0; z-index: 30; background: rgba(246,244,239,.9); backdrop-filter: blur(8px); padding: 14px 0; margin-bottom: 8px; border-bottom: 1px solid var(--gris-border); }
+.progress-sticky .steps { display:flex; gap:6px; max-width:860px; margin:0 auto; padding:0 24px; }
+.progress-sticky .step { flex:1; height:6px; border-radius:100px; background: var(--gris-border); transition: background var(--transition); }
+.progress-sticky .step.done { background: var(--vert); }
+.progress-label { max-width:860px; margin:8px auto 0; padding:0 24px; font-size:.8rem; color:var(--gris-text); font-weight:600; }
+
+/* Section façon MTL connecte : titre-question + sous-titre accueillant */
+.form-section { background: var(--blanc); border:1.5px solid var(--gris-border); border-radius: var(--radius-lg); padding: 28px; margin-bottom: 20px; box-shadow: var(--shadow-md); }
+.section-head { margin-bottom:22px; }
+.section-head h2 { font-family:var(--font-title); font-size:1.3rem; letter-spacing:-.01em; color:var(--noir); }
+.section-head .sec-num { color: var(--vert-dark); font-weight:700; }
+.section-head .welcome { font-size:.9rem; color:var(--gris-text); margin-top:6px; max-width:64ch; }
+
+/* Grille de champs deux colonnes */
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:18px 20px; }
+.grid2 .full { grid-column: 1 / -1; }
+@media (max-width:600px){ .grid2 { grid-template-columns:1fr; } }
+
+.field > label { display:block; font-weight:600; font-size:.88rem; margin-bottom:7px; color:var(--noir); }
+.field .req { color:#d6336c; margin-left:2px; font-weight:700; }
+.field .optional { font-weight:400; color:var(--gris-text); font-size:.8rem; }
+.field input[type=text], .field input[type=email], .field input[type=tel], .field input[type=url], .field textarea, .field select {
+  width:100%; padding:11px 14px; border:1.5px solid var(--gris-border); border-radius: var(--radius-sm);
+  font-family: var(--font-main); font-size:.92rem; color:var(--noir); background:var(--blanc); outline:none; transition: border-color var(--transition); }
+.field input:focus, .field textarea:focus, .field select:focus { border-color: var(--vert); }
+.field textarea { min-height:96px; resize:vertical; }
+.field .subq { font-size:.86rem; color:var(--noir); font-weight:600; margin-bottom:10px; }
+.field .hint { font-size:.78rem; color:var(--gris-text); margin-top:6px; }
+.prefilled-note { display:inline-flex; align-items:center; gap:6px; font-size:.72rem; color:var(--vert-dark); background:var(--vert-light); padding:2px 9px; border-radius:100px; margin-left:6px; font-weight:600; }
+.prefilled-note[hidden] {
+  display: none;
+}
+/* Cases à cocher façon MTL connecte, charte verte */
+.check-list { display:flex; flex-direction:column; gap:10px; }
+.check-item { display:flex; align-items:center; gap:10px; cursor:pointer; }
+.check-item input { width:18px; height:18px; accent-color: var(--vert); cursor:pointer; }
+.check-item .pastille { padding:5px 12px; border-radius:100px; font-size:.86rem; font-weight:500; background: var(--vert-light); color:var(--vert-dark); }
+
+.form-submit-bar { position: fixed; left:0; right:0; bottom:0; z-index:40; background:rgba(255,255,255,.94); backdrop-filter: blur(10px); border-top:1.5px solid var(--gris-border); box-shadow:0 -4px 24px rgba(0,0,0,.06); }
+.form-submit-inner { max-width:860px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.form-submit-inner .status { font-size:.85rem; color:var(--gris-text); }
+.recap-box { background:var(--gris-light); border-radius:var(--radius-md); padding:18px; font-size:.88rem; line-height:1.7; }
+.recap-row { display:flex; gap:10px; padding:4px 0; border-bottom:1px dashed var(--gris-border); }
+.recap-row:last-child { border-bottom:0; }
+.recap-row .k { color:var(--gris-text); min-width:180px; font-weight:600; }
+.recap-sub { font-family:var(--font-title); font-weight:700; font-size:.82rem; color:var(--vert-dark); text-transform:uppercase; letter-spacing:.04em; margin:14px 0 6px; }
+.recap-sub:first-child { margin-top:0; }

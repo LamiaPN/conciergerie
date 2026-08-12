@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<!-- ════════════════════════════════════════════════════════════════════════
+     FICHIER : partenaire-formulaire.html
+     RÔLE    : Page formulaire de besoins (une page, 5 sections + récap).
+               Style = charte PN ; structure/ton = méthodologie MTL connecte.
+
+     ┌─ SOMMAIRE ─────────────────────────────────────────────────────────┐
+     │  SECTION A — <head> : polices, CSS PN, styles propres au formulaire │
+     │  SECTION B — Barre de progression collante                          │
+     │  SECTION C — En-tête (kicker + titre + intro)                       │
+     │  SECTION 1 — Votre organisation                                     │
+     │  SECTION 2 — Votre profil et vos coordonnées                        │
+     │  SECTION 3 — Qui souhaitez-vous rencontrer ?                        │
+     │  SECTION 4 — Que recherchez-vous à travers ces rencontres ?         │
+     │  SECTION 5 — Quelque chose à ajouter ?                              │
+     │  SECTION R — Récapitulatif (section à part)                         │
+     │  SECTION S — Barre d'envoi + scripts                                │
+     └────────────────────────────────────────────────────────────────────┘
+     ════════════════════════════════════════════════════════════════════════ -->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conciergerie MTLC · Vos besoins</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/style.css">
+<!-- SECTION A — styles communs (charte PN + composants + page formulaire) dans style.css -->
+</head>
+<body>
+
+<!-- ═══ SECTION B — BARRE DE PROGRESSION ═══ -->
+<div class="progress-sticky">
+  <div class="steps" id="progressSteps"><div class="step"></div><div class="step"></div><div class="step"></div><div class="step"></div><div class="step"></div></div>
+  <div class="progress-label" id="progressLabel">Section 1 sur 5 — Votre organisation</div>
+</div>
+
+<div class="form-page">
+  <!-- ═══ SECTION C — EN-TÊTE ═══ -->
+  <div class="form-hero">
+    <span class="form-kicker" id="partnerTag">MTL connecte 2026 — Service conciergerie</span>
+    <h1>Vos besoins pour le service de conciergerie</h1>
+    <p>Ces informations nous permettent de préparer une sélection d'organisations alignée sur vos objectifs. Les champs déjà connus sont pré-remplis — vous pouvez les corriger.</p>
+  </div>
+
+  <!-- ═══ SECTION 1 — VOTRE ORGANISATION ═══ -->
+  <section class="form-section" data-section="0">
+    <div class="section-head">
+      <h2><span class="sec-num">1.</span> Votre organisation</h2>
+      <p class="welcome">Nous souhaitons en savoir plus sur votre organisation ou celle de la personne que vous représentez.</p>
+    </div>
+    <div class="grid2">
+      <div class="field full">
+        <label>Nom de l'organisation <span class="req">*</span><span class="prefilled-note" id="orgPrefill" hidden><i class="fas fa-check"></i> pré-rempli</span></label>
+        <input type="text" id="f_org" placeholder="Nom de votre organisation">
+      </div>
+      <div class="field full">
+        <label>Secteur(s) d'activité <span class="req">*</span> <span class="optional">— plusieurs choix</span></label>
+        <div class="choice-grid" id="f_secteurs" data-multi>
+          <button type="button" class="choice-chip" data-val="Technologie"><i class="fas fa-plus"></i> Technologie</button>
+          <button type="button" class="choice-chip" data-val="Éducation"><i class="fas fa-plus"></i> Éducation</button>
+          <button type="button" class="choice-chip" data-val="Culture"><i class="fas fa-plus"></i> Culture</button>
+          <button type="button" class="choice-chip" data-val="Finance"><i class="fas fa-plus"></i> Finance</button>
+          <button type="button" class="choice-chip" data-val="Santé"><i class="fas fa-plus"></i> Santé</button>
+          <button type="button" class="choice-chip" data-val="Autre"><i class="fas fa-plus"></i> Autre</button>
+        </div>
+      </div>
+      <div class="field full">
+        <label>Type d'organisation <span class="req">*</span></label>
+        <select id="f_type">
+          <option value="">Choisir…</option>
+          <option>Grande entreprise</option><option>PME</option><option>Startup</option>
+          <option>Institution publique</option><option>OBNL</option>
+          <option>Université / Centre de recherche</option><option>Autre</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Taille de l'organisation</label>
+        <select id="f_taille">
+          <option value="">Choisir…</option>
+          <option>Micro (1-9)</option><option>Petite (10-49)</option>
+          <option>Moyenne (50-249)</option><option>Grande (250+)</option>
+        </select>
+      </div>
+      <div class="field"><label>Site web</label><input type="url" id="f_site" placeholder="https://…"></div>
+      <div class="field full">
+        <label>Description de l'organisation <span class="req">*</span></label>
+        <textarea id="f_desc" placeholder="Présentez brièvement votre mission, vos activités et votre expertise."></textarea>
+      </div>
+      <div class="field full"><label>Pays / Ville</label><input type="text" id="f_lieu" placeholder="Ex. Canada / Montréal"></div>
+    </div>
+  </section>
+
+  <!-- ═══ SECTION 2 — VOTRE PROFIL ET VOS COORDONNÉES ═══ -->
+  <section class="form-section" data-section="1">
+    <div class="section-head">
+      <h2><span class="sec-num">2.</span> Votre profil et vos coordonnées</h2>
+      <p class="welcome">Nous aimerions en savoir davantage sur vous ou sur la personne que vous représentez.</p>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Nom complet <span class="req">*</span></label><input type="text" id="f_nom" placeholder="Prénom Nom"></div>
+      <div class="field"><label>Fonction au sein de l'organisation <span class="req">*</span></label><input type="text" id="f_poste" placeholder="Ex. Directrice développement"></div>
+      <div class="field"><label>Adresse courriel professionnelle <span class="req">*</span></label><input type="email" id="f_email" placeholder="nom@organisation.com"></div>
+      <div class="field"><label>Numéro de téléphone</label><input type="tel" id="f_tel" placeholder="+1 …"></div>
+      <div class="field full">
+        <label>Langue(s) de communication préférée(s) <span class="optional">— plusieurs choix</span></label>
+        <div class="choice-grid" id="f_langues" data-multi>
+          <button type="button" class="choice-chip" data-val="Français"><i class="fas fa-plus"></i> Français</button>
+          <button type="button" class="choice-chip" data-val="Anglais"><i class="fas fa-plus"></i> Anglais</button>
+          <button type="button" class="choice-chip" data-val="Autre"><i class="fas fa-plus"></i> Autre</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SECTION 3 — QUI SOUHAITEZ-VOUS RENCONTRER ═══ -->
+  <section class="form-section" data-section="2">
+    <div class="section-head">
+      <h2><span class="sec-num">3.</span> Qui souhaitez-vous rencontrer&nbsp;?</h2>
+      <p class="welcome">Ces précisions nous aident à identifier les contacts les plus pertinents pour vous.</p>
+    </div>
+    <div class="grid2">
+      <div class="field full">
+        <div class="subq">Quel type d'organisation souhaitez-vous rencontrer&nbsp;? <span class="optional">— plusieurs choix</span></div>
+        <div class="choice-grid" id="f_type_rech" data-multi>
+          <button type="button" class="choice-chip" data-val="Entreprise privée"><i class="fas fa-plus"></i> Entreprise privée</button>
+          <button type="button" class="choice-chip" data-val="OBNL"><i class="fas fa-plus"></i> Organisme à but non lucratif</button>
+          <button type="button" class="choice-chip" data-val="Institution publique"><i class="fas fa-plus"></i> Institution publique</button>
+          <button type="button" class="choice-chip" data-val="Université / Recherche"><i class="fas fa-plus"></i> Université / Centre de recherche</button>
+          <button type="button" class="choice-chip" data-val="Autre"><i class="fas fa-plus"></i> Autre</button>
+        </div>
+      </div>
+      <div class="field full">
+        <div class="subq">Quel(s) secteur(s) d'activité ciblez-vous&nbsp;? <span class="optional">— plusieurs choix</span></div>
+        <div class="choice-grid" id="f_secteurs_cibles" data-multi>
+          <button type="button" class="choice-chip" data-val="Technologie"><i class="fas fa-plus"></i> Technologie</button>
+          <button type="button" class="choice-chip" data-val="Éducation"><i class="fas fa-plus"></i> Éducation</button>
+          <button type="button" class="choice-chip" data-val="Culture"><i class="fas fa-plus"></i> Culture</button>
+          <button type="button" class="choice-chip" data-val="Finance"><i class="fas fa-plus"></i> Finance</button>
+          <button type="button" class="choice-chip" data-val="Santé"><i class="fas fa-plus"></i> Santé</button>
+          <button type="button" class="choice-chip" data-val="Autre"><i class="fas fa-plus"></i> Autre</button>
+        </div>
+      </div>
+      <div class="field full">
+        <div class="subq">Quelle taille d'organisation visez-vous&nbsp;? <span class="optional">— plusieurs choix</span></div>
+        <div class="choice-grid" id="f_taille_rech" data-multi>
+          <button type="button" class="choice-chip" data-val="Micro"><i class="fas fa-plus"></i> Micro</button>
+          <button type="button" class="choice-chip" data-val="PME"><i class="fas fa-plus"></i> PME</button>
+          <button type="button" class="choice-chip" data-val="Grande entreprise"><i class="fas fa-plus"></i> Grande entreprise</button>
+          <button type="button" class="choice-chip" data-val="Indifférent"><i class="fas fa-plus"></i> Indifférent</button>
+        </div>
+      </div>
+      <div class="field full">
+        <label>Quel rôle ou fonction les personnes à rencontrer occupent-elles&nbsp;?</label>
+        <input type="text" id="f_roles" placeholder="Ex. PDG, directeur innovation, responsable export, chercheur, investisseur…">
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SECTION 4 — OBJECTIFS ═══ -->
+  <section class="form-section" data-section="3">
+    <div class="section-head">
+      <h2><span class="sec-num">4.</span> Que recherchez-vous à travers ces rencontres&nbsp;?</h2>
+      <p class="welcome">Indiquez ce qui compte le plus pour vous — plusieurs objectifs sont possibles.</p>
+    </div>
+    <div class="field full">
+      <div class="subq">Quels sont vos principaux objectifs&nbsp;? <span class="req">*</span> <span class="optional">— plusieurs choix</span></div>
+      <div class="choice-grid" id="f_objectifs" data-multi>
+        <button type="button" class="choice-chip" data-val="Développement d'affaires"><i class="fas fa-plus"></i> Développement d'affaires / prospection</button>
+        <button type="button" class="choice-chip" data-val="Partenariat stratégique"><i class="fas fa-plus"></i> Partenariat stratégique</button>
+        <button type="button" class="choice-chip" data-val="Collaboration R&D"><i class="fas fa-plus"></i> Collaboration en R&D</button>
+        <button type="button" class="choice-chip" data-val="Investissement"><i class="fas fa-plus"></i> Investissement / financement</button>
+        <button type="button" class="choice-chip" data-val="Bonnes pratiques"><i class="fas fa-plus"></i> Échange de bonnes pratiques</button>
+        <button type="button" class="choice-chip" data-val="Autre"><i class="fas fa-plus"></i> Autre</button>
+      </div>
+    </div>
+    <div class="field full" style="margin-top:18px;">
+      <label>Souhaitez-vous préciser un besoin particulier&nbsp;? <span class="optional">— facultatif</span></label>
+      <textarea id="f_objectifs_libre" placeholder="Décrivez en quelques mots vos attentes ou une idée de collaboration."></textarea>
+    </div>
+  </section>
+
+  <!-- ═══ SECTION 5 — COMPLÉMENTS ═══ -->
+  <section class="form-section" data-section="4">
+    <div class="section-head">
+      <h2><span class="sec-num">5.</span> Quelque chose à ajouter&nbsp;?</h2>
+      <p class="welcome">Ces détails, facultatifs, nous aident à affiner encore la mise en relation.</p>
+    </div>
+    <div class="field full"><label>Avez-vous déjà identifié des organisations que vous souhaitez rencontrer&nbsp;? <span class="optional">— facultatif</span></label><textarea id="f_contacts_ident" placeholder="Si oui, précisez nom / organisation."></textarea></div>
+  </section>
+
+  <!-- ═══ SECTION R — RÉCAPITULATIF ═══ -->
+  <section class="form-section recap-section">
+    <div class="section-head">
+      <h2>Récapitulatif</h2>
+      <p class="welcome">Vérifiez vos informations avant de les enregistrer.</p>
+    </div>
+    <div class="recap-box" id="recap">Complétez le formulaire ci-dessus, le récapitulatif s'actualise ici.</div>
+  </section>
+</div>
+
+<!-- ═══ SECTION S — BARRE D'ENVOI + SCRIPTS ═══ -->
+<div class="form-submit-bar">
+  <div class="form-submit-inner">
+    <div class="status" id="formStatus">Vos réponses aideront notre équipe à préparer votre sélection.</div>
+    <button class="btn btn-primary btn-large" id="submitForm"><i class="fas fa-paper-plane"></i> Enregistrer mes informations</button>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/partenaire-formulaire.js"></script>
+</body>
+</html>

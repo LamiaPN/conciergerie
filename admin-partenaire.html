@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conciergerie MTLC · Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- Charte PN existante -->
+<link rel="stylesheet" href="css/admin.css">
+<style>
+  /* Styles manquants — bâtis sur les variables PN */
+  .sidebar-section-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,.35); font-weight: 700; padding: 16px 14px 6px; }
+  .sidebar-search { margin: 4px 2px 8px; position: relative; }
+  .sidebar-search input {
+    width: 100%; padding: 8px 12px 8px 32px; background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius-sm);
+    color: var(--blanc); font-size: 0.82rem; font-family: var(--font-main); outline: none;
+  }
+  .sidebar-search input::placeholder { color: rgba(255,255,255,.35); }
+  .sidebar-search i { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,.35); font-size: 0.8rem; }
+
+  .partner-head { display: flex; flex-direction: column; gap: 4px; }
+  .partner-head .lvl {
+    display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
+    background: var(--vert-light); color: var(--vert-dark);
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+    padding: 4px 12px; border-radius: 100px; margin-bottom: 6px;
+  }
+  .kpi-card.mini { padding: 16px 18px; }
+  .kpi-card.mini .kpi-value { font-size: 1.5rem; }
+
+  .segment { display: inline-flex; background: var(--gris-light); border-radius: 100px; padding: 4px; gap: 2px; }
+  .segment button {
+    border: none; background: transparent; cursor: pointer;
+    font-family: var(--font-main); font-size: 0.82rem; font-weight: 600; color: var(--gris-text);
+    padding: 7px 16px; border-radius: 100px; transition: all var(--transition);
+  }
+  .segment button.on { background: var(--blanc); color: var(--noir); box-shadow: var(--shadow-sm); }
+
+  /* Ligne verte = organisation sélectionnée par le partenaire (charte PN) */
+  #resp-table tbody tr.is-selected { background: var(--vert-light); }
+  #resp-table tbody tr.is-selected:hover { background: #ddf1d2; }
+  #resp-table tbody tr.is-selected td:first-child { box-shadow: inset 3px 0 0 var(--vert); }
+
+  .org-name { font-weight: 600; color: var(--noir); }
+  .sel-dot { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 600; color: var(--vert-dark); }
+  .sel-dot.no { color: var(--gris-text); font-weight: 500; }
+  .sel-dot .fa-circle-check { color: var(--vert); }
+
+  .table-meta-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .last-mod { font-size: 0.78rem; color: var(--gris-text); }
+  .last-mod b { color: var(--noir); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div id="admin-dashboard">
+
+  <!-- ── SIDEBAR (générée dynamiquement) ── -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <span style="font-family:var(--font-title);font-weight:700;color:#fff;font-size:1.05rem;">Conciergerie</span>
+      </div>
+      <button class="sidebar-toggle" aria-label="Fermer"><i class="fas fa-times"></i></button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item"><i class="fas fa-layer-group"></i> Conciergerie</a>
+      <div class="sidebar-section-label">Partenaires</div>
+      <div class="sidebar-search">
+        <i class="fas fa-search"></i>
+        <input type="text" id="navSearch" placeholder="Filtrer les partenaires…">
+      </div>
+      <!-- Liste des partenaires injectée par JS -->
+      <div id="sidebarNav"></div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn-ghost-sm"><i class="fas fa-arrow-right-from-bracket"></i> Déconnexion</button>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <button class="sidebar-open-btn" aria-label="Ouvrir le menu"><i class="fas fa-bars"></i></button>
+      <h1 id="adminTitle">…</h1>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <button class="btn btn-primary btn-sm" id="btnImporter"><i class="fas fa-file-import"></i> Importer le vivier</button>
+      </div>
+    </header>
+
+    <section class="admin-section active">
+
+      <div class="partner-head">
+        <span class="lvl" id="partnerLvl"><i class="fas fa-medal"></i> Niveau …</span>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card mini">
+          <div class="kpi-icon"><i class="fas fa-handshake"></i></div>
+          <div><div class="kpi-value" id="kQuota">—</div><div class="kpi-label">Rencontres prévues</div></div>
+        </div>
+        <div class="kpi-card mini">
+          <div class="kpi-icon"><i class="fas fa-list"></i></div>
+          <div><div class="kpi-value" id="kProposed">—</div><div class="kpi-label">Organisations proposées</div></div>
+        </div>
+        <div class="kpi-card mini">
+          <div class="kpi-icon"><i class="fas fa-circle-check"></i></div>
+          <div><div class="kpi-value" id="kSelected">—</div><div class="kpi-label">Sélectionnées par le partenaire</div></div>
+        </div>
+        <div class="kpi-card mini">
+          <div class="kpi-icon"><i class="fas fa-clock"></i></div>
+          <div><div class="kpi-value" style="font-size:1rem;line-height:1.3;" id="kQuota2">Voir Sheet</div><div class="kpi-label">Dernière modification</div></div>
+        </div>
+      </div>
+
+      <!-- Filtres -->
+      <div class="filters-bar" style="border:1.5px solid var(--gris-border);border-radius:var(--radius-md);">
+        <div class="filter-group" style="flex:2;">
+          <label>Recherche</label>
+          <input type="text" id="tableSearch" placeholder="Organisation, secteur…">
+        </div>
+        <div class="filter-group">
+          <label>Thématique</label>
+          <select id="themeFilter"></select>
+        </div>
+        <div class="filter-group">
+          <label>Type</label>
+          <select id="typeFilter"></select>
+        </div>
+      </div>
+
+      <!-- Tableau (une seule page, sans pagination) -->
+      <div class="table-card">
+        <div class="table-toolbar table-meta-row">
+          <div class="segment" id="segment">
+            <button class="on" data-seg="all">Tous</button>
+            <button data-seg="selected">Sélectionnés</button>
+            <button data-seg="unselected">Non sélectionnés</button>
+          </div>
+          <span class="last-mod">Sélections synchronisées depuis le portail partenaire</span>
+        </div>
+
+        <div class="table-scroll">
+          <table id="resp-table">
+            <thead>
+              <tr>
+                <th>Organisation</th>
+                <th>Secteur</th>
+                <th>Thématique</th>
+                <th>Type</th>
+                <th>Localisation</th>
+                <th>Choix partenaire</th>
+              </tr>
+            </thead>
+            <tbody id="adminTbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+  </div>
+</div>
+
+<!-- ═══ MODALE — IMPORTER LE VIVIER (CSV → data.json) ═══ -->
+<div id="importModal" class="import-overlay" hidden>
+  <div class="import-box">
+    <div class="import-head">
+      <h2><i class="fas fa-file-import"></i> Importer le vivier</h2>
+      <button class="import-close" id="importClose" aria-label="Fermer"><i class="fas fa-times"></i></button>
+    </div>
+    <p class="import-intro">
+      Déposez l'export CSV de la vue Airtable. La plateforme génère un fichier
+      <code>data.json</code> à télécharger, que vous déposez ensuite dans le dossier <code>js/</code> du site.
+    </p>
+
+    <label class="import-drop" id="importDrop">
+      <input type="file" id="importFile" accept=".csv" hidden>
+      <i class="fas fa-cloud-arrow-up"></i>
+      <span id="importDropText">Cliquez ou glissez votre fichier CSV ici</span>
+    </label>
+
+    <div id="importReport" class="import-report" hidden></div>
+
+    <div class="import-actions">
+      <button class="btn btn-ghost-sm" id="importCancel">Annuler</button>
+      <button class="btn btn-primary btn-sm" id="importDownload" disabled><i class="fas fa-download"></i> Télécharger data.json</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/admin-partenaire.js"></script>
+<script src="js/admin-import.js?v=20260811-1"></script>
+</body>
+</html>
