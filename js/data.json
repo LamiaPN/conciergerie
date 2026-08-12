@@ -1,5 +1,5 @@
 {
-  "_comment": "Vivier MTLC conciergerie public généré depuis Airtable. Aucune coordonnée personnelle. id = Conciergerie_ID. Tokens gérés dans le Google Sheet.",
+  "_comment": "Vivier MTLC conciergerie généré depuis Airtable. id = Conciergerie_ID. Tokens gérés dans le Google Sheet.",
   "partenaires": [
     {
       "id": "recmi5WqB79fMzG9O",
@@ -45,6 +45,11 @@
       "id": "rec423rFD3HWS1UDY",
       "nom": "Montpellier Méditérranée Métropole",
       "meeting_quota": 8
+    },
+    {
+      "id": "recvQz81k0WoIDxZB",
+      "nom": "Printemps numérique",
+      "meeting_quota": 5
     },
     {
       "id": "recsnCx0xx4GkdVrD",
@@ -102,7 +107,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Action TI",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recsCzoKYT8oTtIRK",
@@ -113,7 +122,11 @@
       "localisation": "",
       "description": "",
       "site_web": "https://afria.global/",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "AFRIA - Agence internationale pour la Formation et la Recherche en Intelligence Artificielle (AFRIA)",
+        "Type de partenaire": "Délégation",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recP5cx1LG5BbtXdu",
@@ -122,9 +135,13 @@
       "type": "Privé",
       "taille": "Petite entreprise",
       "localisation": "Canada",
-      "description": "",
+      "description": "ALEIA is a consulting agency specialized in providing digital services and solutions. Aleia carries out every single step of a digital project: Branding (logo, graphic charter...), UX, web, or mobile design and development.",
       "site_web": "https://www.aleia.io/",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Aleia",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recpmDSkDidFE4xe3",
@@ -135,7 +152,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "AQIII (L’Association québécoise des informaticiennes et informaticiens indépendants)",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recrcKceOZSe7mQ0j",
@@ -146,7 +167,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Atelier B2B",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recwAsQ3y9hIavsQu",
@@ -155,20 +180,13 @@
       "type": "Gouvernement, secteur public, parapublique",
       "taille": "Moyenne entreprise",
       "localisation": "Canada",
-      "description": "",
+      "description": "Nous prévoyons un contingence de participation à MTL Connect. Considérant que BAnQ est très engagé sur les questions de souveraineté numérique, nous voudrions voir les commandites possibles selon le nombre de billets et participation Panel. Merci!",
       "site_web": "banq.qc.ca",
-      "extra": {}
-    },
-    {
-      "id": "recF6QgZ2EvVRNNXT",
-      "nom": "Behaviour Interactive",
-      "secteur": "Manufacture",
-      "type": "PME",
-      "taille": "Petite entreprise",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "bhvr.com",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "BAnQ",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "rec2VchDLt2pW9YQ9",
@@ -179,7 +197,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Behaviour Interactive",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recNgYONgZiNsw0bf",
@@ -190,7 +212,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Capital numérique",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recpoMlfpG8W7s2CX",
@@ -201,7 +227,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "concordia.ca",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Concordia University",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recJVnIVrRxZTj8Ap",
@@ -212,7 +242,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Cybereco",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recHsqzQ2n5PRzz9K",
@@ -223,7 +257,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "DataFranca",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recE4ZuRfxqUZKi08",
@@ -232,9 +270,13 @@
       "type": "PME",
       "taille": "",
       "localisation": "Canada",
-      "description": "",
+      "description": "Dialog Insight est une entreprise canadienne spécialisée dans les solutions de marketing relationnel et d’automatisation marketing, offrant une plateforme technologique permettant aux organisations de mieux exploiter leurs données clients.\n\nElle accompagne les entreprises dans la gestion, la segmentation et l’activation de leurs bases de données afin de créer des communications personnalisées et performantes. Son positionnement repose sur une approche data-driven, combinant collecte de données, intelligence marketing et orchestration multicanale.\n\nDialog Insight se distingue particulièrement dans les secteurs où la relation client est stratégique (médias, retail, divertissement), en permettant d’optimiser l’engagement, la fidélisation et la conversion.",
       "site_web": "https://www.dialoginsight.com",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Dialog Insight",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "rec3IzJJjOBKpcG83",
@@ -243,9 +285,13 @@
       "type": "OBNL-OSBL",
       "taille": "Moyenne entreprise",
       "localisation": "Canada",
-      "description": "",
+      "description": "Données Souveraines Québec (DSQ) est un regroupement d'organisations québécoises créé pour promouvoir la souveraineté des données et une gouvernance responsable des actifs numériques au Québec.\n\nSa mission est de rassembler des organisations qui considèrent les données comme un actif stratégique et qui souhaitent favoriser un modèle où les données sont gouvernées conformément aux lois, aux valeurs et aux intérêts du Québec et du Canada. DSQ agit également comme voix collective auprès des gouvernements et des décideurs afin d'influencer les politiques publiques liées à la souveraineté numérique, à l'hébergement des données et à leur gouvernance.\nIl ne s'agit pas d'une entreprise technologique, mais d'un organisme de représentation et de mobilisation autour des enjeux de souveraineté numérique.",
       "site_web": "https://donneessouveraines.quebec",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Données SOUVERAINES QUÉBEC",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recIIP2zSKhHVHfOU",
@@ -256,7 +302,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "druide.com",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Druide",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recChbaT2G2CuK6Gr",
@@ -267,7 +317,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Eficio",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recVtW9CfkGTfCvLW",
@@ -276,9 +330,13 @@
       "type": "OBNL-OSBL",
       "taille": "Moyenne entreprise",
       "localisation": "Canada",
-      "description": "",
+      "description": "La mission de l’ÉIAS est de développer la relève et les acteurs de la santé dans leur capacité à intégrer l’IA en milieu réel, pour améliorer la santé de la population et ce, de façon éthique et responsable.",
       "site_web": "https://eiaschum.ca/",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "EIAS (École de l'intelligence artificielle en santé) -CHUM",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recLX7lhIRkLZ17VA",
@@ -289,7 +347,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Fédération culturelle canadienne-française FCCF",
+        "Type de partenaire": "Délégation",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recn1NQZtTDHs7nBK",
@@ -300,7 +362,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Felix & Paul Studios",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "rec7rvXKfNbkOZj3B",
@@ -311,7 +377,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "glmconseil.com",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "GLM Conseil",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recl7XIlU6lt7ojVA",
@@ -320,9 +390,13 @@
       "type": "OBNL-OSBL",
       "taille": "Petite entreprise",
       "localisation": "Canada",
-      "description": "",
+      "description": "L’IRIU est un organisme à but non lucratif (OBNL) agissant comme catalyseur de la résilience des collectivités locales. Il accompagne les gouvernements de proximité et les acteurs territoriaux dans l'amélioration de leur capacité organisationnelle face aux crises, en misant sur la planification stratégique, des outils d’aide à la décision, l’intelligence artificielle, et une gouvernance des données à la fois éthique, souveraine et frugale. L’IRIU favorise l’innovation ouverte, la recherche appliquée et l’intelligence collective, toujours au service de transformations durables.",
       "site_web": "https://www.iriu.ca/",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "IRIU",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "receNnX3JU0JPqQGd",
@@ -333,7 +407,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "lienmultimedia.com",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Le lien multimédia",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "rec3YbJSc2sPbh8tR",
@@ -344,18 +422,11 @@
       "localisation": "France",
       "description": "",
       "site_web": "",
-      "extra": {}
-    },
-    {
-      "id": "rec6j53SqJjyNsvcy",
-      "nom": "Le Monde",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "France",
-      "description": "",
-      "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Le Monde",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recp6SCngjMicnxEC",
@@ -364,9 +435,13 @@
       "type": "PME",
       "taille": "Petite entreprise",
       "localisation": "Canada",
-      "description": "",
+      "description": "Le Wagon est un des leaders mondiaux des formations Tech immersives.\n\nNotre mission est de former des personnes de tous horizons au Développement Web et à la Data et de les aider à accélérer leur carrière grâce à une méthode d’apprentissage reconnue et personnalisée.\n\nFondé à Paris en 2013, Le Wagon possède des campus dans +27 villes, incluant Montréal.\n\nLe Wagon, c’est aussi une communauté internationale de 31 000+ alumni, constituées des personnes qui veulent changer de carrière ou monter en compétences, des entrepreneurs, des travailleurs autonomes ou des digital nomades.",
       "site_web": "https://www.lewagon.com/montreal",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Le Wagon",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "rec7C6p8Ry3N0sj5C",
@@ -377,7 +452,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "makila.ai",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "makila ai",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recPeJt1GFUJsHCN4",
@@ -388,7 +467,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "mamh.gouv.qc.ca",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "MAMH - Ministère des Affaires municipales et de l'Habitation 1",
+        "Type de partenaire": "Public",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recrIofsIhv3DsNX6",
@@ -399,7 +482,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Ministère de la Culture et des Communications",
+        "Type de partenaire": "Public",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recmmEQbUXvYNgMeJ",
@@ -410,7 +497,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Ministère du tourisme (FSTAI)",
+        "Type de partenaire": "Public",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recGrvifPdIoARM5k",
@@ -421,7 +512,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "https://momentfactory.com/fr",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Moment Factory",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recOfE9BXZwZfMFXP",
@@ -432,7 +527,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Montreal International",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "rec2miixBgR9fWCs4",
@@ -443,7 +542,11 @@
       "localisation": "France",
       "description": "",
       "site_web": "nantes-saintnazaire.fr",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Nantes Métropole / Nantes St Nazaire Développement / Nantes Digitale week",
+        "Type de partenaire": "Délégation",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recpFvx21dv0c3iqB",
@@ -454,7 +557,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "https://www.pairconnex.com/fr/en-savoir-plus/mobile",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "PairConnex",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recIdlSmcuIbFpgd0",
@@ -463,9 +570,13 @@
       "type": "PME",
       "taille": "Petite entreprise",
       "localisation": "Canada",
-      "description": "",
+      "description": "paysages studio est un studio de création multimédia montréalais spécialisé dans les expériences immersives et contemplatives pour le bien-être. Il conçoit des environnements où le son, l’image et la lumière transforment un lieu en expérience sensible, avec une approche centrée sur le calme, la présence et le ralentissement",
       "site_web": "https://paysages.studio",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "paysages.studio X",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recYDJOonMBJBhefl",
@@ -476,7 +587,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "www.pixsenses.com",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Pixsenses",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recFRQ2QIuWUjM0KH",
@@ -485,9 +600,13 @@
       "type": "PME",
       "taille": "Petite entreprise",
       "localisation": "Canada",
-      "description": "",
+      "description": "Plumfind est une entreprise montréalaise spécialisée dans le marketing numérique assisté par intelligence artificielle. Elle propose des solutions sur mesure — notamment pour l’hôtellerie et l’e‑commerce — permettant d’analyser les tendances, optimiser les campagnes, automatiser la création de contenu et anticiper les comportements clients.",
       "site_web": "plumfind.com",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Plumfind",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recW9onKA84kSuijI",
@@ -496,9 +615,13 @@
       "type": "Gouvernement, secteur public, parapublique",
       "taille": "Grande entreprise",
       "localisation": "Canada",
-      "description": "",
+      "description": "PME MTL est un réseau d'accompagnement et de financement dédié aux petites et moyennes entreprises (PME) de la région de Montréal. Créé en 2016, il regroupe six pôles territoriaux pour offrir des services adaptés aux besoins locaux des entrepreneurs .\n\nMission : Soutenir la création, la croissance et la pérennité des PME montréalaises.\nChiffres clés :\n12 000 entreprises accompagnées depuis sa création.\n1,5 milliard $ en retombées économiques générées.\n1 000+ emplois créés ou maintenus annuellement.",
       "site_web": "https://pmemtl.com/",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "PME MTL",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "rec9nJ2eGmiBvNCbS",
@@ -509,7 +632,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "R2i",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "reczr8Fpe2aT8E7w7",
@@ -520,7 +647,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Royal Photo",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recIzzeITTBwUWFlI",
@@ -531,7 +662,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Services Québec - Ministère de l’Emploi et de la Solidarité sociale",
+        "Type de partenaire": "Public",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recjzPmAY3HmHOpBD",
@@ -540,9 +675,13 @@
       "type": "PME",
       "taille": "Petite entreprise",
       "localisation": "Canada",
-      "description": "",
+      "description": "Sterling North Partners est une firme canadienne de conseil stratégique spécialisée dans l’accompagnement des organisations sur des enjeux complexes liés à la croissance, à la transformation et au financement.\n\nL’entreprise intervient auprès de dirigeants, d’investisseurs et d’entreprises en phase de développement pour structurer des initiatives stratégiques, faciliter des partenariats et soutenir des décisions d’investissement. Elle se positionne comme un partenaire de haut niveau, à l’intersection du conseil, du capital et du développement d’affaires.\n\nSterling North Partners évolue dans un environnement où les enjeux financiers, technologiques et stratégiques sont étroitement liés, avec une approche orientée vers la création de valeur à long terme.",
       "site_web": "https://sterlingnorth.partners",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Sterling North Partners",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recVR0Mp84aH2nGEF",
@@ -553,7 +692,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Taxelco",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "reckLm70wK9XavhjF",
@@ -564,7 +707,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Tourisme Montréal",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recy6pbHLhLSwJQ02",
@@ -575,7 +722,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Ville de Montréal",
+        "Type de partenaire": "Public",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recHByYQJay8qdfrr",
@@ -586,7 +737,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Women Tech Makers",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recZ6k2Vacjl4P9Xi",
@@ -597,7 +752,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Xn Québec",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recmi5WqB79fMzG9O",
@@ -608,7 +767,11 @@
       "localisation": "Sénégal",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Akassaa (Partenaire de Festic)",
+        "Type de partenaire": "Délégation",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "reciIX5Ta28EDeNh1",
@@ -619,7 +782,11 @@
       "localisation": "Belgique",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "AWEX - Agence Wallonne à l’Exportation et aux Investissements étrangers",
+        "Type de partenaire": "Délégation",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recfxaGlX1FD54jtO",
@@ -630,7 +797,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "https://culturemonteregie.qc.ca/",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Culture Montérégie",
+        "Type de partenaire": "Délégation",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recjuRolApPFbdYAR",
@@ -641,7 +812,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "desjardins.com",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Desjardins Caisse des Technologies",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recWJkjbunA7OzbDY",
@@ -652,7 +827,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "FAADEV - Femmes Africaines Actives pour le Développement",
+        "Type de partenaire": "Délégation",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recHcnLWeHGgXC5xi",
@@ -663,7 +842,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "isaca.org",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "ISACA",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recRNIxrsNubaEn2M",
@@ -674,7 +857,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "lojiq.org",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "LOJIQ - Les Offices jeunesse internationaux du Québec",
+        "Type de partenaire": "Délégation",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "receSr9qRN9X3TMsP",
@@ -685,7 +872,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Maison de l'innovation Technologique - MiT",
+        "Type de partenaire": "Délégation",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "rec423rFD3HWS1UDY",
@@ -696,7 +887,26 @@
       "localisation": "France",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Montpellier Méditérranée Métropole",
+        "Type de partenaire": "Délégation",
+        "Conciergerie": "checked"
+      }
+    },
+    {
+      "id": "recvQz81k0WoIDxZB",
+      "nom": "Printemps numérique",
+      "secteur": "Evénementiel",
+      "type": "OBNL-OSBL",
+      "taille": "Petite entreprise",
+      "localisation": "",
+      "description": "",
+      "site_web": "",
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Printemps numérique",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recsnCx0xx4GkdVrD",
@@ -707,7 +917,11 @@
       "localisation": "Cameroun",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Promot Africa,Promot Africa",
+        "Type de partenaire": "Délégation",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recM8ivXKX8At3AlL",
@@ -718,7 +932,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "RADN - Projet Collectif",
+        "Type de partenaire": "Délégation",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recImcHlmxPUnGPMs",
@@ -729,7 +947,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "RDÉE Canada",
+        "Type de partenaire": "Délégation",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recMtq0R2up0qp2il",
@@ -740,7 +962,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Représentation de l’OIF pour les Amériques (REPAM)",
+        "Type de partenaire": "Public",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recSMGJlwXpPy4opT",
@@ -751,7 +977,11 @@
       "localisation": "Tunisie",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "RTCA - Réseau Tuniso-Canadien des Affaires,RTCA - Réseau Tuniso-Canadien des Affaires",
+        "Type de partenaire": "Délégation",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recg9xoXmljSim91m",
@@ -762,7 +992,11 @@
       "localisation": "Sénégal",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Festic",
+        "Type de partenaire": "Délégation",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recsjWZG9REX5unKV",
@@ -771,9 +1005,13 @@
       "type": "PME",
       "taille": "Moyenne entreprise",
       "localisation": "Canada",
-      "description": "",
+      "description": "L’UM6P est une université privée à but non lucratif marocaine axée sur la recherche appliquée, l’innovation et le développement durable, avec une forte orientation vers l’Afrique. Fondée par la Fondation OCP, elle propose une approche pluridisciplinaire et expérimentale dans de nombreux domaines scientifiques et techniques .",
       "site_web": "https://um6p.ma/fr",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "UMP6",
+        "Type de partenaire": "Privé",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "rec8o9RmF6HgLUYSl",
@@ -784,7 +1022,11 @@
       "localisation": "Belgique",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "AWEX - Agence Wallonne à l’Exportation et aux Investissements étrangers",
+        "Type de partenaire": "Délégation",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recrZFbmpGNNTR2dM",
@@ -795,7 +1037,11 @@
       "localisation": "Canada",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "UQAC - Université du Québec à Chicoutimi",
+        "Type de partenaire": "Public",
+        "Conciergerie": "checked"
+      }
     },
     {
       "id": "recoe37yXMSw9Ui4j",
@@ -806,7 +1052,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Consulat général de Belgique à Montréal",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recNL0oN9FVzjI7bn",
@@ -817,7 +1067,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Deloitte",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recPIYMfOHr134I1X",
@@ -828,7 +1082,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Drakkar",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recYuCt16qiuJQt9H",
@@ -839,7 +1097,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "École Polytechnique de Montréal",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recUuWkHNkPla8dMr",
@@ -850,7 +1112,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "EIAS (École de l'intelligence artificielle en santé) -CHUM",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recWD7NA1sGP6M3n3",
@@ -861,7 +1127,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Futurpreneur",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "rec0xMCLQzNJIMBBN",
@@ -872,7 +1142,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Hydro-Québec",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recQu64jtclAkQoUr",
@@ -883,7 +1157,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "LUQIA (Ex-Crim)",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recRUMZe1GcQkOppq",
@@ -894,7 +1172,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Ministère de l'Éducation du Québec (MÉQ)",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recmoWXAUjADDqHmx",
@@ -905,7 +1187,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Montreal International",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recscWjbNwiNjuvxf",
@@ -916,7 +1202,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Onepoint",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "reczuCKrfTs3Zwr1d",
@@ -927,7 +1217,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "OVH cloud",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recNntVr3AmaNKuMM",
@@ -938,7 +1232,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Petal",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "reco8O88P20cd7oEM",
@@ -949,7 +1247,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Prompt Innov",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recR5tvRcH5vA4eEv",
@@ -960,7 +1262,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Technovation Montréal",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recOcvLOCqqm9kNCa",
@@ -971,7 +1277,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Bradley & Rollins Inc",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recV2MKZPKNOqlgxk",
@@ -982,7 +1292,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "CAE Inc",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recw8w7E0v1aEMTIt",
@@ -993,7 +1307,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "CDPQ - Caisse de dépôt et placement du Québec",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recKz4miYN25bfUP0",
@@ -1004,7 +1322,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "CEIMIA",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recgeyNQpAWr6Nj3G",
@@ -1015,7 +1337,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Centech",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recndaYWiLD4lSNvz",
@@ -1026,7 +1352,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Conseil de l'Innovation du Québec",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "rececYJHzDrNIGVLU",
@@ -1037,7 +1367,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Consulat Général d'Allemagne à Montréal",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recSE7ICFOLuMfIu2",
@@ -1048,7 +1382,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "IVADO",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recZWVaepztWxzW8f",
@@ -1059,7 +1397,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Mila - Institut québécois d'intelligence artificielle",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     },
     {
       "id": "recvTIk7phOD0Ytwz",
@@ -1070,7 +1412,11 @@
       "localisation": "",
       "description": "",
       "site_web": "",
-      "extra": {}
+      "extra": {
+        "Nom de l'organisation/ Délégation": "Technum Québec",
+        "Type de partenaire": "",
+        "Conciergerie": ""
+      }
     }
   ],
   "propositions": [
