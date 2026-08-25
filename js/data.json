@@ -1,19 +1,14 @@
 {
-  "_comment": "Vivier MTLC conciergerie généré depuis Airtable. id = Conciergerie_ID. Tokens gérés dans le Google Sheet.",
+  "_comment": "Vivier MTLC conciergerie généré depuis le dernier export Airtable. id = Conciergerie _ID. Tokens et relations gérés dans Google Sheets.",
   "partenaires": [
     {
-      "id": "recmi5WqB79fMzG9O",
-      "nom": "Akassaa (Partenaire de Festic)",
-      "meeting_quota": 5
-    },
-    {
       "id": "reciIX5Ta28EDeNh1",
-      "nom": "AWEX - Agence Wallonne à l’Exportation et aux Investissements étrangers",
+      "nom": "AWEX - Agence Wallonne à l’Exportation et aux Investissements étrangers,Université de Mons - UMons",
       "meeting_quota": 8
     },
     {
-      "id": "recfxaGlX1FD54jtO",
-      "nom": "Culture Montérégie",
+      "id": "recsnCx0xx4GkdVrD",
+      "nom": "Promot Africa",
       "meeting_quota": 5
     },
     {
@@ -22,9 +17,9 @@
       "meeting_quota": 10
     },
     {
-      "id": "recWJkjbunA7OzbDY",
-      "nom": "FAADEV - Femmes Africaines Actives pour le Développement",
-      "meeting_quota": 5
+      "id": "rec423rFD3HWS1UDY",
+      "nom": "Montpellier Méditérranée Métropole",
+      "meeting_quota": 8
     },
     {
       "id": "recHcnLWeHGgXC5xi",
@@ -32,29 +27,24 @@
       "meeting_quota": 10
     },
     {
+      "id": "recvQz81k0WoIDxZB",
+      "nom": "Printemps numérique",
+      "meeting_quota": 5
+    },
+    {
+      "id": "recfxaGlX1FD54jtO",
+      "nom": "Culture Montérégie",
+      "meeting_quota": 5
+    },
+    {
       "id": "recRNIxrsNubaEn2M",
-      "nom": "LOJIQ - Les Offices jeunesse internationaux du Québec, OFQJ - Office franco-québécois pour la jeunesse",
+      "nom": "LOJIQ - Les Offices jeunesse internationaux du Québec",
       "meeting_quota": 5
     },
     {
       "id": "receSr9qRN9X3TMsP",
       "nom": "Maison de l'innovation Technologique - MiT",
       "meeting_quota": 8
-    },
-    {
-      "id": "rec423rFD3HWS1UDY",
-      "nom": "Montpellier Méditérranée Métropole",
-      "meeting_quota": 8
-    },
-    {
-      "id": "recvQz81k0WoIDxZB",
-      "nom": "Printemps numérique",
-      "meeting_quota": 5
-    },
-    {
-      "id": "recsnCx0xx4GkdVrD",
-      "nom": "Promot Africa, Promot Africa",
-      "meeting_quota": 5
     },
     {
       "id": "recM8ivXKX8At3AlL",
@@ -72,13 +62,18 @@
       "meeting_quota": 10
     },
     {
-      "id": "recSMGJlwXpPy4opT",
-      "nom": "RTCA - Réseau Tuniso-Canadien des Affaires",
+      "id": "recmi5WqB79fMzG9O",
+      "nom": "Akassaa - Sénégal,FESTIC - Association des Femmes Sénégalaises du TIC",
       "meeting_quota": 5
     },
     {
-      "id": "recg9xoXmljSim91m",
-      "nom": "Sénégal - FESTIC - Association des Femmes Sénégalaises du TIC",
+      "id": "recWJkjbunA7OzbDY",
+      "nom": "FAADEV - Femmes Africaines Actives pour le Développement",
+      "meeting_quota": 5
+    },
+    {
+      "id": "recYcnW19oZk6Jyih",
+      "nom": "RTCA - Réseau Tuniso-Canadien des Affaires",
       "meeting_quota": 5
     },
     {
@@ -101,733 +96,1204 @@
     {
       "id": "recARkgEpSktk9MpG",
       "nom": "Action TI",
-      "secteur": "Médias, publicité, marketing",
-      "type": "OBNL",
-      "taille": "Petite entreprise",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "11-50",
       "localisation": "Canada",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Action TI",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "description": "Le Réseau Action TI est un organisme à but non lucratif qui rassemble et mobilise la communauté des technologies de l’information et des affaires au Québec. Il favorise le partage de connaissances, le réseautage, l’innovation et la reconnaissance de l’excellence technologique. Son réseau regroupe plus de 16 000 membres et contacts issus de 800 entreprises et organisations. Il organise notamment la JIQ, le Concours des OCTAS et Datavore, ainsi que plusieurs réseaux spécialisés destinés aux professionnels et décideurs du secteur des TI.",
+      "site_web": "https://actionti.com/",
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Communauté TI",
+        "Réseautage"
+      ]
     },
     {
       "id": "recsCzoKYT8oTtIRK",
-      "nom": "AFRIA - Agence internationale pour la Formation et la Recherche en Intelligence Artificielle (AFRIA)",
-      "secteur": "",
-      "type": "",
+      "nom": "AFRIA - Agence Francophone de l'Intelligence Artificielle",
+      "secteur": "Intelligence artificielle / Artificial Inteligence",
+      "type": "OBNL-OSBL / NPO",
       "taille": "",
-      "localisation": "",
+      "localisation": "Suisse",
       "description": "",
       "site_web": "https://afria.global/",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "AFRIA - Agence internationale pour la Formation et la Recherche en Intelligence Artificielle (AFRIA)",
-        "Type de partenaire": "Délégation",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable"
-      }
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Formation IA",
+        "Gouvernance IA"
+      ]
     },
     {
       "id": "recP5cx1LG5BbtXdu",
       "nom": "Aleia",
-      "secteur": "Technologies de l'information",
+      "secteur": "Technologies de l'information / Information technology",
       "type": "Privé",
-      "taille": "Petite entreprise",
+      "taille": "11-50",
       "localisation": "Canada",
-      "description": "ALEIA is a consulting agency specialized in providing digital services and solutions. Aleia carries out every single step of a digital project: Branding (logo, graphic charter...), UX, web, or mobile design and development.",
+      "description": "ALEIA est une agence numérique montréalaise spécialisée dans la conception et le développement de produits et d’expériences numériques. Elle accompagne les organisations en stratégie numérique, UX/UI, développement web et mobile, intelligence artificielle et infrastructure technologique. Fondée à Montréal en 2019, l’agence travaille avec des clients de différents secteurs et dispose également d’une présence internationale.",
       "site_web": "https://www.aleia.io/",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Aleia",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Services"
+      ]
     },
     {
       "id": "recpmDSkDidFE4xe3",
       "nom": "AQIII (L’Association québécoise des informaticiennes et informaticiens indépendants)",
-      "secteur": "Conseil/ Management /Entreprenariat",
-      "type": "OBNL-OSBL",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "OBNL-OSBL / NPO",
       "taille": "",
       "localisation": "Canada",
       "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "AQIII (L’Association québécoise des informaticiennes et informaticiens indépendants)",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable"
-      }
+      "site_web": "https://aqiii.org/",
+      "theme": "",
+      "expertise": [
+        "Consultants TI",
+        "Réseautage"
+      ]
     },
     {
       "id": "recrcKceOZSe7mQ0j",
       "nom": "Atelier B2B",
-      "secteur": "",
-      "type": "",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "Privé",
       "taille": "",
-      "localisation": "",
+      "localisation": "Canada",
       "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Atelier B2B",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "site_web": "https://atelierb2b.ca/",
+      "theme": "",
+      "expertise": [
+        "Conseil / Management",
+        "Formation"
+      ]
+    },
+    {
+      "id": "reciIX5Ta28EDeNh1",
+      "nom": "AWEX - Agence Wallonne à l’Exportation et aux Investissements étrangers,Université de Mons - UMons",
+      "secteur": "Conseil/Management",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+      "taille": "",
+      "localisation": "Belgique",
+      "description": "",
+      "site_web": "https://www.walloniaexportinvestment.be/",
+      "theme": "",
+      "expertise": [
+        "Exportation",
+        "Attraction d’investissements"
+      ]
     },
     {
       "id": "recwAsQ3y9hIavsQu",
       "nom": "BAnQ",
-      "secteur": "Culture et créativité",
-      "type": "Gouvernement, secteur public, parapublique",
+      "secteur": "Culture et créativité / Culture and creativity",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
       "taille": "Moyenne entreprise",
       "localisation": "Canada",
       "description": "Nous prévoyons un contingence de participation à MTL Connect. Considérant que BAnQ est très engagé sur les questions de souveraineté numérique, nous voudrions voir les commandites possibles selon le nombre de billets et participation Panel. Merci!",
       "site_web": "banq.qc.ca",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "BAnQ",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "theme": "Territoire & Humanités",
+      "expertise": [
+        "Patrimoine documentaire",
+        "Services culturels"
+      ]
     },
     {
       "id": "rec2VchDLt2pW9YQ9",
       "nom": "Behaviour Interactive",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Behaviour Interactive",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recNgYONgZiNsw0bf",
-      "nom": "Capitale Numérique",
-      "secteur": "Evénementiel",
-      "type": "OBNL-OSBL",
-      "taille": "Petite entreprise",
+      "secteur": "Divertissements, multimédia, jeux vidéos",
+      "type": "Privé",
+      "taille": "1001 -5000",
       "localisation": "Canada",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Capital numérique",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable"
-      }
+      "description": "Behaviour Interactive est une entreprise montréalaise spécialisée dans le développement et l’édition de jeux vidéo. Elle développe ses propres propriétés intellectuelles, dont Dead by Daylight, et réalise également du développement et du codéveloppement pour de grands acteurs internationaux de l’industrie. Behaviour développe aussi des expériences immersives multimédias à grande échelle. L’entreprise compte plus de 1 200 employés répartis entre plusieurs studios au Canada et en Europe.",
+      "site_web": "https://www.bhvr.com/",
+      "theme": "Culture & Créativité",
+      "expertise": [
+        "Jeux vidéo",
+        "Expérience Imersive"
+      ]
     },
     {
-      "id": "recpoMlfpG8W7s2CX",
-      "nom": "Concordia University",
-      "secteur": "Éducation et enseignement supérieur",
-      "type": "Institution Académique",
-      "taille": "Moyenne entreprise",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "concordia.ca",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Concordia University",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable"
-      }
-    },
-    {
-      "id": "recJVnIVrRxZTj8Ap",
-      "nom": "Cybereco",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Cybereco",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recHsqzQ2n5PRzz9K",
-      "nom": "DataFranca",
-      "secteur": "Intelligence artificielle",
-      "type": "OBNL-OSBL",
-      "taille": "Petite entreprise",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "DataFranca",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recE4ZuRfxqUZKi08",
-      "nom": "Dialog Insight",
-      "secteur": "",
-      "type": "PME",
+      "id": "recV2MKZPKNOqlgxk",
+      "nom": "CAE Inc",
+      "secteur": "Manufacture / Manufacturing",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
       "taille": "",
       "localisation": "Canada",
-      "description": "Dialog Insight est une entreprise canadienne spécialisée dans les solutions de marketing relationnel et d’automatisation marketing, offrant une plateforme technologique permettant aux organisations de mieux exploiter leurs données clients.\n\nElle accompagne les entreprises dans la gestion, la segmentation et l’activation de leurs bases de données afin de créer des communications personnalisées et performantes. Son positionnement repose sur une approche data-driven, combinant collecte de données, intelligence marketing et orchestration multicanale.\n\nDialog Insight se distingue particulièrement dans les secteurs où la relation client est stratégique (médias, retail, divertissement), en permettant d’optimiser l’engagement, la fidélisation et la conversion.",
-      "site_web": "https://www.dialoginsight.com",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Dialog Insight",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "rec3IzJJjOBKpcG83",
-      "nom": "Données SOUVERAINES QUÉBEC",
-      "secteur": "Entreprenariat/Accompagnement",
-      "type": "OBNL-OSBL",
-      "taille": "Moyenne entreprise",
-      "localisation": "Canada",
-      "description": "Données Souveraines Québec (DSQ) est un regroupement d'organisations québécoises créé pour promouvoir la souveraineté des données et une gouvernance responsable des actifs numériques au Québec.\n\nSa mission est de rassembler des organisations qui considèrent les données comme un actif stratégique et qui souhaitent favoriser un modèle où les données sont gouvernées conformément aux lois, aux valeurs et aux intérêts du Québec et du Canada. DSQ agit également comme voix collective auprès des gouvernements et des décideurs afin d'influencer les politiques publiques liées à la souveraineté numérique, à l'hébergement des données et à leur gouvernance.\nIl ne s'agit pas d'une entreprise technologique, mais d'un organisme de représentation et de mobilisation autour des enjeux de souveraineté numérique.",
-      "site_web": "https://donneessouveraines.quebec",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Données SOUVERAINES QUÉBEC",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recIIP2zSKhHVHfOU",
-      "nom": "Druide",
-      "secteur": "Technologies de l'information",
-      "type": "PME",
-      "taille": "Moyenne entreprise",
-      "localisation": "Canada",
       "description": "",
-      "site_web": "druide.com",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Druide",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable"
-      }
+      "site_web": "https://ceimia.org/",
+      "theme": "",
+      "expertise": [
+        "Aérospatial / Défense"
+      ]
     },
     {
-      "id": "recChbaT2G2CuK6Gr",
-      "nom": "Eficio",
-      "secteur": "",
-      "type": "",
+      "id": "recsnCx0xx4GkdVrD",
+      "nom": "Promot Africa",
+      "secteur": "Conseil/Management",
+      "type": "Privé",
       "taille": "",
-      "localisation": "",
+      "localisation": "Cameroun",
       "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Eficio",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recVtW9CfkGTfCvLW",
-      "nom": "EIAS (École de l'intelligence artificielle en santé) -CHUM",
-      "secteur": "Intelligence artificielle",
-      "type": "OBNL-OSBL",
-      "taille": "Moyenne entreprise",
-      "localisation": "Canada",
-      "description": "La mission de l’ÉIAS est de développer la relève et les acteurs de la santé dans leur capacité à intégrer l’IA en milieu réel, pour améliorer la santé de la population et ce, de façon éthique et responsable.",
-      "site_web": "https://eiaschum.ca/",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "EIAS (École de l'intelligence artificielle en santé) -CHUM",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "site_web": "https://www.festicsn.com/fr",
+      "theme": "",
+      "expertise": [
+        "Inconnu / à vérifier"
+      ]
     },
     {
       "id": "recLX7lhIRkLZ17VA",
       "nom": "Fédération culturelle canadienne-française FCCF",
-      "secteur": "",
-      "type": "",
+      "secteur": "Culture et créativité / Culture and creativity",
+      "type": "OBNL-OSBL / NPO",
       "taille": "",
       "localisation": "Canada",
       "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Fédération culturelle canadienne-française FCCF",
-        "Type de partenaire": "Délégation",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "site_web": "https://fccf.ca/",
+      "theme": "",
+      "expertise": [
+        "Arts & spectacles"
+      ]
+    },
+    {
+      "id": "recw8w7E0v1aEMTIt",
+      "nom": "CDPQ - Caisse de dépôt et placement du Québec",
+      "secteur": "Finances / Finance",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://www.lacaisse.com/fr",
+      "theme": "",
+      "expertise": [
+        "Investissement institutionnel",
+        "Capital"
+      ]
+    },
+    {
+      "id": "recKz4miYN25bfUP0",
+      "nom": "CEIMIA",
+      "secteur": "Intelligence artificielle / Artificial Inteligence",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://ceimia.org/",
+      "theme": "",
+      "expertise": [
+        "IA responsable",
+        "Gouvernance"
+      ]
+    },
+    {
+      "id": "recgeyNQpAWr6Nj3G",
+      "nom": "Centech",
+      "secteur": "Incubateur,Accelerateur",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://centech.co/",
+      "theme": "",
+      "expertise": [
+        "Entrepreneuriat / Incubateur"
+      ]
+    },
+    {
+      "id": "recpoMlfpG8W7s2CX",
+      "nom": "Concordia University",
+      "secteur": "Éducation et enseignement supérieur / Education and higher education",
+      "type": "Institution Académique / Academic institution",
+      "taille": "5000-10000",
+      "localisation": "Canada",
+      "description": "L’Université Concordia est une université publique de recherche située à Montréal. Elle offre plus de 250 programmes et mène des activités de recherche et d’innovation dans de nombreux domaines, notamment les technologies numériques, l’ingénierie, les villes intelligentes et durables, la santé, les affaires et les industries créatives. Elle se distingue également par ses collaborations avec l’industrie et son approche axée sur l’apprentissage expérientiel.",
+      "site_web": "https://www.concordia.ca/?utm_source=chatgpt.com",
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Enseignement supérieur",
+        "Recherche"
+      ]
+    },
+    {
+      "id": "recndaYWiLD4lSNvz",
+      "nom": "Conseil de l'Innovation du Québec",
+      "secteur": "Secteur public",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://conseilinnovation.quebec/",
+      "theme": "",
+      "expertise": [
+        "Innovation",
+        "Productivité"
+      ]
+    },
+    {
+      "id": "rececYJHzDrNIGVLU",
+      "nom": "Consulat Général d'Allemagne à Montréal",
+      "secteur": "Secteur public",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://canada.diplo.de/ca-fr/missions/montreal",
+      "theme": "",
+      "expertise": [
+        "Relations internationales",
+        "Services consulaires"
+      ]
+    },
+    {
+      "id": "recoe37yXMSw9Ui4j",
+      "nom": "Consulat général de Belgique à Montréal",
+      "secteur": "Secteur public",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://canada.diplomatie.belgium.be/",
+      "theme": "",
+      "expertise": [
+        "Relations internationales",
+        "Services consulaires"
+      ]
+    },
+    {
+      "id": "recJVnIVrRxZTj8Ap",
+      "nom": "Cybereco",
+      "secteur": "Cybersécurité / Cybersecurity",
+      "type": "Privé",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://cybereco.ca/",
+      "theme": "",
+      "expertise": [
+        "Écosystème cybersécurité",
+        "Talents"
+      ]
+    },
+    {
+      "id": "recHsqzQ2n5PRzz9K",
+      "nom": "DataFranca",
+      "secteur": "Intelligence artificielle / Artificial Inteligence",
+      "type": "Privé",
+      "taille": "Petite entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "https://datafranca.org/wiki/Accueil",
+      "theme": "",
+      "expertise": [
+        "Littératie IA",
+        "Terminologie"
+      ]
+    },
+    {
+      "id": "recNL0oN9FVzjI7bn",
+      "nom": "Deloitte",
+      "secteur": "Finances / Finance",
+      "type": "Privé",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://www.deloitte.com/ca/fr.html",
+      "theme": "",
+      "expertise": [
+        "Conseil / Management"
+      ]
+    },
+    {
+      "id": "recjuRolApPFbdYAR",
+      "nom": "Desjardins Caisse des Technologies",
+      "secteur": "Finances / Finance",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "Moyenne entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "desjardins.com",
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Banque"
+      ]
+    },
+    {
+      "id": "recE4ZuRfxqUZKi08",
+      "nom": "Dialog Insight",
+      "secteur": "Médias, publicité, marketing / Media, advertising, marketing",
+      "type": "Privé",
+      "taille": "Grande entreprise",
+      "localisation": "Canada",
+      "description": "Dialog Insight est une entreprise canadienne spécialisée dans les solutions de marketing relationnel et d’automatisation marketing, offrant une plateforme technologique permettant aux organisations de mieux exploiter leurs données clients.\n\nElle accompagne les entreprises dans la gestion, la segmentation et l’activation de leurs bases de données afin de créer des communications personnalisées et performantes. Son positionnement repose sur une approche data-driven, combinant collecte de données, intelligence marketing et orchestration multicanale.\n\nDialog Insight se distingue particulièrement dans les secteurs où la relation client est stratégique (médias, retail, divertissement), en permettant d’optimiser l’engagement, la fidélisation et la conversion.",
+      "site_web": "https://www.dialoginsight.com",
+      "theme": "",
+      "expertise": [
+        "Marketing"
+      ]
+    },
+    {
+      "id": "rec3IzJJjOBKpcG83",
+      "nom": "Données SOUVERAINES QUÉBEC",
+      "secteur": "Secteur public",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "Moyenne entreprise",
+      "localisation": "Canada",
+      "description": "Données Souveraines Québec (DSQ) est un regroupement d'organisations québécoises créé pour promouvoir la souveraineté des données et une gouvernance responsable des actifs numériques au Québec.\n\nSa mission est de rassembler des organisations qui considèrent les données comme un actif stratégique et qui souhaitent favoriser un modèle où les données sont gouvernées conformément aux lois, aux valeurs et aux intérêts du Québec et du Canada. DSQ agit également comme voix collective auprès des gouvernements et des décideurs afin d'influencer les politiques publiques liées à la souveraineté numérique, à l'hébergement des données et à leur gouvernance.\nIl ne s'agit pas d'une entreprise technologique, mais d'un organisme de représentation et de mobilisation autour des enjeux de souveraineté numérique.",
+      "site_web": "https://donneessouveraines.quebec",
+      "theme": "",
+      "expertise": [
+        "Gouvernance des données"
+      ]
+    },
+    {
+      "id": "recPIYMfOHr134I1X",
+      "nom": "Drakkar",
+      "secteur": "RH / Human resources",
+      "type": "Privé",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://drakkar.com/fr",
+      "theme": "",
+      "expertise": [
+        "Ressources humaines",
+        "Services d’affaires"
+      ]
+    },
+    {
+      "id": "recIIP2zSKhHVHfOU",
+      "nom": "Druide",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "Moyenne entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "druide.com",
+      "theme": "",
+      "expertise": [
+        "Technologies linguistiques",
+        "Logiciels"
+      ]
+    },
+    {
+      "id": "recYuCt16qiuJQt9H",
+      "nom": "École Polytechnique de Montréal",
+      "secteur": "Éducation et enseignement supérieur / Education and higher education",
+      "type": "Institution Académique / Academic institution",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://www.polymtl.ca/",
+      "theme": "",
+      "expertise": [
+        "Recherche"
+      ]
+    },
+    {
+      "id": "recChbaT2G2CuK6Gr",
+      "nom": "Eficio",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "Privé",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://eficio.ca/",
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Services"
+      ]
+    },
+    {
+      "id": "recVtW9CfkGTfCvLW",
+      "nom": "EIAS (École de l'intelligence artificielle en santé) -CHUM",
+      "secteur": "Intelligence artificielle / Artificial Inteligence",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "Moyenne entreprise",
+      "localisation": "Canada",
+      "description": "La mission de l’ÉIAS est de développer la relève et les acteurs de la santé dans leur capacité à intégrer l’IA en milieu réel, pour améliorer la santé de la population et ce, de façon éthique et responsable.",
+      "site_web": "https://eiaschum.ca/",
+      "theme": "",
+      "expertise": [
+        "Santé IA"
+      ]
     },
     {
       "id": "recn1NQZtTDHs7nBK",
       "nom": "Felix & Paul Studios",
-      "secteur": "",
-      "type": "",
+      "secteur": "Divertissements, multimédia, jeux vidéos ; Culture et créativité",
+      "type": "Public",
       "taille": "",
       "localisation": "",
       "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Felix & Paul Studios",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "site_web": "https://www.felixandpaul.com/",
+      "theme": "Culture & Créativité",
+      "expertise": [
+        "Contenu créatif"
+      ]
     },
     {
-      "id": "rec7rvXKfNbkOZj3B",
-      "nom": "GLM Conseil",
-      "secteur": "Médias, publicité, marketing",
-      "type": "Média",
-      "taille": "Moyenne entreprise",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "glmconseil.com",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "GLM Conseil",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable"
-      }
-    },
-    {
-      "id": "recl7XIlU6lt7ojVA",
-      "nom": "IRIU",
-      "secteur": "Intelligence artificielle",
-      "type": "OBNL-OSBL",
-      "taille": "Petite entreprise",
-      "localisation": "Canada",
-      "description": "L’IRIU est un organisme à but non lucratif (OBNL) agissant comme catalyseur de la résilience des collectivités locales. Il accompagne les gouvernements de proximité et les acteurs territoriaux dans l'amélioration de leur capacité organisationnelle face aux crises, en misant sur la planification stratégique, des outils d’aide à la décision, l’intelligence artificielle, et une gouvernance des données à la fois éthique, souveraine et frugale. L’IRIU favorise l’innovation ouverte, la recherche appliquée et l’intelligence collective, toujours au service de transformations durables.",
-      "site_web": "https://www.iriu.ca/",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "IRIU",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "receNnX3JU0JPqQGd",
-      "nom": "Le lien multimédia",
-      "secteur": "Médias, publicité, marketing",
-      "type": "Média",
-      "taille": "Petite entreprise",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "lienmultimedia.com",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Le lien multimédia",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable"
-      }
-    },
-    {
-      "id": "rec3YbJSc2sPbh8tR",
-      "nom": "Le Monde",
-      "secteur": "",
-      "type": "Média",
+      "id": "rec423rFD3HWS1UDY",
+      "nom": "Montpellier Méditérranée Métropole",
+      "secteur": "Secteur public",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
       "taille": "",
       "localisation": "France",
       "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Le Monde",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable"
-      }
-    },
-    {
-      "id": "recp6SCngjMicnxEC",
-      "nom": "Le Wagon",
-      "secteur": "Éducation et enseignement supérieur",
-      "type": "PME",
-      "taille": "Petite entreprise",
-      "localisation": "Canada",
-      "description": "Le Wagon est un des leaders mondiaux des formations Tech immersives.\n\nNotre mission est de former des personnes de tous horizons au Développement Web et à la Data et de les aider à accélérer leur carrière grâce à une méthode d’apprentissage reconnue et personnalisée.\n\nFondé à Paris en 2013, Le Wagon possède des campus dans +27 villes, incluant Montréal.\n\nLe Wagon, c’est aussi une communauté internationale de 31 000+ alumni, constituées des personnes qui veulent changer de carrière ou monter en compétences, des entrepreneurs, des travailleurs autonomes ou des digital nomades.",
-      "site_web": "https://www.lewagon.com/montreal",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Le Wagon",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "rec7C6p8Ry3N0sj5C",
-      "nom": "makila ai",
-      "secteur": "Santé",
-      "type": "PME",
-      "taille": "Petite entreprise",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "makila.ai",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "makila ai",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recPeJt1GFUJsHCN4",
-      "nom": "MAMH - Ministère des Affaires municipales et de l'Habitation 1",
-      "secteur": "",
-      "type": "Gouvernement, secteur public, parapublique",
-      "taille": "Grande entreprise",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "mamh.gouv.qc.ca",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "MAMH - Ministère des Affaires municipales et de l'Habitation 1",
-        "Type de partenaire": "Public",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recrIofsIhv3DsNX6",
-      "nom": "Ministère de la Culture et des Communications",
-      "secteur": "",
-      "type": "Gouvernement, secteur public, parapublique",
-      "taille": "Grande entreprise",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Ministère de la Culture et des Communications",
-        "Type de partenaire": "Public",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recmmEQbUXvYNgMeJ",
-      "nom": "Ministère du tourisme (FSTAI)",
-      "secteur": "",
-      "type": "Gouvernement, secteur public, parapublique",
-      "taille": "",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Ministère du tourisme (FSTAI)",
-        "Type de partenaire": "Public",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recGrvifPdIoARM5k",
-      "nom": "Moment Factory",
-      "secteur": "Culture et créativité",
-      "type": "PME",
-      "taille": "Moyenne entreprise",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "https://momentfactory.com/fr",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Moment Factory",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recOfE9BXZwZfMFXP",
-      "nom": "Montreal International",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Montreal International",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "site_web": "https://www.montpellier.fr/",
+      "theme": "",
+      "expertise": [
+        "Développement territorial",
+        "Services publics"
+      ]
     },
     {
       "id": "rec2miixBgR9fWCs4",
-      "nom": "Nantes Métropole / Nantes St Nazaire Développement / Nantes Digitale week",
-      "secteur": "",
-      "type": "",
+      "nom": "Nantes Saint-Nazaire Développement",
+      "secteur": "Secteur public",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
       "taille": "Grande entreprise",
       "localisation": "France",
       "description": "",
       "site_web": "nantes-saintnazaire.fr",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Nantes Métropole / Nantes St Nazaire Développement / Nantes Digitale week",
-        "Type de partenaire": "Délégation",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "theme": "",
+      "expertise": [
+        "Développement économique",
+        "Numérique"
+      ]
+    },
+    {
+      "id": "recWD7NA1sGP6M3n3",
+      "nom": "Futurpreneur",
+      "secteur": "Incubateur,Accelerateur",
+      "type": "Privé",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://futurpreneur.ca/",
+      "theme": "",
+      "expertise": [
+        "Entrepreneuriat / Incubateur"
+      ]
+    },
+    {
+      "id": "rec7rvXKfNbkOZj3B",
+      "nom": "GLM Conseil",
+      "secteur": "Intelligence artificielle",
+      "type": "Privé",
+      "taille": "Moyenne entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "https://glmconseil.com/",
+      "theme": "",
+      "expertise": [
+        "Conseil / Management"
+      ]
+    },
+    {
+      "id": "rec0xMCLQzNJIMBBN",
+      "nom": "Hydro-Québec",
+      "secteur": "Environnement, développement durable, technologie verte / Environment, sustainable development, green technology",
+      "type": "Privé",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://www.hydroquebec.com/",
+      "theme": "",
+      "expertise": [
+        "Énergie / Renouvelables"
+      ]
+    },
+    {
+      "id": "recl7XIlU6lt7ojVA",
+      "nom": "IRIU",
+      "secteur": "Secteur public",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "Petite entreprise",
+      "localisation": "Canada",
+      "description": "L’IRIU est un organisme à but non lucratif (OBNL) agissant comme catalyseur de la résilience des collectivités locales. Il accompagne les gouvernements de proximité et les acteurs territoriaux dans l'amélioration de leur capacité organisationnelle face aux crises, en misant sur la planification stratégique, des outils d’aide à la décision, l’intelligence artificielle, et une gouvernance des données à la fois éthique, souveraine et frugale. L’IRIU favorise l’innovation ouverte, la recherche appliquée et l’intelligence collective, toujours au service de transformations durables.",
+      "site_web": "https://www.iriu.ca/",
+      "theme": "Territoire & Humanités",
+      "expertise": [
+        "Innovation gouvernementale"
+      ]
+    },
+    {
+      "id": "recHcnLWeHGgXC5xi",
+      "nom": "ISACA",
+      "secteur": "Cybersécurité / Cybersecurity",
+      "type": "Privé",
+      "taille": "Moyenne entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "isaca.org",
+      "theme": "Cybersécurité & Identité numérique",
+      "expertise": [
+        "Gouvernance TI",
+        "Cybersécurité"
+      ]
+    },
+    {
+      "id": "recSE7ICFOLuMfIu2",
+      "nom": "IVADO",
+      "secteur": "Intelligence artificielle / Artificial Inteligence",
+      "type": "Privé",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://ivado.ca/",
+      "theme": "",
+      "expertise": [
+        "Recherche"
+      ]
+    },
+    {
+      "id": "receNnX3JU0JPqQGd",
+      "nom": "Le lien multimédia",
+      "secteur": "Médias, publicité, marketing / Media, advertising, marketing",
+      "type": "Privé",
+      "taille": "Petite entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "lienmultimedia.com",
+      "theme": "",
+      "expertise": [
+        "Médias"
+      ]
+    },
+    {
+      "id": "rec3YbJSc2sPbh8tR",
+      "nom": "Le Monde",
+      "secteur": "Médias, publicité, marketing / Media, advertising, marketing",
+      "type": "Privé",
+      "taille": "",
+      "localisation": "France",
+      "description": "",
+      "site_web": "https://www.lemonde.fr/",
+      "theme": "",
+      "expertise": [
+        "Médias"
+      ]
+    },
+    {
+      "id": "recp6SCngjMicnxEC",
+      "nom": "Le Wagon",
+      "secteur": "Éducation et enseignement supérieur / Education and higher education",
+      "type": "Privé",
+      "taille": "Petite entreprise",
+      "localisation": "Canada",
+      "description": "Le Wagon est un des leaders mondiaux des formations Tech immersives.\n\nNotre mission est de former des personnes de tous horizons au Développement Web et à la Data et de les aider à accélérer leur carrière grâce à une méthode d’apprentissage reconnue et personnalisée.\n\nFondé à Paris en 2013, Le Wagon possède des campus dans +27 villes, incluant Montréal.\n\nLe Wagon, c’est aussi une communauté internationale de 31 000+ alumni, constituées des personnes qui veulent changer de carrière ou monter en compétences, des entrepreneurs, des travailleurs autonomes ou des digital nomades.",
+      "site_web": "https://www.lewagon.com/montreal",
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "EdTech",
+        "Formation"
+      ]
+    },
+    {
+      "id": "recQu64jtclAkQoUr",
+      "nom": "LUQIA (Ex-Crim)",
+      "secteur": "Intelligence artificielle / Artificial Inteligence",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://www.luqia.ca/",
+      "theme": "",
+      "expertise": [
+        "IA appliquée",
+        "Innovation industrielle"
+      ]
+    },
+    {
+      "id": "rec7C6p8Ry3N0sj5C",
+      "nom": "makila ai",
+      "secteur": "Technologies de l'information / Information technology ; Intelligence artificielle",
+      "type": "Privé",
+      "taille": "Petite entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "makila.ai",
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Analyse prédictive",
+        "Aide à la décision"
+      ]
+    },
+    {
+      "id": "recPeJt1GFUJsHCN4",
+      "nom": "MAMH - Ministère des Affaires municipales et de l'Habitation 1",
+      "secteur": "Secteur public",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+      "taille": "Grande entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "mamh.gouv.qc.ca",
+      "theme": "",
+      "expertise": [
+        "Affaires municipales",
+        "Habitation"
+      ]
+    },
+    {
+      "id": "recZWVaepztWxzW8f",
+      "nom": "Mila - Institut québécois d'intelligence artificielle",
+      "secteur": "Intelligence artificielle / Artificial Inteligence",
+      "type": "Institution Académique / Academic institution",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://mila.quebec/",
+      "theme": "",
+      "expertise": [
+        "Recherche"
+      ]
+    },
+    {
+      "id": "recRUMZe1GcQkOppq",
+      "nom": "Ministère de l'Éducation du Québec (MÉQ)",
+      "secteur": "Secteur public",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://www.quebec.ca/gouvernement/ministeres-organismes/education",
+      "theme": "",
+      "expertise": [
+        "Culture",
+        "Politiques publiques"
+      ]
+    },
+    {
+      "id": "recrIofsIhv3DsNX6",
+      "nom": "Ministère de la Culture et des Communications",
+      "secteur": "Secteur public",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+      "taille": "Grande entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "https://www.quebec.ca/gouvernement/ministeres-organismes/culture-communications",
+      "theme": "",
+      "expertise": [
+        "Éducation",
+        "Politiques publiques"
+      ]
+    },
+    {
+      "id": "recmmEQbUXvYNgMeJ",
+      "nom": "Ministère du tourisme (FSTAI)",
+      "secteur": "Secteur public",
+      "type": "Gouvernement",
+      "taille": "",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "https://www.quebec.ca/tourisme-et-loisirs/aide-financiere/fonds-stimulation-tourisme-affaires-international",
+      "theme": "",
+      "expertise": [
+        "Tourisme"
+      ]
+    },
+    {
+      "id": "recGrvifPdIoARM5k",
+      "nom": "Moment Factory",
+      "secteur": "Divertissements, multimédia, jeux vidéos ; Culture et créativité",
+      "type": "Privé",
+      "taille": "Moyenne entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "https://momentfactory.com/fr",
+      "theme": "Culture & Créativité",
+      "expertise": [
+        "Contenu créatif"
+      ]
+    },
+    {
+      "id": "recOfE9BXZwZfMFXP",
+      "nom": "Montreal International",
+      "secteur": "Secteur public",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://www.montrealinternational.com/fr/",
+      "theme": "",
+      "expertise": [
+        "Attraction d’investissements",
+        "Talents"
+      ]
+    },
+    {
+      "id": "recscWjbNwiNjuvxf",
+      "nom": "Onepoint",
+      "secteur": "Autre ; Technologies de l'information / Information technology ; Intelligence artificielle",
+      "type": "Privé",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://www.groupeonepoint.com/fr/",
+      "theme": "",
+      "expertise": [
+        "Conseil / Management"
+      ]
+    },
+    {
+      "id": "reczuCKrfTs3Zwr1d",
+      "nom": "OVH cloud",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "Privé",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://www.ovhcloud.com/en-ca/",
+      "theme": "",
+      "expertise": [
+        "Cloud"
+      ]
     },
     {
       "id": "recpFvx21dv0c3iqB",
       "nom": "PairConnex",
-      "secteur": "Technologies de l'information",
-      "type": "PME",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "Privé",
       "taille": "Petite entreprise",
       "localisation": "Canada",
       "description": "",
       "site_web": "https://www.pairconnex.com/fr/en-savoir-plus/mobile",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "PairConnex",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "theme": "",
+      "expertise": [
+        "Technologie événementielle",
+        "Matchmaking"
+      ]
     },
     {
       "id": "recIdlSmcuIbFpgd0",
       "nom": "paysages.studio X",
-      "secteur": "Culture et créativité",
-      "type": "PME",
+      "secteur": "Culture et créativité / Culture and creativity",
+      "type": "Privé",
       "taille": "Petite entreprise",
       "localisation": "Canada",
       "description": "paysages studio est un studio de création multimédia montréalais spécialisé dans les expériences immersives et contemplatives pour le bien-être. Il conçoit des environnements où le son, l’image et la lumière transforment un lieu en expérience sensible, avec une approche centrée sur le calme, la présence et le ralentissement",
       "site_web": "https://paysages.studio",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "paysages.studio X",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "theme": "Culture & Créativité",
+      "expertise": [
+        "Contenu créatif"
+      ]
+    },
+    {
+      "id": "recNntVr3AmaNKuMM",
+      "nom": "Petal",
+      "secteur": "Santé / Healthcare",
+      "type": "Privé",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://www.petal-health.com/",
+      "theme": "",
+      "expertise": [
+        "Santé numérique"
+      ]
     },
     {
       "id": "recYDJOonMBJBhefl",
       "nom": "Pixsenses",
-      "secteur": "Culture et créativité",
-      "type": "PME",
+      "secteur": "Culture et créativité / Culture and creativity",
+      "type": "Privé",
       "taille": "Moyenne entreprise",
       "localisation": "Canada",
       "description": "",
       "site_web": "www.pixsenses.com",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Pixsenses",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Formulaire rempli"
-      }
+      "theme": "",
+      "expertise": [
+        "IA immersive",
+        "XR"
+      ]
     },
     {
       "id": "recFRQ2QIuWUjM0KH",
       "nom": "Plumfind",
-      "secteur": "Médias, publicité, marketing",
-      "type": "PME",
+      "secteur": "Médias, publicité, marketing / Media, advertising, marketing",
+      "type": "Privé",
       "taille": "Petite entreprise",
       "localisation": "Canada",
       "description": "Plumfind est une entreprise montréalaise spécialisée dans le marketing numérique assisté par intelligence artificielle. Elle propose des solutions sur mesure — notamment pour l’hôtellerie et l’e‑commerce — permettant d’analyser les tendances, optimiser les campagnes, automatiser la création de contenu et anticiper les comportements clients.",
       "site_web": "plumfind.com",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Plumfind",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Marketing"
+      ]
     },
     {
       "id": "recW9onKA84kSuijI",
       "nom": "PME MTL",
-      "secteur": "Conseil/ Management /Entreprenariat",
-      "type": "Gouvernement, secteur public, parapublique",
+      "secteur": "Secteur public",
+      "type": "OBNL-OSBL / NPO",
       "taille": "Grande entreprise",
       "localisation": "Canada",
       "description": "PME MTL est un réseau d'accompagnement et de financement dédié aux petites et moyennes entreprises (PME) de la région de Montréal. Créé en 2016, il regroupe six pôles territoriaux pour offrir des services adaptés aux besoins locaux des entrepreneurs .\n\nMission : Soutenir la création, la croissance et la pérennité des PME montréalaises.\nChiffres clés :\n12 000 entreprises accompagnées depuis sa création.\n1,5 milliard $ en retombées économiques générées.\n1 000+ emplois créés ou maintenus annuellement.",
       "site_web": "https://pmemtl.com/",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "PME MTL",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable"
-      }
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Entrepreneuriat / Incubateur"
+      ]
+    },
+    {
+      "id": "recvQz81k0WoIDxZB",
+      "nom": "Printemps numérique",
+      "secteur": "Evénementiel / Events",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "Petite entreprise",
+      "localisation": "Canada",
+      "description": "Le Printemps numérique (PN) est un organisme à but non lucratif montréalais dont la mission est de stimuler et soutenir l’intelligence numérique, en favorisant l’appropriation des technologies, le développement des compétences numériques et les rencontres entre les différents acteurs de l’écosystème.\n\nIl agit à la croisée de la technologie, de l’innovation, de la culture et de la société, notamment à travers des événements, des programmes de littératie numérique et des initiatives de maillage.\n\nLe Printemps numérique est notamment l’organisateur de MTL connecte – la Semaine numérique de Montréal, son événement international phare consacré aux grands enjeux de la transformation numérique.",
+      "site_web": "https://www.printempsnumerique.ca/?utm_source=chatgpt.com",
+      "theme": "",
+      "expertise": [
+        "Événementiel numérique",
+        "Littératie numérique"
+      ]
+    },
+    {
+      "id": "reco8O88P20cd7oEM",
+      "nom": "Prompt Innov",
+      "secteur": "Intelligence artificielle / Artificial Inteligence",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://promptinnov.com/",
+      "theme": "",
+      "expertise": [
+        "Financement R-D",
+        "Innovation collaborative"
+      ]
+    },
+    {
+      "id": "recNgYONgZiNsw0bf",
+      "nom": "Capitale numérique",
+      "secteur": "Evénementiel / Events",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "Petite entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "https://www.capitalenumerique.com/",
+      "theme": "",
+      "expertise": [
+        "Événementiel numérique",
+        "Communautés"
+      ]
+    },
+    {
+      "id": "recfxaGlX1FD54jtO",
+      "nom": "Culture Montérégie",
+      "secteur": "Culture et créativité / Culture and creativity",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "https://culturemonteregie.qc.ca/",
+      "theme": "",
+      "expertise": [
+        "Arts & spectacles"
+      ]
+    },
+    {
+      "id": "recRNIxrsNubaEn2M",
+      "nom": "LOJIQ - Les Offices jeunesse internationaux du Québec",
+      "secteur": "Secteur public",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+      "taille": "Moyenne entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "lojiq.org",
+      "theme": "",
+      "expertise": [
+        "Mobilité jeunesse",
+        "International"
+      ]
+    },
+    {
+      "id": "receSr9qRN9X3TMsP",
+      "nom": "Maison de l'innovation Technologique - MiT",
+      "secteur": "Conseil/Management",
+      "type": "Privé",
+      "taille": "",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "https://mit.quebec/",
+      "theme": "",
+      "expertise": [
+        "Innovation technologique",
+        "Transformation numérique"
+      ]
+    },
+    {
+      "id": "recM8ivXKX8At3AlL",
+      "nom": "RADN - Projet Collectif",
+      "secteur": "Conseil/Management",
+      "type": "Privé",
+      "taille": "Grande entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "https://projetcollectif.ca/nouvelles/coordination-radn",
+      "theme": "",
+      "expertise": [
+        "Développement culturel numérique",
+        "Mobilisation"
+      ]
     },
     {
       "id": "rec9nJ2eGmiBvNCbS",
       "nom": "R2i",
-      "secteur": "Technologies de l'information",
-      "type": "PME",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "Privé",
       "taille": "Petite entreprise",
       "localisation": "Canada",
       "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "R2i",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "site_web": "https://www.r2i.ca/",
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Cloud"
+      ]
+    },
+    {
+      "id": "recImcHlmxPUnGPMs",
+      "nom": "RDÉE Canada",
+      "secteur": "Conseil/Management",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "https://rdee.ca/",
+      "theme": "",
+      "expertise": [
+        "Économie sociale / Communautaire"
+      ]
+    },
+    {
+      "id": "recMtq0R2up0qp2il",
+      "nom": "Représentation de l’OIF pour les Amériques (REPAM)",
+      "secteur": "Secteur public",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://www.francophonie.org/loif-forme-des-jeunes-diplomates-des-ameriques-en-francais-8211",
+      "theme": "",
+      "expertise": [
+        "Francophonie",
+        "Coopération internationale"
+      ]
     },
     {
       "id": "reczr8Fpe2aT8E7w7",
       "nom": "Royal Photo",
-      "secteur": "",
-      "type": "",
+      "secteur": "Culture et créativité / Culture and creativity",
+      "type": "Privé",
       "taille": "",
       "localisation": "",
       "description": "",
+      "site_web": "https://royalphoto.com/",
+      "theme": "",
+      "expertise": [
+        "Contenu créatif"
+      ]
+    },
+    {
+      "id": "recmi5WqB79fMzG9O",
+      "nom": "Akassaa - Sénégal,FESTIC - Association des Femmes Sénégalaises du TIC",
+      "secteur": "Conseil/Management",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+      "taille": "",
+      "localisation": "Sénégal",
+      "description": "",
       "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Royal Photo",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "theme": "",
+      "expertise": [
+        "Développement d’affaires",
+        "Internationalisation"
+      ]
+    },
+    {
+      "id": "recWJkjbunA7OzbDY",
+      "nom": "FAADEV - Femmes Africaines Actives pour le Développement",
+      "secteur": "Conseil/Management",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "",
+      "localisation": "Sénégal",
+      "description": "",
+      "site_web": "https://faadev.org/",
+      "theme": "",
+      "expertise": [
+        "Économie sociale / Communautaire"
+      ]
     },
     {
       "id": "recIzzeITTBwUWFlI",
       "nom": "Services Québec - Ministère de l’Emploi et de la Solidarité sociale",
-      "secteur": "",
-      "type": "Gouvernement, secteur public, parapublique",
+      "secteur": "Intelligence artificielle / Artificial Inteligence",
+      "type": "Privé",
       "taille": "",
       "localisation": "Canada",
       "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Services Québec - Ministère de l’Emploi et de la Solidarité sociale",
-        "Type de partenaire": "Public",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable"
-      }
+      "site_web": "https://www.quebec.ca/gouvernement/ministeres-organismes/emploi-solidarite-sociale",
+      "theme": "",
+      "expertise": [
+        "Conseil / Management"
+      ]
     },
     {
       "id": "recjzPmAY3HmHOpBD",
       "nom": "Sterling North Partners",
-      "secteur": "IA",
-      "type": "PME",
+      "secteur": "Mobilité et transports / Mobility and transport",
+      "type": "Privé",
       "taille": "Petite entreprise",
       "localisation": "Canada",
       "description": "Sterling North Partners est une firme canadienne de conseil stratégique spécialisée dans l’accompagnement des organisations sur des enjeux complexes liés à la croissance, à la transformation et au financement.\n\nL’entreprise intervient auprès de dirigeants, d’investisseurs et d’entreprises en phase de développement pour structurer des initiatives stratégiques, faciliter des partenariats et soutenir des décisions d’investissement. Elle se positionne comme un partenaire de haut niveau, à l’intersection du conseil, du capital et du développement d’affaires.\n\nSterling North Partners évolue dans un environnement où les enjeux financiers, technologiques et stratégiques sont étroitement liés, avec une approche orientée vers la création de valeur à long terme.",
       "site_web": "https://sterlingnorth.partners",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Sterling North Partners",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Transport & logistique"
+      ]
     },
     {
       "id": "recVR0Mp84aH2nGEF",
       "nom": "Taxelco",
-      "secteur": "Mobilité et transports",
-      "type": "PME",
+      "secteur": "Éducation et enseignement supérieur / Education and higher education",
+      "type": "OBNL-OSBL / NPO",
       "taille": "Petite entreprise",
       "localisation": "Canada",
       "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Taxelco",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "site_web": "https://taxelco.com/",
+      "theme": "",
+      "expertise": [
+        "EdTech"
+      ]
+    },
+    {
+      "id": "recR5tvRcH5vA4eEv",
+      "nom": "Technovation Montréal",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://www.technovationmontreal.com/",
+      "theme": "",
+      "expertise": [
+        "Microélectronique"
+      ]
+    },
+    {
+      "id": "recvTIk7phOD0Ytwz",
+      "nom": "Technum Québec",
+      "secteur": "Secteur public",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "",
+      "localisation": "",
+      "description": "",
+      "site_web": "https://technumquebec.ca/",
+      "theme": "",
+      "expertise": [
+        "Tourisme"
+      ]
     },
     {
       "id": "reckLm70wK9XavhjF",
       "nom": "Tourisme Montréal",
-      "secteur": "Conseil/ Management /Entreprenariat",
-      "type": "Gouvernement, secteur public, parapublique",
+      "secteur": "Éducation et enseignement supérieur / Education and higher education",
+      "type": "Privé",
       "taille": "",
       "localisation": "Canada",
       "description": "",
+      "site_web": "https://www.mtl.org/",
+      "theme": "",
+      "expertise": [
+        "Recherche"
+      ]
+    },
+    {
+      "id": "recYcnW19oZk6Jyih",
+      "nom": "RTCA - Réseau Tuniso-Canadien des Affaires",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "",
+      "localisation": "Tunisie",
+      "description": "",
       "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Tourisme Montréal",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "theme": "",
+      "expertise": [
+        "Femmes en tech",
+        "Transformation numérique"
+      ]
+    },
+    {
+      "id": "recsjWZG9REX5unKV",
+      "nom": "UM6P",
+      "secteur": "Éducation et enseignement supérieur / Education and higher education",
+      "type": "Institution Académique / Academic institution",
+      "taille": "Moyenne entreprise",
+      "localisation": "Canada",
+      "description": "L’UM6P est une université privée à but non lucratif marocaine axée sur la recherche appliquée, l’innovation et le développement durable, avec une forte orientation vers l’Afrique. Fondée par la Fondation OCP, elle propose une approche pluridisciplinaire et expérimentale dans de nombreux domaines scientifiques et techniques .",
+      "site_web": "https://um6p.ma/fr",
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Recherche"
+      ]
+    },
+    {
+      "id": "rec8o9RmF6HgLUYSl",
+      "nom": "Université de Mons - UMons",
+      "secteur": "Éducation et enseignement supérieur / Education and higher education",
+      "type": "Institution Académique / Academic institution",
+      "taille": "",
+      "localisation": "Belgique",
+      "description": "",
+      "site_web": "https://web.umons.ac.be/",
+      "theme": "",
+      "expertise": [
+        "Recherche"
+      ]
+    },
+    {
+      "id": "recrZFbmpGNNTR2dM",
+      "nom": "UQAC - Université du Québec à Chicoutimi",
+      "secteur": "Secteur public",
+      "type": "Public",
+      "taille": "",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "https://www.uqac.ca/",
+      "theme": "",
+      "expertise": [
+        "Administration municipale",
+        "Services publics"
+      ]
     },
     {
       "id": "recy6pbHLhLSwJQ02",
       "nom": "Ville de Montréal",
-      "secteur": "",
-      "type": "Gouvernement, secteur public, parapublique",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "OBNL-OSBL / NPO",
       "taille": "",
       "localisation": "Canada",
       "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Ville de Montréal",
-        "Type de partenaire": "Public",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "site_web": "https://montreal.ca/",
+      "theme": "",
+      "expertise": [
+        "Femmes en tech",
+        "Communauté"
+      ]
     },
     {
       "id": "recHByYQJay8qdfrr",
-      "nom": "Women Tech Makers",
-      "secteur": "",
-      "type": "OBNL",
-      "taille": "",
+      "nom": "Women Techmakers Montréal",
+      "secteur": "Culture et créativité / Culture and creativity",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "Petite entreprise",
       "localisation": "Canada",
       "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Women Tech Makers",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable"
-      }
+      "site_web": "https://www.womentechmakers.com/",
+      "theme": "",
+      "expertise": [
+        "Contenu créatif"
+      ]
     },
     {
       "id": "recZ6k2Vacjl4P9Xi",
@@ -837,788 +1303,219 @@
       "taille": "",
       "localisation": "Canada",
       "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Xn Québec",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recmi5WqB79fMzG9O",
-      "nom": "Akassaa (Partenaire de Festic)",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "Sénégal",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Akassaa (Partenaire de Festic)",
-        "Type de partenaire": "Délégation",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "reciIX5Ta28EDeNh1",
-      "nom": "AWEX - Agence Wallonne à l’Exportation et aux Investissements étrangers",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "Belgique",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "AWEX - Agence Wallonne à l’Exportation et aux Investissements étrangers",
-        "Type de partenaire": "Délégation",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recfxaGlX1FD54jtO",
-      "nom": "Culture Montérégie",
-      "secteur": "Culture et créativité",
-      "type": "OBNL-OSBL",
-      "taille": "",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "https://culturemonteregie.qc.ca/",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Culture Montérégie",
-        "Type de partenaire": "Délégation",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable"
-      }
-    },
-    {
-      "id": "recjuRolApPFbdYAR",
-      "nom": "Desjardins Caisse des Technologies",
-      "secteur": "Banque & services financiers",
-      "type": "Grande entreprise",
-      "taille": "Moyenne entreprise",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "desjardins.com",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Desjardins Caisse des Technologies",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recWJkjbunA7OzbDY",
-      "nom": "FAADEV - Femmes Africaines Actives pour le Développement",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "FAADEV - Femmes Africaines Actives pour le Développement",
-        "Type de partenaire": "Délégation",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recHcnLWeHGgXC5xi",
-      "nom": "ISACA",
-      "secteur": "Cybersécurité",
-      "type": "OBNL-OSBL",
-      "taille": "Moyenne entreprise",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "isaca.org",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "ISACA",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "En attente"
-      }
-    },
-    {
-      "id": "recRNIxrsNubaEn2M",
-      "nom": "LOJIQ - Les Offices jeunesse internationaux du Québec, OFQJ - Office franco-québécois pour la jeunesse",
-      "secteur": "Mobilité et transports",
-      "type": "",
-      "taille": "Moyenne entreprise",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "lojiq.org",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "LOJIQ - Les Offices jeunesse internationaux du Québec",
-        "Type de partenaire": "Délégation",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "receSr9qRN9X3TMsP",
-      "nom": "Maison de l'innovation Technologique - MiT",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Maison de l'innovation Technologique - MiT",
-        "Type de partenaire": "Délégation",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "rec423rFD3HWS1UDY",
-      "nom": "Montpellier Méditérranée Métropole",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "France",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Montpellier Méditérranée Métropole",
-        "Type de partenaire": "Délégation",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recvQz81k0WoIDxZB",
-      "nom": "Printemps numérique",
-      "secteur": "Evénementiel",
-      "type": "OBNL-OSBL",
-      "taille": "Petite entreprise",
-      "localisation": "Canada",
-      "description": "Le Printemps numérique (PN) est un organisme à but non lucratif montréalais dont la mission est de stimuler et soutenir l’intelligence numérique, en favorisant l’appropriation des technologies, le développement des compétences numériques et les rencontres entre les différents acteurs de l’écosystème.\n\nIl agit à la croisée de la technologie, de l’innovation, de la culture et de la société, notamment à travers des événements, des programmes de littératie numérique et des initiatives de maillage.\n\nLe Printemps numérique est notamment l’organisateur de MTL connecte – la Semaine numérique de Montréal, son événement international phare consacré aux grands enjeux de la transformation numérique.",
-      "site_web": "https://www.printempsnumerique.ca/?utm_source=chatgpt.com",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Printemps numérique",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recsnCx0xx4GkdVrD",
-      "nom": "Promot Africa, Promot Africa",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "Cameroun",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Promot Africa,Promot Africa",
-        "Type de partenaire": "Délégation",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recM8ivXKX8At3AlL",
-      "nom": "RADN - Projet Collectif",
-      "secteur": "",
-      "type": "",
-      "taille": "Grande entreprise",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "RADN - Projet Collectif",
-        "Type de partenaire": "Délégation",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable"
-      }
-    },
-    {
-      "id": "recImcHlmxPUnGPMs",
-      "nom": "RDÉE Canada",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "RDÉE Canada",
-        "Type de partenaire": "Délégation",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recMtq0R2up0qp2il",
-      "nom": "Représentation de l’OIF pour les Amériques (REPAM)",
-      "secteur": "",
-      "type": "OBNL-OSBL",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Représentation de l’OIF pour les Amériques (REPAM)",
-        "Type de partenaire": "Public",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recSMGJlwXpPy4opT",
-      "nom": "RTCA - Réseau Tuniso-Canadien des Affaires",
-      "secteur": "",
-      "type": "",
-      "taille": "Moyenne entreprise",
-      "localisation": "Tunisie",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "RTCA - Réseau Tuniso-Canadien des Affaires,RTCA - Réseau Tuniso-Canadien des Affaires",
-        "Type de partenaire": "Délégation",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Formulaire rempli"
-      }
-    },
-    {
-      "id": "recg9xoXmljSim91m",
-      "nom": "Sénégal - FESTIC - Association des Femmes Sénégalaises du TIC",
-      "secteur": "",
-      "type": "OBNL-OSBL",
-      "taille": "Petite entreprise",
-      "localisation": "Sénégal",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Festic",
-        "Type de partenaire": "Délégation",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Formulaire transmis"
-      }
-    },
-    {
-      "id": "recsjWZG9REX5unKV",
-      "nom": "UM6P",
-      "secteur": "Éducation et enseignement supérieur",
-      "type": "PME",
-      "taille": "Moyenne entreprise",
-      "localisation": "Canada",
-      "description": "L’UM6P est une université privée à but non lucratif marocaine axée sur la recherche appliquée, l’innovation et le développement durable, avec une forte orientation vers l’Afrique. Fondée par la Fondation OCP, elle propose une approche pluridisciplinaire et expérimentale dans de nombreux domaines scientifiques et techniques .",
-      "site_web": "https://um6p.ma/fr",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "UMP6",
-        "Type de partenaire": "Privé",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Formulaire rempli"
-      }
-    },
-    {
-      "id": "rec8o9RmF6HgLUYSl",
-      "nom": "Université de Mons - UMons",
-      "secteur": "Éducation et enseignement supérieur",
-      "type": "",
-      "taille": "",
-      "localisation": "Belgique",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "AWEX - Agence Wallonne à l’Exportation et aux Investissements étrangers",
-        "Type de partenaire": "Délégation",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recrZFbmpGNNTR2dM",
-      "nom": "UQAC - Université du Québec à Chicoutimi",
-      "secteur": "",
-      "type": "Institution Académique",
-      "taille": "",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "UQAC - Université du Québec à Chicoutimi",
-        "Type de partenaire": "Public",
-        "Conciergerie": "checked",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recoe37yXMSw9Ui4j",
-      "nom": "Consulat général de Belgique à Montréal",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Consulat général de Belgique à Montréal",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recNL0oN9FVzjI7bn",
-      "nom": "Deloitte",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Deloitte",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recPIYMfOHr134I1X",
-      "nom": "Drakkar",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Drakkar",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recYuCt16qiuJQt9H",
-      "nom": "École Polytechnique de Montréal",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "École Polytechnique de Montréal",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recUuWkHNkPla8dMr",
-      "nom": "EIAS (École de l'intelligence artificielle en santé) -CHUM",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "EIAS (École de l'intelligence artificielle en santé) -CHUM",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recWD7NA1sGP6M3n3",
-      "nom": "Futurpreneur",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Futurpreneur",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "rec0xMCLQzNJIMBBN",
-      "nom": "Hydro-Québec",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Hydro-Québec",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recQu64jtclAkQoUr",
-      "nom": "LUQIA (Ex-Crim)",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "LUQIA (Ex-Crim)",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recRUMZe1GcQkOppq",
-      "nom": "Ministère de l'Éducation du Québec (MÉQ)",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Ministère de l'Éducation du Québec (MÉQ)",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recmoWXAUjADDqHmx",
-      "nom": "Montreal International",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Montreal International",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recscWjbNwiNjuvxf",
-      "nom": "Onepoint",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Onepoint",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "reczuCKrfTs3Zwr1d",
-      "nom": "OVH cloud",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "OVH cloud",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recNntVr3AmaNKuMM",
-      "nom": "Petal",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Petal",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "reco8O88P20cd7oEM",
-      "nom": "Prompt Innov",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Prompt Innov",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recR5tvRcH5vA4eEv",
-      "nom": "Technovation Montréal",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Technovation Montréal",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recOcvLOCqqm9kNCa",
-      "nom": "Bradley & Rollins Inc",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Bradley & Rollins Inc",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recV2MKZPKNOqlgxk",
-      "nom": "CAE Inc",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "CAE Inc",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recw8w7E0v1aEMTIt",
-      "nom": "CDPQ - Caisse de dépôt et placement du Québec",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "CDPQ - Caisse de dépôt et placement du Québec",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recKz4miYN25bfUP0",
-      "nom": "CEIMIA",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "CEIMIA",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recgeyNQpAWr6Nj3G",
-      "nom": "Centech",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Centech",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recndaYWiLD4lSNvz",
-      "nom": "Conseil de l'Innovation du Québec",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Conseil de l'Innovation du Québec",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "rececYJHzDrNIGVLU",
-      "nom": "Consulat Général d'Allemagne à Montréal",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Consulat Général d'Allemagne à Montréal",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recSE7ICFOLuMfIu2",
-      "nom": "IVADO",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "IVADO",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recZWVaepztWxzW8f",
-      "nom": "Mila - Institut québécois d'intelligence artificielle",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Mila - Institut québécois d'intelligence artificielle",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
-    },
-    {
-      "id": "recvTIk7phOD0Ytwz",
-      "nom": "Technum Québec",
-      "secteur": "",
-      "type": "",
-      "taille": "",
-      "localisation": "",
-      "description": "",
-      "site_web": "",
-      "extra": {
-        "Nom de l'organisation/ Délégation": "Technum Québec",
-        "Type de partenaire": "",
-        "Conciergerie": "",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": ""
-      }
+      "site_web": "https://www.xnquebec.co/",
+      "theme": "",
+      "expertise": []
     }
   ],
-  "propositions": [
-    {
-      "partenaire_id": "recsjWZG9REX5unKV",
-      "organisation_id": "rec7C6p8Ry3N0sj5C"
+  "propositions": [],
+  "_formulaire": {
+    "version": "1c4631be",
+    "generated_at": "2026-08-24T13:15:27.999475Z",
+    "referentiels": {
+      "secteurs": [
+        "Autre ; Technologies de l'information / Information technology ; Intelligence artificielle",
+        "Conseil/Management",
+        "Culture et créativité / Culture and creativity",
+        "Cybersécurité / Cybersecurity",
+        "Divertissements, multimédia, jeux vidéos",
+        "Divertissements, multimédia, jeux vidéos ; Culture et créativité",
+        "Environnement, développement durable, technologie verte / Environment, sustainable development, green technology",
+        "Evénementiel / Events",
+        "Finances / Finance",
+        "Incubateur,Accelerateur",
+        "Intelligence artificielle",
+        "Intelligence artificielle / Artificial Inteligence",
+        "Manufacture / Manufacturing",
+        "Mobilité et transports / Mobility and transport",
+        "Médias, publicité, marketing / Media, advertising, marketing",
+        "RH / Human resources",
+        "Santé / Healthcare",
+        "Secteur public",
+        "Technologies de l'information / Information technology",
+        "Technologies de l'information / Information technology ; Intelligence artificielle",
+        "Éducation et enseignement supérieur / Education and higher education"
+      ],
+      "types": [
+        "Gouvernement",
+        "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+        "Institution Académique / Academic institution",
+        "OBNL-OSBL / NPO",
+        "Privé",
+        "Public"
+      ],
+      "tailles": [
+        "1001 -5000",
+        "11-50",
+        "5000-10000",
+        "Grande entreprise",
+        "Moyenne entreprise",
+        "Petite entreprise"
+      ]
     },
-    {
-      "partenaire_id": "recsjWZG9REX5unKV",
-      "organisation_id": "recHcnLWeHGgXC5xi"
-    },
-    {
-      "partenaire_id": "recsjWZG9REX5unKV",
-      "organisation_id": "recjuRolApPFbdYAR"
-    },
-    {
-      "partenaire_id": "recjuRolApPFbdYAR",
-      "organisation_id": "recwAsQ3y9hIavsQu"
-    },
-    {
-      "partenaire_id": "recjuRolApPFbdYAR",
-      "organisation_id": "recpFvx21dv0c3iqB"
-    },
-    {
-      "partenaire_id": "recjuRolApPFbdYAR",
-      "organisation_id": "recP5cx1LG5BbtXdu"
+    "partenaires": {
+      "reciIX5Ta28EDeNh1": {
+        "nom": "AWEX - Agence Wallonne à l’Exportation et aux Investissements étrangers,Université de Mons - UMons",
+        "secteur": "Conseil/Management",
+        "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+        "taille": "",
+        "localisation": "Belgique",
+        "description": "",
+        "site_web": "https://www.walloniaexportinvestment.be/"
+      },
+      "recsnCx0xx4GkdVrD": {
+        "nom": "Promot Africa",
+        "secteur": "Conseil/Management",
+        "type": "Privé",
+        "taille": "",
+        "localisation": "Cameroun",
+        "description": "",
+        "site_web": "https://www.festicsn.com/fr"
+      },
+      "recjuRolApPFbdYAR": {
+        "nom": "Desjardins Caisse des Technologies",
+        "secteur": "Finances / Finance",
+        "type": "OBNL-OSBL / NPO",
+        "taille": "Moyenne entreprise",
+        "localisation": "Canada",
+        "description": "",
+        "site_web": "desjardins.com"
+      },
+      "rec423rFD3HWS1UDY": {
+        "nom": "Montpellier Méditérranée Métropole",
+        "secteur": "Secteur public",
+        "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+        "taille": "",
+        "localisation": "France",
+        "description": "",
+        "site_web": "https://www.montpellier.fr/"
+      },
+      "recHcnLWeHGgXC5xi": {
+        "nom": "ISACA",
+        "secteur": "Cybersécurité / Cybersecurity",
+        "type": "Privé",
+        "taille": "Moyenne entreprise",
+        "localisation": "Canada",
+        "description": "",
+        "site_web": "isaca.org"
+      },
+      "recvQz81k0WoIDxZB": {
+        "nom": "Printemps numérique",
+        "secteur": "Evénementiel / Events",
+        "type": "OBNL-OSBL / NPO",
+        "taille": "Petite entreprise",
+        "localisation": "Canada",
+        "description": "Le Printemps numérique (PN) est un organisme à but non lucratif montréalais dont la mission est de stimuler et soutenir l’intelligence numérique, en favorisant l’appropriation des technologies, le développement des compétences numériques et les rencontres entre les différents acteurs de l’écosystème.\n\nIl agit à la croisée de la technologie, de l’innovation, de la culture et de la société, notamment à travers des événements, des programmes de littératie numérique et des initiatives de maillage.\n\nLe Printemps numérique est notamment l’organisateur de MTL connecte – la Semaine numérique de Montréal, son événement international phare consacré aux grands enjeux de la transformation numérique.",
+        "site_web": "https://www.printempsnumerique.ca/?utm_source=chatgpt.com"
+      },
+      "recfxaGlX1FD54jtO": {
+        "nom": "Culture Montérégie",
+        "secteur": "Culture et créativité / Culture and creativity",
+        "type": "OBNL-OSBL / NPO",
+        "taille": "",
+        "localisation": "Canada",
+        "description": "",
+        "site_web": "https://culturemonteregie.qc.ca/"
+      },
+      "recRNIxrsNubaEn2M": {
+        "nom": "LOJIQ - Les Offices jeunesse internationaux du Québec",
+        "secteur": "Secteur public",
+        "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+        "taille": "Moyenne entreprise",
+        "localisation": "Canada",
+        "description": "",
+        "site_web": "lojiq.org"
+      },
+      "receSr9qRN9X3TMsP": {
+        "nom": "Maison de l'innovation Technologique - MiT",
+        "secteur": "Conseil/Management",
+        "type": "Privé",
+        "taille": "",
+        "localisation": "Canada",
+        "description": "",
+        "site_web": "https://mit.quebec/"
+      },
+      "recM8ivXKX8At3AlL": {
+        "nom": "RADN - Projet Collectif",
+        "secteur": "Conseil/Management",
+        "type": "Privé",
+        "taille": "Grande entreprise",
+        "localisation": "Canada",
+        "description": "",
+        "site_web": "https://projetcollectif.ca/nouvelles/coordination-radn"
+      },
+      "recImcHlmxPUnGPMs": {
+        "nom": "RDÉE Canada",
+        "secteur": "Conseil/Management",
+        "type": "OBNL-OSBL / NPO",
+        "taille": "",
+        "localisation": "Canada",
+        "description": "",
+        "site_web": "https://rdee.ca/"
+      },
+      "recMtq0R2up0qp2il": {
+        "nom": "Représentation de l’OIF pour les Amériques (REPAM)",
+        "secteur": "Secteur public",
+        "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+        "taille": "",
+        "localisation": "",
+        "description": "",
+        "site_web": "https://www.francophonie.org/loif-forme-des-jeunes-diplomates-des-ameriques-en-francais-8211"
+      },
+      "recmi5WqB79fMzG9O": {
+        "nom": "Akassaa - Sénégal,FESTIC - Association des Femmes Sénégalaises du TIC",
+        "secteur": "Conseil/Management",
+        "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+        "taille": "",
+        "localisation": "Sénégal",
+        "description": "",
+        "site_web": ""
+      },
+      "recWJkjbunA7OzbDY": {
+        "nom": "FAADEV - Femmes Africaines Actives pour le Développement",
+        "secteur": "Conseil/Management",
+        "type": "OBNL-OSBL / NPO",
+        "taille": "",
+        "localisation": "Sénégal",
+        "description": "",
+        "site_web": "https://faadev.org/"
+      },
+      "recYcnW19oZk6Jyih": {
+        "nom": "RTCA - Réseau Tuniso-Canadien des Affaires",
+        "secteur": "Technologies de l'information / Information technology",
+        "type": "OBNL-OSBL / NPO",
+        "taille": "",
+        "localisation": "Tunisie",
+        "description": "",
+        "site_web": ""
+      },
+      "recsjWZG9REX5unKV": {
+        "nom": "UM6P",
+        "secteur": "Éducation et enseignement supérieur / Education and higher education",
+        "type": "Institution Académique / Academic institution",
+        "taille": "Moyenne entreprise",
+        "localisation": "Canada",
+        "description": "L’UM6P est une université privée à but non lucratif marocaine axée sur la recherche appliquée, l’innovation et le développement durable, avec une forte orientation vers l’Afrique. Fondée par la Fondation OCP, elle propose une approche pluridisciplinaire et expérimentale dans de nombreux domaines scientifiques et techniques .",
+        "site_web": "https://um6p.ma/fr"
+      },
+      "rec8o9RmF6HgLUYSl": {
+        "nom": "Université de Mons - UMons",
+        "secteur": "Éducation et enseignement supérieur / Education and higher education",
+        "type": "Institution Académique / Academic institution",
+        "taille": "",
+        "localisation": "Belgique",
+        "description": "",
+        "site_web": "https://web.umons.ac.be/"
+      },
+      "recrZFbmpGNNTR2dM": {
+        "nom": "UQAC - Université du Québec à Chicoutimi",
+        "secteur": "Secteur public",
+        "type": "Public",
+        "taille": "",
+        "localisation": "Canada",
+        "description": "",
+        "site_web": "https://www.uqac.ca/"
+      }
     }
-  ]
+  }
 }

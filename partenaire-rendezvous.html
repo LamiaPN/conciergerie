@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conciergerie MTLC · Mes rendez-vous</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/style.css?v=20260824-avail-notif1">
+</head>
+<body class="partner-rdv-page" data-partner-page="rendezvous">
+
+<div class="screen-inner">
+  <nav class="partner-space-nav" aria-label="Espace Conciergerie">
+    <span class="partner-space-nav-title">Espace partenaire</span>
+    <a href="partenaire-formulaire.html" data-partner-nav="besoins">
+      <i class="fas fa-clipboard-list"></i>
+      <span>Mes besoins</span>
+    </a>
+    <a href="partenaire-selection.html" data-partner-nav="choix">
+      <i class="fas fa-list-check"></i>
+      <span>Mes choix</span>
+    </a>
+    <a href="partenaire-rendezvous.html" data-partner-nav="rendezvous">
+      <i class="fas fa-calendar-check"></i>
+      <span>Mes rendez-vous</span>
+    </a>
+  </nav>
+
+  <div class="brand-logo"><span class="screen-title">MTL connecte · Conciergerie</span></div>
+
+  <div class="screen-body">
+    <span class="tag-label" id="partnerTag">Espace partenaire · 13–15 octobre 2026</span>
+
+    <div class="partner-rdv-head">
+      <div>
+        <h1 class="screen-title">Mes rendez-vous</h1>
+        <p class="hero-description">Retrouvez ici les rendez-vous planifiés pour votre organisation.</p>
+      </div>
+      <div class="partner-rdv-count" id="rdvCount">—</div>
+    </div>
+
+    <div class="partner-rdv-loading" id="rdvLoading">
+      <span class="spinner partner-spinner-dark"></span>
+      Chargement de vos rendez-vous…
+    </div>
+
+    <div class="partner-rdv-error" id="rdvError" hidden></div>
+    <div class="partner-rdv-content" id="rdvContent" hidden></div>
+  </div>
+</div>
+
+<script src="js/config.js?v=20260824-avail-notif1"></script>
+<script src="js/api.js?v=20260824-avail-notif1"></script>
+<script src="js/partenaire-espace.js?v=20260824-avail-notif1"></script>
+<script src="js/partenaire-rendezvous.js?v=20260824-avail-notif1"></script>
+</body>
+</html>

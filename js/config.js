@@ -11,5 +11,5 @@ const CONFIG = {
   DATA_URL: "js/data.json",
 
   // Délai d'attente réseau (ms) avant de considérer une requête échouée.
-  TIMEOUT_MS: 8000
+  TIMEOUT_MS: 30000
 };

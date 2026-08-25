@@ -1,0 +1,10 @@
+IMPORTANT — js/data.json n'est volontairement PAS inclus dans ce lot.
+
+Pourquoi :
+- le vivier actuellement présent dans la BETA/GitHub est la donnée autoritaire ;
+- plusieurs correctifs de code ont été consolidés, mais aucun ne doit remplacer le vivier ;
+- les propositions/sélections de test sont dans Google Sheets et doivent rester intactes.
+
+Lors de la mise à jour GitHub :
+NE PAS supprimer ni remplacer js/data.json.
+Mettre uniquement à jour/ajouter les fichiers présents dans ce dossier final.

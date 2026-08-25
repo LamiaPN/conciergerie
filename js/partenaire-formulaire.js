@@ -1,16 +1,16 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : partenaire-formulaire.js
-   RÔLE    : Formulaire de besoins du partenaire (une page, 5 sections).
-             Pré-remplit le nom d'organisation via ?p=<partenaire>,
+   RÔLE    : Formulaire de besoins du partenaire (une page, 6 sections).
+             Pré-remplit les champs depuis le vivier via ?p=<partenaire>,
              collecte les réponses, affiche un récap, gère l'envoi.
 
    ┌─ SOMMAIRE ───────────────────────────────────────────────────────────┐
    │  SECTION 1  — Initialisation & paramètres URL (?p, ?token)            │
    │  SECTION 2  — Raccourcis DOM ($ / $$)                                 │
-   │  SECTION 3  — Pré-remplissage depuis le vivier (data.json)           │
+   │  SECTION 3  — Snapshot vivier + formulaire déjà enregistré            │
    │  SECTION 4  — Chips & selects : sélection & écoute                    │
    │  SECTION 5  — Lecture des valeurs (multiVals / val)                   │
-   │  SECTION 6  — Collecte complète des réponses                          │
+   │  SECTION 6  — Collecte complète + disponibilités Conciergerie         │
    │  SECTION 7  — Récapitulatif en direct                                 │
    │  SECTION 8  — Progression au scroll                                   │
    │  SECTION 9  — Champs texte → maj récap                                │
@@ -27,100 +27,286 @@
   const params = new URLSearchParams(location.search);
   const pid = (params.get("p") || "").trim();
   const token = params.get("token") || "";
+  const MULTI_SEPARATOR = " | ";
+  let submitBusy = false;
 
   /* ═══ SECTION 2 — RACCOURCIS DOM ════════════════════════════════════════
      $ → un élément ; $$ → liste d'éléments (en tableau). */
   const $ = s => document.querySelector(s);
   const $$ = s => Array.from(document.querySelectorAll(s));
 
-  /* ═══ SECTION 3 — PRÉ-REMPLISSAGE DEPUIS LE VIVIER ══════════════════════
-     Charge data.json, retrouve le partenaire et sa fiche organisation.
-     Pré-remplit uniquement les données organisationnelles publiques.
-     Les coordonnées du contact restent volontairement vides. */
+  /* ═══ SECTION 3 — SNAPSHOT VIVIER + PRÉ-REMPLISSAGE ═══════════════════
+     Le formulaire ne charge plus le vivier fusionné ni Vivier_modifs.
+     data.json contient un snapshot léger `_formulaire`, préparé au moment
+     de l'import CSV : référentiels + fiche publique des seuls partenaires.
+
+     RÈGLE :
+     - le snapshot est recalculé uniquement lors d'un nouvel import ;
+     - si l'import est plus récent que le dernier formulaire enregistré,
+       les informations organisationnelles sont rafraîchies depuis le vivier ;
+     - sinon, les réponses enregistrées restent prioritaires, mais une valeur
+       vide ne remplace jamais une information disponible dans le vivier. */
   async function prefill() {
     if (!pid) return;
 
     try {
-      const v = await API.loadVivier();
-      const partenaire = API.getPartenaire(v, pid);
-      const fiche = v.organisations.find(o => o.id === pid);
+      const [snapshot, formulaireEnregistre] = await Promise.all([
+        loadFormSnapshot(),
+        token ? API.getFormulaire(pid, token).catch(() => null) : Promise.resolve(null)
+      ]);
 
-      if (!partenaire) {
-        console.error("Partenaire introuvable :", pid);
+      buildVivierControls(snapshot.referentiels || {});
+
+      const profil = snapshot.partenaires?.[pid] || null;
+      if (!profil) {
+        console.error("Partenaire introuvable dans le snapshot formulaire :", pid);
         return;
       }
 
-      const p = { ...(fiche || {}), ...partenaire };
-
       $("#partnerTag").textContent = "MTL connecte 2026 — Service conciergerie";
+      applyVivierProfile(profil);
 
-      if (p.nom) {
-        $("#f_org").value = p.nom;
-        $("#orgPrefill").hidden = false;
-      }
-
-      if (p.site_web) $("#f_site").value = p.site_web;
-      if (p.description) $("#f_desc").value = p.description;
-      if (p.localisation) $("#f_lieu").value = p.localisation;
-
-      if (p.type) {
-        const type = $("#f_type");
-        const option = Array.from(type.options).find(o =>
-          o.value.toLowerCase() === p.type.toLowerCase()
+      if (formulaireEnregistre) {
+        const vivierPlusRecent = isSnapshotNewer(
+          snapshot.generated_at,
+          formulaireEnregistre.date_modification
         );
-        if (option) type.value = option.value;
-      }
 
-      if (p.taille) {
-        const tailles = {
-          "Micro entreprise": "Micro (1-9)",
-          "Petite entreprise": "Petite (10-49)",
-          "Moyenne entreprise": "Moyenne (50-249)",
-          "Grande entreprise": "Grande (250+)",
-          "Très Grande entreprise": "Grande (250+)"
-        };
-        if (tailles[p.taille]) $("#f_taille").value = tailles[p.taille];
-      }
+        applySavedForm(formulaireEnregistre, { refreshOrganisation: vivierPlusRecent });
 
-      if (p.secteur) {
-        const secteur = p.secteur.toLowerCase();
-
-        $$("#f_secteurs .choice-chip").forEach(chip => {
-          const valeur = chip.dataset.val.toLowerCase();
-          let match = secteur.includes(valeur);
-
-          if (valeur === "éducation" && secteur.includes("enseignement")) {
-            match = true;
-          }
-
-          if (match) {
-            chip.classList.add("selected");
-            const icon = chip.querySelector("i");
-            if (icon) icon.className = "fas fa-check";
-          }
-        });
+        $("#formStatus").textContent = vivierPlusRecent
+          ? "Les informations de votre organisation ont été actualisées depuis le dernier vivier. Vos autres réponses sont conservées."
+          : "Vos dernières réponses sont chargées. Vous pouvez les modifier puis enregistrer.";
       }
 
       updateRecap();
-
     } catch (e) {
       console.error("Erreur pré-remplissage :", e);
+      setSubmitStatus("Impossible de charger les informations du formulaire.", true);
     }
+  }
+
+  async function loadFormSnapshot() {
+    const res = await fetch(CONFIG.DATA_URL, { cache: "no-cache" });
+    if (!res.ok) throw new Error("Impossible de charger les données du formulaire (" + res.status + ").");
+
+    const data = await res.json();
+    if (data._formulaire?.referentiels && data._formulaire?.partenaires) {
+      return data._formulaire;
+    }
+
+    // Compatibilité avec un ancien data.json : on prépare le snapshot une fois
+    // côté navigateur, sans appeler le backend Vivier_modifs.
+    return buildFallbackSnapshot(data);
+  }
+
+  function buildFallbackSnapshot(data) {
+    const organisations = Array.isArray(data.organisations) ? data.organisations : [];
+    const partenaires = Array.isArray(data.partenaires) ? data.partenaires : [];
+    const orgById = new Map(
+      organisations
+        .filter(org => String(org?.id || "").trim())
+        .map(org => [String(org.id).trim(), org])
+    );
+
+    const unique = key => [...new Set(
+      organisations
+        .map(org => String(org?.[key] || "").trim())
+        .filter(Boolean)
+    )].sort((a, b) => a.localeCompare(b, "fr", { sensitivity: "base" }));
+
+    const profiles = {};
+    partenaires.forEach(partenaire => {
+      const id = String(partenaire?.id || "").trim();
+      if (!id) return;
+      const org = orgById.get(id) || {};
+
+      profiles[id] = {
+        nom: String(org.nom || partenaire.nom || "").trim(),
+        secteur: String(org.secteur || "").trim(),
+        type: String(org.type || "").trim(),
+        taille: String(org.taille || "").trim(),
+        localisation: String(org.localisation || "").trim(),
+        description: String(org.description || "").trim(),
+        site_web: String(org.site_web || "").trim()
+      };
+    });
+
+    return {
+      version: "legacy",
+      generated_at: "",
+      referentiels: {
+        secteurs: unique("secteur"),
+        types: unique("type"),
+        tailles: unique("taille")
+      },
+      partenaires: profiles
+    };
+  }
+
+  function applyVivierProfile(profil) {
+    if (profil.nom) {
+      $("#f_org").value = profil.nom;
+      $("#orgPrefill").hidden = false;
+    }
+
+    setMultiValues("f_secteurs", profil.secteur);
+    setFieldValue("f_type", profil.type);
+    setFieldValue("f_taille", profil.taille);
+    setFieldValue("f_site", profil.site_web);
+    setFieldValue("f_desc", profil.description);
+    setFieldValue("f_lieu", profil.localisation);
+  }
+
+  function isSnapshotNewer(generatedAt, formModifiedAt) {
+    const vivierDate = parseDateValue(generatedAt);
+    const formDate = parseDateValue(formModifiedAt);
+    return vivierDate !== null && formDate !== null && vivierDate > formDate;
+  }
+
+  function parseDateValue(value) {
+    const text = String(value || "").trim();
+    if (!text) return null;
+
+    const normalized = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(text)
+      ? text.replace(" ", "T") + ":00"
+      : text;
+
+    const time = new Date(normalized).getTime();
+    return Number.isFinite(time) ? time : null;
+  }
+
+  function setChipState(chip, selected) {
+    if (!chip) return;
+    chip.classList.toggle("selected", selected);
+    const icon = chip.querySelector("i");
+    if (icon) icon.className = selected ? "fas fa-check" : "fas fa-plus";
+  }
+
+  function buildSelectOptions(id, values) {
+    const select = $("#" + id);
+    if (!select) return;
+    select.innerHTML = `<option value="">Choisir…</option>` + (values || [])
+      .map(value => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`)
+      .join("");
+  }
+
+  function buildChipOptions(id, values, compact = false) {
+    const container = $("#" + id);
+    if (!container) return;
+    container.innerHTML = (values || []).map(value => `
+      <button type="button" class="choice-chip${compact ? " compact-choice-chip" : ""}" data-val="${escapeHtml(value)}">
+        <i class="fas fa-plus"></i><span>${escapeHtml(value)}</span>
+      </button>`).join("");
+  }
+
+  function buildVivierControls(referentiels) {
+    const secteurs = Array.isArray(referentiels.secteurs) ? referentiels.secteurs : [];
+    const types = Array.isArray(referentiels.types) ? referentiels.types : [];
+    const tailles = Array.isArray(referentiels.tailles) ? referentiels.tailles : [];
+
+    buildChipOptions("f_secteurs", secteurs, true);
+    buildSelectOptions("f_type", types);
+    buildSelectOptions("f_taille", tailles);
+    buildChipOptions("f_type_rech", types, true);
+    buildChipOptions("f_secteurs_cibles", secteurs, true);
+    buildChipOptions("f_taille_rech", tailles, true);
+  }
+
+  function splitStoredValues(value, id) {
+    if (Array.isArray(value)) {
+      return value.map(item => String(item ?? "").trim()).filter(Boolean);
+    }
+
+    const text = String(value ?? "").trim();
+    if (!text) return [];
+
+    if (text.startsWith("[") && text.endsWith("]")) {
+      try {
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed)) return parsed.map(item => String(item ?? "").trim()).filter(Boolean);
+      } catch (_) {}
+    }
+
+    if (text.includes(MULTI_SEPARATOR)) {
+      return text.split(MULTI_SEPARATOR).map(item => item.trim()).filter(Boolean);
+    }
+
+    const exact = $$(`#${id} .choice-chip`).some(chip => String(chip.dataset.val || "").trim() === text);
+    if (exact) return [text];
+
+    return text.split(",").map(item => item.trim()).filter(Boolean);
+  }
+
+  function setMultiValues(id, value) {
+    const wanted = new Set(splitStoredValues(value, id));
+    $$(`#${id} .choice-chip`).forEach(chip => {
+      setChipState(chip, wanted.has(String(chip.dataset.val || "").trim()));
+    });
+  }
+
+  function setFieldValue(id, value) {
+    const element = $("#" + id);
+    if (!element) return;
+    element.value = String(value ?? "");
+  }
+
+  function hasStoredValue(value) {
+    if (Array.isArray(value)) return value.length > 0;
+    return String(value ?? "").trim() !== "";
+  }
+
+  function applySavedForm(data, options = {}) {
+    const refreshOrganisation = options.refreshOrganisation === true;
+
+    // Section 1 : les données du vivier restent en place si l'ancien formulaire
+    // est vide ou si un nouvel import est plus récent que cet enregistrement.
+    if (!refreshOrganisation) {
+      if (hasStoredValue(data.organisation)) setFieldValue("f_org", data.organisation);
+      if (hasStoredValue(data.secteurs)) setMultiValues("f_secteurs", data.secteurs);
+      if (hasStoredValue(data.type)) setFieldValue("f_type", data.type);
+      if (hasStoredValue(data.taille)) setFieldValue("f_taille", data.taille);
+      if (hasStoredValue(data.site)) setFieldValue("f_site", data.site);
+      if (hasStoredValue(data.description)) setFieldValue("f_desc", data.description);
+      if (hasStoredValue(data.lieu)) setFieldValue("f_lieu", data.lieu);
+    }
+
+    // Sections 2 à 6 : ce sont les réponses propres au partenaire.
+    setFieldValue("f_nom", data.contact_nom);
+    setFieldValue("f_poste", data.contact_poste);
+    setFieldValue("f_email", data.contact_email);
+    setFieldValue("f_tel", data.contact_tel);
+    setMultiValues("f_langues", data.langues);
+
+    setMultiValues("f_type_rech", data.type_recherche);
+    setMultiValues("f_secteurs_cibles", data.secteurs_cibles);
+    setMultiValues("f_taille_rech", data.taille_recherchee);
+    setFieldValue("f_roles", data.roles);
+
+    setMultiValues("f_objectifs", data.objectifs);
+    setFieldValue("f_objectifs_libre", data.objectifs_libre);
+    setMultiValues("f_disponibilites", data.disponibilites_conciergerie);
+    setFieldValue("f_contacts_ident", data.contacts_identifies);
   }
 
   /* ═══ SECTION 4 — CHIPS & SELECTS : SÉLECTION & ÉCOUTE ══════════════════
      Clic sur un chip = bascule sélectionné ; selects écoutés ;
      chaque changement rafraîchit le récap. */
   function bindChoices() {
-    $$('[data-multi] .choice-chip').forEach(chip => {
-      chip.addEventListener("click", () => {
-        chip.classList.toggle("selected");
-        const i = chip.querySelector("i");
-        if (i) i.className = chip.classList.contains("selected") ? "fas fa-check" : "fas fa-plus";
+    // Délégation : fonctionne aussi pour les chips générés après le chargement de data.json.
+    $$('[data-multi]').forEach(container => {
+      container.addEventListener("click", event => {
+        const chip = event.target.closest(".choice-chip");
+        if (!chip || !container.contains(chip)) return;
+        setChipState(chip, !chip.classList.contains("selected"));
         updateRecap();
       });
     });
-    ["f_type","f_taille"].forEach(id => { const el=$("#"+id); if(el) el.addEventListener("change", updateRecap); });
+
+    ["f_type", "f_taille"].forEach(id => {
+      const element = $("#" + id);
+      if (element) element.addEventListener("change", updateRecap);
+    });
   }
 
   /* ═══ SECTION 5 — LECTURE DES VALEURS ═══════════════════════════════════
@@ -131,11 +317,12 @@
   const val = id => { const el = $("#" + id); return el ? el.value.trim() : ""; };
 
   /* ═══ SECTION 6 — COLLECTE COMPLÈTE DES RÉPONSES ════════════════════════
-     Rassemble tous les champs des 5 sections en un seul objet.
-     Les repères // 1..5 renvoient aux sections du formulaire HTML. */
+     Rassemble tous les champs des 6 sections en un seul objet.
+     Les repères // 1..6 renvoient aux sections du formulaire HTML. */
   function collect() {
     return {
       partenaire_id: pid,
+
       // 1 — Votre organisation
       organisation: val("f_org"),
       secteurs: multiVals("f_secteurs"),
@@ -144,21 +331,28 @@
       site: val("f_site"),
       description: val("f_desc"),
       lieu: val("f_lieu"),
-      // 2 — Votre profil et vos coordonnées
+
+      // 2 — Personne responsable des rendez-vous
       contact_nom: val("f_nom"),
       contact_poste: val("f_poste"),
       contact_email: val("f_email"),
       contact_tel: val("f_tel"),
       langues: multiVals("f_langues"),
+
       // 3 — Qui souhaitez-vous rencontrer
       type_recherche: multiVals("f_type_rech"),
       secteurs_cibles: multiVals("f_secteurs_cibles"),
       taille_recherchee: multiVals("f_taille_rech"),
       roles: val("f_roles"),
+
       // 4 — Objectifs
       objectifs: multiVals("f_objectifs"),
       objectifs_libre: val("f_objectifs_libre"),
-      // 5 — Compléments
+
+      // 5 — Disponibilités réservées à la Conciergerie
+      disponibilites_conciergerie: multiVals("f_disponibilites"),
+
+      // 6 — Compléments
       contacts_identifies: val("f_contacts_ident")
     };
   }
@@ -177,24 +371,23 @@
     const d = collect();
     let html = "";
 
-    // Rappel court — sections 1 & 2
     html += sub("Votre organisation");
     html += row("Organisation", d.organisation);
     html += row("Contact", d.contact_nom);
 
-    // Ce qui sert à choisir les contacts — section 3
     html += sub("Qui vous souhaitez rencontrer");
     html += row("Type d'organisation recherché", d.type_recherche);
     html += row("Secteurs ciblés", d.secteurs_cibles);
     html += row("Taille recherchée", d.taille_recherchee);
     html += row("Rôles / fonctions visés", d.roles);
 
-    // Objectifs — section 4
     html += sub("Vos objectifs");
     html += row("Objectifs", d.objectifs);
     html += row("Précisions", d.objectifs_libre);
 
-    // Compléments — section 5
+    html += sub("Disponibilités Conciergerie");
+    html += row("Plages réservées", d.disponibilites_conciergerie);
+
     html += sub("Compléments");
     html += row("Organisations déjà identifiées", d.contacts_identifies);
 
@@ -207,17 +400,25 @@
   function bindProgress() {
     const sections = $$(".form-section[data-section]");
     const steps = $$("#progressSteps .step");
-    const labels = ["Votre organisation","Votre profil","Qui rencontrer","Objectifs","Compléments"];
+    const labels = [
+      "Votre organisation",
+      "Participant aux rendez-vous",
+      "Qui rencontrer",
+      "Objectifs",
+      "Disponibilités",
+      "Compléments"
+    ];
+
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => {
-        if (e.isIntersecting) {
-          const idx = +e.target.dataset.section;
-          steps.forEach((s, i) => s.classList.toggle("done", i <= idx));
-          $("#progressLabel").textContent = `Section ${idx + 1} sur 5 — ${labels[idx]}`;
-        }
+        if (!e.isIntersecting) return;
+        const idx = +e.target.dataset.section;
+        steps.forEach((step, i) => step.classList.toggle("done", i <= idx));
+        $("#progressLabel").textContent = `Section ${idx + 1} sur ${labels.length} — ${labels[idx]}`;
       });
     }, { rootMargin: "-45% 0px -45% 0px" });
-    sections.forEach(s => io.observe(s));
+
+    sections.forEach(section => io.observe(section));
   }
 
   /* ═══ SECTION 9 — CHAMPS TEXTE → MAJ RÉCAP ══════════════════════════════
@@ -231,7 +432,8 @@
      Convertit les multi-valeurs en chaînes puis enregistre réellement
      le formulaire dans le Google Sheet via API.saveFormulaire(). */
   function toReponses(data) {
-    const join = v => Array.isArray(v) ? v.join(", ") : (v || "");
+    const join = value => Array.isArray(value) ? value.join(MULTI_SEPARATOR) : (value || "");
+
     return {
       organisation: data.organisation,
       secteurs: join(data.secteurs),
@@ -251,28 +453,116 @@
       roles: data.roles,
       objectifs: join(data.objectifs),
       objectifs_libre: data.objectifs_libre,
+      disponibilites_conciergerie: join(data.disponibilites_conciergerie),
       contacts_identifies: data.contacts_identifies
     };
   }
 
-  function bindSubmit() {
-    $("#submitForm").addEventListener("click", async () => {
-      const data = collect();
-      if (!data.organisation) { toast("Merci d'indiquer le nom de votre organisation.", true); return; }
-      if (!pid || !token) { toast("Lien invalide : identifiant ou jeton manquant.", true); return; }
-      const btn = $("#submitForm");
-      btn.disabled = true; const orig = btn.innerHTML;
-      btn.innerHTML = `<span class="spinner"></span> Enregistrement…`;
-      try {
-        await API.saveFormulaire(pid, token, toReponses(data));
-        $("#formStatus").textContent = "Merci — vos informations ont bien été enregistrées.";
-        toast("Vos préférences ont bien été enregistrées. Notre équipe préparera votre sélection.");
-      } catch (e) {
-        toast(e.message || "Échec de l'enregistrement. Réessayez.", true);
-      } finally {
-        btn.disabled = false; btn.innerHTML = orig;
+  function setSubmitStatus(message, isError = false) {
+    const status = $("#formStatus");
+    if (!status) return;
+    status.textContent = message;
+    status.classList.toggle("is-error", isError);
+    status.classList.toggle("is-saving", !isError && message.includes("Enregistrement"));
+  }
+
+  async function handleSubmit(event) {
+    if (event) event.preventDefault();
+    if (submitBusy) return;
+
+    const data = collect();
+
+    if (!data.organisation) {
+      setSubmitStatus("Merci d'indiquer le nom de votre organisation.", true);
+      toast("Merci d'indiquer le nom de votre organisation.", true);
+      return;
+    }
+
+    if (!data.disponibilites_conciergerie.length) {
+      setSubmitStatus("Merci de réserver au moins une plage horaire.", true);
+      toast("Merci de réserver au moins une plage horaire pour vos rendez-vous Conciergerie.", true);
+      return;
+    }
+
+    if (!pid || !token) {
+      setSubmitStatus("Lien invalide : identifiant ou jeton manquant.", true);
+      toast("Lien invalide : identifiant ou jeton manquant.", true);
+      return;
+    }
+
+    const btn = $("#submitForm");
+    if (!btn) return;
+
+    submitBusy = true;
+    btn.disabled = true;
+    const orig = btn.innerHTML;
+    btn.innerHTML = `<span class="spinner"></span> Enregistrement…`;
+    setSubmitStatus("Enregistrement en cours…");
+
+    try {
+      const result = await API.saveFormulaire(pid, token, toReponses(data));
+      if (!result || result.ok !== true) {
+        throw new Error("Le serveur n'a pas confirmé l'enregistrement.");
       }
+
+      setSubmitStatus(
+        result.changed === false
+          ? "Aucune modification : vos informations sont déjà à jour."
+          : "Vos informations ont bien été enregistrées."
+      );
+      showSuccess();
+
+      toast(
+        result.changed === false
+          ? "Aucune modification détectée : vos informations sont déjà à jour."
+          : "Vos informations ont bien été enregistrées."
+      );
+    } catch (e) {
+      const message = e?.message || "Échec de l'enregistrement. Réessayez.";
+      console.error("Erreur enregistrement formulaire :", e);
+      setSubmitStatus(message, true);
+      toast(message, true);
+    } finally {
+      submitBusy = false;
+      btn.disabled = false;
+      btn.innerHTML = orig;
+    }
+  }
+
+  function bindSubmit() {
+    const btn = $("#submitForm");
+    if (!btn) {
+      console.error("Bouton #submitForm introuvable.");
+      return;
+    }
+    btn.type = "button";
+    btn.addEventListener("click", handleSubmit);
+  }
+
+
+  function showSuccess() {
+    const success = $("#formSuccess");
+    const hero = document.querySelector(".form-hero");
+    const submitBar = document.querySelector(".form-submit-bar");
+    const progress = document.querySelector(".progress-sticky");
+
+    $$(".form-section").forEach(section => {
+      if (section.id !== "formSuccess") section.hidden = true;
     });
+
+    if (hero) hero.hidden = true;
+    if (submitBar) submitBar.hidden = true;
+    if (progress) progress.hidden = true;
+
+    if (success) {
+      success.hidden = false;
+      success.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+
+    document.body.classList.add("form-completed");
   }
 
   /* ═══ SECTION 11 — UTILITAIRES ══════════════════════════════════════════
@@ -288,6 +578,10 @@
   /* ═══ SECTION 12 — DÉMARRAGE ════════════════════════════════════════════
      Branche tout une fois le DOM chargé. */
   document.addEventListener("DOMContentLoaded", () => {
-    prefill(); bindChoices(); bindInputs(); bindProgress(); bindSubmit();
+    bindChoices();
+    bindInputs();
+    bindProgress();
+    bindSubmit();
+    prefill();
   });
 })();

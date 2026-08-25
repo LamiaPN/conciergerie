@@ -962,3 +962,834 @@ body {
 .recap-row .k { color:var(--gris-text); min-width:180px; font-weight:600; }
 .recap-sub { font-family:var(--font-title); font-weight:700; font-size:.82rem; color:var(--vert-dark); text-transform:uppercase; letter-spacing:.04em; margin:14px 0 6px; }
 .recap-sub:first-child { margin-top:0; }
+/* ═══ Écran de remerciement (après envoi du formulaire) ═══ */
+.merci-ecran {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  padding: 24px; background: var(--vert-light, #f0f9ec);
+}
+.merci-carte {
+  background: #fff; border-radius: 18px; padding: 48px 40px; text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,.08); max-width: 460px;
+}
+.merci-icone { font-size: 3.2rem; color: var(--vert, #6FBF4A); margin-bottom: 16px; }
+.merci-carte h1 { font-family: var(--font-title, sans-serif); font-size: 1.6rem; color: var(--noir, #0B0D0C); margin-bottom: 10px; }
+.merci-carte p { color: var(--gris-text, #555); font-size: 1.05rem; }
+
+/* ════════════════════════════════════════════════════════════════════════
+   SECTION 11 — PAGE SÉLECTION PARTENAIRE (partenaire-selection.html)
+   Réutilise les composants communs existants : choice-btn, choice-chip,
+   tag-label, btn, privacy-note. L'accordéon reprend le modèle visuel
+   "Besoins exprimés par le partenaire" de l'admin, sans charger admin.css.
+   ════════════════════════════════════════════════════════════════════════ */
+
+.partner-selection-page .hero-description {
+  max-width: 38rem;
+  margin-top: 6px;
+  margin-bottom: 10px;
+  font-size: .76rem;
+  line-height: 1.34;
+}
+
+.partner-selection-page #quotaWarning[hidden] { display: none !important; }
+
+.partner-selection-summary {
+  margin: 14px 0 10px;
+  color: var(--gris-text);
+  font-size: .78rem;
+  font-style: italic;
+}
+.partner-selection-summary b { color: var(--noir); }
+
+/* ── Accordéon filtres : même logique visuelle que l'accordéon admin ── */
+.partner-filter-accordion {
+  overflow: hidden;
+  margin: 12px 0;
+  border: 1.5px solid var(--gris-border);
+  border-radius: var(--radius-md);
+  background: var(--blanc);
+  box-shadow: var(--shadow-sm);
+}
+
+.partner-filter-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 12px 16px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.partner-filter-summary::-webkit-details-marker { display: none; }
+
+.partner-filter-summary > div:first-child { min-width: 0; }
+.partner-filter-summary strong {
+  display: block;
+  color: var(--noir);
+  font-family: var(--font-title);
+  font-size: .82rem;
+}
+.partner-filter-summary strong i {
+  margin-right: 7px;
+  color: var(--vert-dark);
+}
+.partner-filter-summary > div:first-child > span {
+  display: block;
+  margin-top: 2px;
+  color: var(--gris-text);
+  font-size: .70rem;
+}
+
+.partner-filter-summary-right {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 10px;
+}
+.partner-filter-count {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: var(--gris-light);
+  color: var(--gris-text);
+  font-size: .68rem;
+  font-weight: 700;
+}
+.partner-filter-count.has-filters {
+  background: var(--vert-light);
+  color: var(--vert-dark);
+}
+.partner-filter-chevron {
+  color: var(--gris-text);
+  font-size: .76rem;
+  transition: transform .18s ease;
+}
+.partner-filter-accordion[open] .partner-filter-chevron { transform: rotate(180deg); }
+
+.partner-filter-body {
+  padding: 10px 16px 14px;
+  border-top: 1px solid var(--gris-border);
+}
+
+/* Filtres volontairement très compacts */
+.partner-filter-body .form-grid { gap: 7px; }
+.partner-filter-body .form-group { gap: 3px; margin: 0; }
+.partner-filter-body .form-group label {
+  margin: 0 0 2px;
+  font-size: .60rem;
+  line-height: 1.1;
+}
+.partner-filter-body .choice-grid { gap: 3px 4px; }
+.partner-filter-body .choice-chip {
+  min-height: 0;
+  padding: 3px 7px;
+  gap: 4px;
+  border-width: 1.5px;
+  border-radius: 7px;
+  font-size: .60rem;
+  line-height: 1.12;
+}
+.partner-filter-body .choice-chip i { font-size: .50rem; }
+.partner-filter-actions { margin-top: 7px; padding-top: 0; }
+.partner-filter-actions .btn-small {
+  min-height: 0;
+  padding: 4px 8px;
+  font-size: .58rem;
+}
+
+/* ── Deux listes : choix actuels puis autres propositions ── */
+.partner-list-section { margin: 18px 0 24px; }
+
+.partner-list-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.partner-list-heading h2 {
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: 1.02rem;
+  line-height: 1.2;
+}
+.partner-list-heading > span {
+  display: inline-flex;
+  min-width: 28px;
+  justify-content: center;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--gris-light);
+  color: #687069;
+  font-size: .68rem;
+  font-weight: 700;
+}
+.partner-list-section.selected .partner-list-heading > span {
+  background: var(--vert-light);
+  color: var(--vert-dark);
+}
+.partner-list-empty {
+  margin: 4px 0 14px;
+  padding: 10px 12px;
+  border: 1px dashed var(--gris-border);
+  border-radius: var(--radius-sm);
+  color: var(--gris-text);
+  font-size: .72rem;
+}
+
+/* ── Groupes par secteur ── */
+.partner-sector-group + .partner-sector-group { margin-top: 14px; }
+
+.partner-sector-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 6px;
+  color: #505851;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .045em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.partner-sector-title span {
+  display: inline-flex;
+  min-width: 20px;
+  justify-content: center;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: var(--gris-light);
+  color: var(--gris-text);
+  font-size: .58rem;
+  letter-spacing: 0;
+}
+.partner-sector-list { gap: 7px; }
+
+/* ── Fiche organisation compacte ── */
+.partner-org-card {
+  min-height: 0;
+  padding: 12px 14px;
+  gap: 0;
+  border-width: 1.5px;
+  border-radius: 12px;
+  transform: none;
+}
+.partner-org-card:hover {
+  transform: none;
+  border-color: #b9c2ba;
+  box-shadow: 0 3px 10px rgba(0,0,0,.035);
+}
+.partner-org-card.selected {
+  border-color: var(--vert);
+  background: var(--vert-light);
+  box-shadow: inset 3px 0 0 var(--vert);
+}
+
+.partner-org-content { display: block; width: 100%; }
+
+.partner-org-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.partner-org-title-row > strong {
+  color: var(--noir);
+  font-family: var(--font-title);
+  font-size: .88rem;
+  line-height: 1.22;
+}
+
+.partner-selected-check {
+  display: inline-grid;
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border-radius: 7px;
+  background: var(--vert);
+  color: var(--blanc);
+  font-size: .66rem;
+}
+
+.partner-org-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px 6px;
+  margin-top: 4px;
+  color: #555d56;
+  font-size: .68rem;
+  line-height: 1.25;
+}
+.partner-meta-dot { color: #a1a8a2; }
+
+.partner-org-expertise {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 6px;
+}
+.partner-org-label {
+  color: #59605a;
+  font-size: .66rem;
+  font-weight: 700;
+}
+.partner-org-tags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.partner-org-tags .tag-label {
+  margin-bottom: 0;
+  padding: 3px 7px;
+  font-size: .61rem;
+  line-height: 1.05;
+}
+
+.partner-org-description {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 6px 0 0;
+  color: #525a53;
+  font-size: .68rem;
+  line-height: 1.35;
+  text-align: left;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* L'ancien bloc initiales n'est plus généré par le JS. */
+.partner-org-card .choice-icon { display: none !important; }
+
+@media (max-width: 640px) {
+  .partner-filter-summary > div:first-child > span,
+  .partner-filter-count { display: none; }
+
+  .partner-filter-body .choice-chip {
+    padding: 4px 7px;
+    font-size: .64rem;
+  }
+
+  .partner-org-card { padding: 11px 12px; }
+}
+
+/* ═══ FIN SECTION 11 — PAGE SÉLECTION PARTENAIRE ═══ */
+
+/* ════════════════════════════════════════════════════════════════════════
+   SECTION 12 — ESPACE CONCIERGERIE PARTENAIRE
+   Navigation verticale à droite + page Mes rendez-vous + confirmation
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* ── Navigation partenaire à droite ─────────────────────────────────── */
+.partner-space-nav {
+  position: fixed;
+  z-index: 90;
+  top: 155px;
+  right: 24px;
+  display: flex;
+  width: 205px;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  border: 1.5px solid var(--gris-border);
+  border-radius: 16px;
+  background: var(--blanc);
+  box-shadow: 0 10px 30px rgba(11,13,12,.10);
+}
+
+.partner-space-nav-title {
+  display: block;
+  padding: 3px 8px 7px;
+  color: var(--gris-text);
+  font-size: .63rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.partner-space-nav a {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 9px 11px;
+  border-radius: 11px;
+  color: var(--gris-text);
+  font-size: .76rem;
+  font-weight: 700;
+  line-height: 1.15;
+  text-decoration: none;
+  transition:
+    background var(--transition),
+    color var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+}
+
+.partner-space-nav a:hover {
+  background: var(--gris-light);
+  color: var(--noir);
+  transform: translateX(-2px);
+}
+
+.partner-space-nav a.active {
+  background: var(--vert-light);
+  color: var(--vert-dark);
+  box-shadow: inset 0 0 0 1px rgba(111,191,74,.28);
+}
+
+.partner-space-nav a i {
+  width: 18px;
+  color: var(--vert-dark);
+  font-size: .78rem;
+  text-align: center;
+}
+
+/* ── Confirmation visible après le formulaire ───────────────────────── */
+.form-success-panel {
+  max-width: 680px;
+  margin: 70px auto 0;
+  padding: 44px 36px;
+  border: 1.5px solid rgba(111,191,74,.36);
+  border-radius: 22px;
+  background: var(--blanc);
+  box-shadow: 0 14px 36px rgba(11,13,12,.08);
+  text-align: center;
+}
+
+.form-success-panel[hidden] {
+  display: none;
+}
+
+.form-success-icon {
+  display: flex;
+  width: 58px;
+  height: 58px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: var(--vert-light);
+  color: var(--vert-dark);
+  font-size: 1.45rem;
+}
+
+.form-success-kicker {
+  display: inline-block;
+  margin-bottom: 6px;
+  color: var(--vert-dark);
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.form-success-panel h1 {
+  margin: 0 0 10px;
+  color: var(--noir);
+  font-family: var(--font-title);
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.form-success-panel p {
+  max-width: 540px;
+  margin: 0 auto 22px;
+  color: var(--gris-text);
+  font-size: .88rem;
+  line-height: 1.55;
+}
+
+.form-success-next {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.form-completed .form-page {
+  min-height: 70vh;
+}
+
+/* ── Mes rendez-vous ────────────────────────────────────────────────── */
+.partner-rdv-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.partner-rdv-head .hero-description {
+  margin-top: 5px;
+}
+
+.partner-rdv-count {
+  flex: 0 0 auto;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--vert-light);
+  color: var(--vert-dark);
+  font-size: .72rem;
+  font-weight: 800;
+}
+
+.partner-rdv-loading,
+.partner-rdv-error {
+  padding: 18px;
+  border: 1.5px solid var(--gris-border);
+  border-radius: var(--radius-md);
+  background: var(--blanc);
+  color: var(--gris-text);
+  font-size: .82rem;
+}
+
+.partner-rdv-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.partner-spinner-dark {
+  border-color: rgba(11,13,12,.15);
+  border-top-color: var(--vert);
+}
+
+.partner-rdv-error {
+  border-color: #e8b4b4;
+  background: #fff7f7;
+  color: #9e2929;
+}
+
+.partner-rdv-error[hidden],
+.partner-rdv-content[hidden] {
+  display: none;
+}
+
+.partner-rdv-content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.partner-rdv-day {
+  overflow: hidden;
+  border: 1.5px solid var(--gris-border);
+  border-radius: var(--radius-md);
+  background: var(--blanc);
+  box-shadow: var(--shadow-sm);
+}
+
+.partner-rdv-day-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--gris-border);
+  background: var(--gris-light);
+}
+
+.partner-rdv-day-head > span {
+  color: var(--noir);
+  font-family: var(--font-title);
+  font-size: .86rem;
+  font-weight: 700;
+}
+
+.partner-rdv-day-head > strong {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--vert-light);
+  color: var(--vert-dark);
+  font-size: .62rem;
+}
+
+.partner-rdv-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.partner-rdv-card {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--gris-border);
+}
+
+.partner-rdv-card:last-child {
+  border-bottom: 0;
+}
+
+.partner-rdv-time {
+  color: var(--vert-dark);
+  font-family: var(--font-title);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.partner-rdv-info {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.partner-rdv-info strong {
+  color: var(--noir);
+  font-size: .84rem;
+  line-height: 1.25;
+}
+
+.partner-rdv-info span {
+  color: var(--gris-text);
+  font-size: .68rem;
+}
+
+.partner-rdv-info span i {
+  margin-right: 4px;
+  color: var(--vert-dark);
+}
+
+.partner-rdv-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--vert-light);
+  color: var(--vert-dark);
+  font-size: .62rem;
+  font-weight: 700;
+}
+
+.partner-rdv-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 42px 24px;
+  border: 1.5px dashed var(--gris-border);
+  border-radius: var(--radius-md);
+  background: var(--blanc);
+  text-align: center;
+}
+
+.partner-rdv-empty > i {
+  color: var(--vert);
+  font-size: 1.7rem;
+}
+
+.partner-rdv-empty strong {
+  color: var(--noir);
+  font-family: var(--font-title);
+  font-size: .92rem;
+}
+
+.partner-rdv-empty p {
+  max-width: 470px;
+  color: var(--gris-text);
+  font-size: .76rem;
+  line-height: 1.45;
+}
+
+/* Sur écran plus étroit, la navigation revient en haut pour ne pas
+   recouvrir le contenu. */
+@media (max-width: 1180px) {
+  .partner-space-nav {
+    position: static;
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+    margin: 0 0 20px;
+    padding: 5px;
+  }
+
+  .partner-space-nav-title {
+    display: none;
+  }
+
+  .partner-space-nav a {
+    justify-content: center;
+    min-height: 38px;
+    padding: 7px 9px;
+  }
+
+  .partner-space-nav a:hover {
+    transform: none;
+  }
+
+  .form-success-panel {
+    margin-top: 30px;
+  }
+}
+
+@media (max-width: 640px) {
+  .partner-space-nav {
+    gap: 3px;
+    padding: 4px;
+  }
+
+  .partner-space-nav a {
+    gap: 4px;
+    min-height: 36px;
+    padding: 6px 5px;
+    font-size: .66rem;
+  }
+
+  .partner-space-nav a i {
+    display: none;
+  }
+
+  .form-success-panel {
+    padding: 34px 20px;
+  }
+
+  .form-success-panel h1 {
+    font-size: 1.65rem;
+  }
+
+  .partner-rdv-card {
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .partner-rdv-status {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   DISPONIBILITÉS CONCIERGERIE — formulaire partenaire
+   Les plages sont choisies comme des chips standards, avec une grille
+   plus lisible sur deux colonnes et un rappel de réservation Conciergerie.
+   ════════════════════════════════════════════════════════════════════════ */
+.availability-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.availability-chip {
+  width: 100%;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.availability-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--vert-light);
+  color: var(--vert-dark);
+  font-size: .8rem;
+  line-height: 1.45;
+}
+
+.availability-note i {
+  margin-top: 2px;
+  flex: 0 0 auto;
+}
+
+@media (max-width: 680px) {
+  .availability-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   FORMULAIRE PARTENAIRE — CHOIX ISSUS DU VIVIER (v11)
+   Les secteurs / types / tailles sont générés depuis data.json.
+   Les boutons sont volontairement compacts pour limiter la hauteur des
+   sections 1 et 3 lorsque le vivier contient beaucoup d'appellations.
+   ════════════════════════════════════════════════════════════════════════ */
+.vivier-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 6px;
+}
+
+.vivier-choice-grid .compact-choice-chip {
+  width: 100%;
+  min-height: 34px;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 6px 9px;
+  gap: 6px;
+  border-width: 1.5px;
+  border-radius: 9px;
+  font-size: .72rem;
+  line-height: 1.18;
+  text-align: left;
+}
+
+.vivier-choice-grid .compact-choice-chip i {
+  flex: 0 0 auto;
+  font-size: .66rem;
+}
+
+.vivier-choice-grid .compact-choice-chip span {
+  min-width: 0;
+}
+
+.vivier-sector-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 4px;
+}
+
+/* Même densité visuelle que les filtres de « Mes choix ». */
+.vivier-sector-grid .compact-choice-chip {
+  min-height: 26px;
+  padding: 3px 6px;
+  gap: 4px;
+  border-width: 1px;
+  border-radius: 7px;
+  font-size: .64rem;
+  line-height: 1.08;
+  white-space: normal;
+}
+
+.vivier-sector-grid .compact-choice-chip i {
+  font-size: .52rem;
+}
+
+.form-submit-bar .status.is-saving {
+  color: var(--vert-dark);
+  font-weight: 600;
+}
+
+.form-submit-bar .status.is-error {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+@media (max-width: 760px) {
+  .vivier-choice-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .vivier-sector-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .vivier-choice-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vivier-sector-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

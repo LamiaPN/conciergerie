@@ -1,4 +1,17 @@
 <!DOCTYPE html>
+<!-- ════════════════════════════════════════════════════════════════════════
+     FICHIER : partenaire-selection.html
+     RÔLE    : Portail partenaire — sélection parmi les propositions PN.
+
+     ┌─ SOMMAIRE ─────────────────────────────────────────────────────────┐
+     │  A — Head & CSS commun                                              │
+     │  B — En-tête partenaire                                             │
+     │  C — Filtres                                                        │
+     │  D — Liste des propositions                                         │
+     │  E — Sauvegarde                                                     │
+     │  F — Scripts                                                        │
+     └────────────────────────────────────────────────────────────────────┘
+     ════════════════════════════════════════════════════════════════════════ -->
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -7,120 +20,76 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<!-- Charte PN existante -->
-<link rel="stylesheet" href="css/style.css">
-<style>
-  /* Styles manquants pour le portail — bâtis sur les variables PN */
-  .portal-top { max-width: 980px; margin: 0 auto; padding: 40px 28px 0; }
-  .portal-head { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
-  .list-wrap { max-width: 980px; margin: 0 auto; padding: 0 28px 130px; }
-
-  .org-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-  .org-card {
-    background: var(--blanc); border: 2px solid var(--gris-border); border-radius: var(--radius-md);
-    padding: 20px; display: flex; flex-direction: column; gap: 12px; cursor: pointer;
-    transition: border-color var(--transition), box-shadow var(--transition); position: relative;
-  }
-  .org-card:hover { border-color: var(--vert); box-shadow: var(--shadow-sm); }
-  .org-card.selected { border-color: var(--vert); background: var(--vert-light); box-shadow: 0 2px 12px rgba(111,191,74,.18); }
-  .org-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-  .org-logo {
-    width: 46px; height: 46px; min-width: 46px; border-radius: var(--radius-sm);
-    background: var(--gris-light); display: grid; place-items: center;
-    font-family: var(--font-title); font-weight: 700; color: var(--vert-dark); font-size: 1.1rem;
-  }
-  .org-check {
-    width: 26px; height: 26px; min-width: 26px; border: 2px solid var(--gris-border);
-    border-radius: 7px; display: grid; place-items: center; background: var(--blanc);
-    color: transparent; transition: all var(--transition);
-  }
-  .org-card.selected .org-check { background: var(--vert); border-color: var(--vert); color: var(--blanc); }
-  .org-title { font-family: var(--font-title); font-weight: 700; font-size: 1.05rem; color: var(--noir); }
-  .org-sector { font-size: 0.82rem; color: var(--gris-text); font-weight: 500; }
-  .org-desc { font-size: 0.86rem; color: var(--noir); line-height: 1.5; }
-  .org-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
-  .org-meta span {
-    font-size: 0.72rem; font-weight: 600; padding: 3px 10px; border-radius: 100px;
-    background: var(--gris-light); color: var(--gris-text);
-  }
-  .org-meta span.theme { background: var(--vert-light); color: var(--vert-dark); }
-
-  .filter-panel {
-    background: var(--blanc); border: 1.5px solid var(--gris-border); border-radius: var(--radius-md);
-    padding: 18px 20px; margin-bottom: 22px; display: flex; flex-direction: column; gap: 16px;
-  }
-  .filter-row { display: flex; flex-direction: column; gap: 8px; }
-  .filter-row-label {
-    font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--gris-text);
-  }
-  .filter-panel .choice-grid { gap: 8px; }
-  .filter-panel .choice-chip { padding: 8px 14px; font-size: 0.84rem; }
-  .filter-reset {
-    align-self: flex-start; background: none; border: none; cursor: pointer;
-    font-family: var(--font-main); font-size: 0.82rem; font-weight: 600; color: var(--gris-text);
-    display: inline-flex; align-items: center; gap: 6px; padding: 4px 2px;
-  }
-  .filter-reset:hover { color: var(--vert-dark); }
-  .result-count { font-size: 0.84rem; color: var(--gris-text); margin: -6px 0 14px; }
-  .result-count b { color: var(--noir); }
-  .empty-hint { grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--gris-text); }
-
-  .select-bar {
-    position: fixed; left: 0; right: 0; bottom: 0; z-index: 100;
-    background: rgba(255,255,255,.92); backdrop-filter: blur(10px);
-    border-top: 1.5px solid var(--gris-border); box-shadow: 0 -4px 24px rgba(0,0,0,.06);
-  }
-  .select-bar-inner {
-    max-width: 980px; margin: 0 auto; padding: 14px 28px;
-    display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  }
-  .select-count { font-size: 0.95rem; color: var(--noir); }
-  .select-count b { font-family: var(--font-title); font-size: 1.15rem; color: var(--vert-dark); }
-
-  @media (max-width: 600px) {
-    .select-bar-inner { padding: 12px 16px; }
-    .portal-top, .list-wrap { padding-left: 16px; padding-right: 16px; }
-  }
-</style>
+<link rel="stylesheet" href="css/style.css?v=20260824-avail-notif1">
 </head>
-<body>
+<body class="partner-selection-page" data-partner-page="choix">
 
-<div class="portal-top">
-  <div class="brand-logo" style="justify-content:flex-start;margin-bottom:16px;">
-    <span style="font-family:var(--font-title);font-weight:700;font-size:1.1rem;">MTL connecte · Conciergerie</span>
-  </div>
-  <div class="portal-head">
+<div class="screen-inner">
+  <nav class="partner-space-nav" aria-label="Espace Conciergerie">
+    <span class="partner-space-nav-title">Espace partenaire</span>
+    <a href="partenaire-formulaire.html" data-partner-nav="besoins">
+      <i class="fas fa-clipboard-list"></i>
+      <span>Mes besoins</span>
+    </a>
+    <a href="partenaire-selection.html" data-partner-nav="choix">
+      <i class="fas fa-list-check"></i>
+      <span>Mes choix</span>
+    </a>
+    <a href="partenaire-rendezvous.html" data-partner-nav="rendezvous">
+      <i class="fas fa-calendar-check"></i>
+      <span>Mes rendez-vous</span>
+    </a>
+  </nav>
+
+  <!-- ═══ SECTION B — EN-TÊTE PARTENAIRE ═══ -->
+  <div class="brand-logo"><span class="screen-title">MTL connecte · Conciergerie</span></div>
+  <div class="screen-body">
     <span class="tag-label" id="partnerTag">Espace partenaire · 13–15 octobre 2026</span>
     <h1 class="screen-title">Quelles organisations souhaitez-vous rencontrer&nbsp;?</h1>
-    <p class="hero-description" style="max-width:640px;">
-      Nous avons identifié plusieurs organisations correspondant à vos critères. Sélectionnez toutes celles que vous
-      souhaiteriez rencontrer. Une sélection plus large donne davantage de flexibilité à notre équipe pour organiser
-      vos rendez-vous selon les disponibilités de chacun.
-    </p>
-    <p class="hero-description" style="font-size:0.85rem;margin-top:2px;">Liste préparée pour <b id="partnerTitle">…</b></p>
+    <p class="hero-description">Nous avons sélectionné des organisations selon vos critères. Choisissez celles que vous souhaitez rencontrer ; vos choix restent modifiables.</p>
+    <p class="hint">Liste préparée pour <b id="partnerTitle">…</b></p>
+
+    <!-- ═══ SECTION C — FILTRES OPTIONNELS ═══ -->
+    <details class="partner-filter-accordion" id="filterAccordion">
+      <summary class="partner-filter-summary">
+        <div>
+          <strong><i class="fas fa-sliders"></i> Filtrer les propositions</strong>
+          <span>Optionnel · utile surtout pour modifier vos choix</span>
+        </div>
+        <div class="partner-filter-summary-right">
+          <span class="partner-filter-count" id="filterCount">0 actif</span>
+          <i class="fas fa-chevron-down partner-filter-chevron" aria-hidden="true"></i>
+        </div>
+      </summary>
+      <div class="partner-filter-body">
+        <div id="filterPanel"></div>
+      </div>
+    </details>
+
+    <!-- ═══ SECTION D — LISTE DES PROPOSITIONS ═══ -->
+    <p class="partner-selection-summary" id="resultCount"></p>
+
+    <div class="privacy-note" id="quotaWarning" hidden>
+      <i class="fas fa-circle-info"></i>
+      <span id="quotaWarningText"></span>
+    </div>
+
+    <div class="choice-list" id="orgGrid"></div>
+
+    <!-- ═══ SECTION E — SAUVEGARDE ═══ -->
+    <div class="screen-actions">
+      <div>
+        <p class="hint" id="selCount"><b>0</b> organisation sélectionnée</p>
+        <button class="btn btn-primary btn-medium" id="saveBtn"><i class="fas fa-floppy-disk"></i> Enregistrer mes choix</button>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="list-wrap">
-  <!-- Filtres combinables (générés par JS depuis le vivier) -->
-  <div class="filter-panel" id="filterPanel"></div>
-
-  <p class="result-count" id="resultCount"></p>
-
-  <!-- Cartes (générées par JS) -->
-  <div class="org-grid" id="orgGrid"></div>
-</div>
-
-<!-- Barre fixe : compteur informatif SANS limite -->
-<div class="select-bar">
-  <div class="select-bar-inner">
-    <div class="select-count" id="selCount"><b>0</b> organisation sélectionnée</div>
-    <button class="btn btn-primary btn-medium" id="saveBtn"><i class="fas fa-floppy-disk"></i> Enregistrer mes choix</button>
-  </div>
-</div>
-
-<script src="js/config.js"></script>
-<script src="js/api.js"></script>
-<script src="js/partenaire-selection.js"></script>
+<!-- ═══ SECTION F — SCRIPTS ═══ -->
+<script src="js/config.js?v=20260824-avail-notif1"></script>
+<script src="js/api.js?v=20260824-avail-notif1"></script>
+<script src="js/partenaire-espace.js?v=20260824-avail-notif1"></script>
+<script src="js/partenaire-selection.js?v=20260824-avail-notif1"></script>
 </body>
 </html>

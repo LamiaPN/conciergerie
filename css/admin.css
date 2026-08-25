@@ -595,14 +595,14 @@ body {
 
 .table-scroll th,
 .table-scroll td {
-  padding: 12px 10px;
+  padding: 6px 10px;
   border-bottom: 1px solid var(--gris-border);
   text-align: left;
   vertical-align: top;
 }
 
 .table-scroll th {
-  font-size: 0.75rem;
+  font-size: 0.70rem;
   font-weight: 700;
   color: var(--gris-text);
   text-transform: uppercase;
@@ -611,7 +611,7 @@ body {
 }
 
 .table-scroll td {
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   color: var(--noir);
 }
 .page-btn {
@@ -862,3 +862,1387 @@ body {
 .import-muted { color: var(--gris-text); }
 
 .import-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+
+/* ═══ FUSION — case à cocher proposition + barre d'action ═══ */
+.check-cell { text-align: center; }
+.check-cell input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--vert); cursor: pointer; }
+.proposals-bar { display: flex; align-items: center; gap: 14px; margin: 0 0 12px; }
+.save-status { font-size: .85rem; color: var(--gris-text); }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   ÉDITEUR DU VIVIER — modale ajout / modification d'organisation
+   ════════════════════════════════════════════════════════════════════════ */
+.edit-org-box { max-width: 760px; max-height: 92vh; overflow-y: auto; }
+.edit-org-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; margin-top: 16px; }
+.edit-org-field { display: flex; flex-direction: column; gap: 6px; }
+.edit-org-field.full { grid-column: 1 / -1; }
+.edit-org-field label { font-size: .82rem; font-weight: 700; color: var(--noir); }
+.edit-org-field input, .edit-org-field textarea, .edit-org-field select {
+  width: 100%; padding: 10px 12px; border: 1.5px solid var(--gris-border); border-radius: var(--radius-sm);
+  font: inherit; color: var(--noir); background: var(--blanc); outline: none;
+}
+.edit-org-field input:focus, .edit-org-field textarea:focus, .edit-org-field select:focus { border-color: var(--vert); box-shadow: 0 0 0 3px rgba(111,191,74,.15); }
+.edit-org-field textarea { resize: vertical; min-height: 100px; }
+.edit-org-field select { cursor: pointer; }
+.edit-org-note { display: inline-block; margin-top: 5px; color: var(--gris-text); font-size: .78rem; }
+.required-star { color: var(--danger); }
+.edit-org-btn { padding: 5px 9px; font-size: .68rem; white-space: nowrap; }
+.toast-error { background: var(--danger); }
+@media (max-width: 700px) { .edit-org-grid { grid-template-columns: 1fr; } .edit-org-field.full { grid-column: 1; } }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   RÉFÉRENTIELS — ajout contrôlé d'une nouvelle appellation
+   ════════════════════════════════════════════════════════════════════════ */
+.new-reference-wrap {
+  margin-top: 8px;
+  padding: 10px;
+  border: 1.5px dashed var(--gris-border);
+  border-radius: var(--radius-sm);
+  background: var(--gris-light);
+}
+.new-reference-wrap[hidden] { display: none; }
+.new-reference-wrap input { background: var(--blanc); }
+
+
+/* Référentiels centraux : secteur, expertise, type et taille */
+.edit-org-field select[data-reference-category] { width: 100%; }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   EXPERTISES MULTI-VALEURS — tags / badges
+   ════════════════════════════════════════════════════════════════════════ */
+.expertise-tags {
+  min-height: 44px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid var(--gris-border);
+  border-radius: var(--radius-sm);
+  background: var(--blanc);
+}
+.expertise-tag, .expertise-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 100%;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--vert-pale);
+  color: var(--vert-dark);
+  font-size: .78rem;
+  line-height: 1.2;
+  white-space: normal;
+}
+.expertise-tag button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0;
+}
+.expertise-empty {
+  color: var(--gris-text);
+  font-size: .8rem;
+}
+.expertise-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.new-expertise-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.new-expertise-row input { flex: 1; }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   GESTION DES RÉFÉRENTIELS
+   ════════════════════════════════════════════════════════════════════════ */
+.referentiel-box {
+  width: min(980px, 94vw);
+  max-width: min(980px, 94vw);
+  max-height: 90vh;
+  overflow: hidden;
+}
+.referentiel-toolbar {
+  display: flex;
+  gap: 16px;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.referentiel-toolbar .edit-org-field { min-width: 260px; }
+.referentiel-count {
+  color: var(--gris-text);
+  font-size: .82rem;
+  font-weight: 600;
+  padding-bottom: 10px;
+}
+.referentiel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 52vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 6px;
+}
+.referentiel-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 140px 215px;
+  gap: 14px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--gris-border);
+  border-radius: var(--radius-sm);
+  background: var(--blanc);
+}
+.referentiel-value {
+  font-weight: 600;
+  color: var(--noir);
+  overflow-wrap: anywhere;
+}
+.referentiel-usage { min-width: 0; }
+.usage-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 700;
+}
+.usage-badge.used {
+  background: #fff4d6;
+  color: #7a5600;
+}
+.usage-badge.free {
+  background: var(--vert-light);
+  color: var(--vert-dark);
+}
+.referentiel-actions {
+  display: flex;
+  gap: 7px;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+.referentiel-actions .btn {
+  white-space: nowrap;
+}
+.danger-soft {
+  border-color: #e8b4b4 !important;
+  color: #a62323 !important;
+}
+.danger-soft:hover:not(:disabled) {
+  background: #fff1f1 !important;
+}
+.danger-soft:disabled {
+  opacity: .42;
+  cursor: not-allowed;
+}
+@media (max-width: 860px) {
+  .referentiel-row {
+    grid-template-columns: 1fr;
+  }
+  .referentiel-actions { justify-content: flex-start; }
+}
+
+
+/* Édition directe des appellations */
+.referentiel-row.is-editing {
+  border-color: var(--vert);
+  background: #fbfff9;
+}
+.referentiel-edit-input {
+  width: 100%;
+  min-width: 0;
+  padding: 9px 11px;
+  border: 1.5px solid var(--vert);
+  border-radius: 8px;
+  background: var(--blanc);
+  color: var(--noir);
+  font: inherit;
+  font-weight: 600;
+  outline: none;
+}
+.referentiel-edit-input:focus {
+  box-shadow: 0 0 0 3px rgba(111, 191, 74, .16);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   CONFIRMATION MODALE — suppression d'une appellation
+   ════════════════════════════════════════════════════════════════════════ */
+.nested-modal {
+  z-index: 1200;
+  background: rgba(11, 13, 12, .58);
+}
+.delete-confirm-box {
+  width: min(520px, 92vw);
+  max-width: min(520px, 92vw);
+}
+.delete-confirm-text {
+  margin: 6px 0 12px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--noir);
+}
+.delete-confirm-text strong {
+  display: block;
+  margin-top: 8px;
+  overflow-wrap: anywhere;
+}
+.delete-confirm-warning {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #fff5f5;
+  color: #8c2222;
+  font-size: .85rem;
+  line-height: 1.45;
+}
+.btn-danger {
+  border: 1px solid #cf3d3d;
+  background: #cf3d3d;
+  color: #fff;
+}
+.btn-danger:hover:not(:disabled) {
+  background: #b92f2f;
+  border-color: #b92f2f;
+}
+.btn-danger:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+
+/* Suppression des organisations locales */
+.organisation-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.organisation-actions-right {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+@media (max-width: 620px) {
+  .organisation-actions { align-items: stretch; flex-direction: column; }
+  .organisation-actions-right { margin-left: 0; justify-content: flex-end; }
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   VUE CONCIERGERIE — organisation → partenaires
+   ════════════════════════════════════════════════════════════════════════ */
+.conciergerie-view { gap: 18px; }
+.conciergerie-view-head { display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+.conciergerie-kicker { display:inline-block; margin-bottom:5px; color:var(--vert-dark); font-size:.72rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase; }
+.conciergerie-view-head h2 { margin:0; font-family:var(--font-title); font-size:1.7rem; }
+.conciergerie-view-head p { margin:4px 0 0; color:var(--gris-text); font-size:.88rem; }
+.conciergerie-summary { display:flex; gap:10px; }
+.conciergerie-summary > div { min-width:112px; padding:10px 14px; border:1px solid var(--gris-border); border-radius:var(--radius-sm); background:var(--blanc); box-shadow:var(--shadow-sm); }
+.conciergerie-summary strong { display:block; font-family:var(--font-title); font-size:1.2rem; color:var(--noir); }
+.conciergerie-summary span { color:var(--gris-text); font-size:.72rem; }
+.conciergerie-content { display:flex; flex-direction:column; gap:16px; }
+.conciergerie-org-card { overflow:hidden; border:1.5px solid var(--gris-border); border-radius:var(--radius-md); background:var(--blanc); box-shadow:var(--shadow-sm); }
+.conciergerie-org-head { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 18px; border-bottom:1px solid var(--gris-border); background:var(--gris-light); }
+.conciergerie-org-head h3 { margin:0; font-family:var(--font-title); font-size:1rem; }
+.conciergerie-org-head > span { flex:0 0 auto; padding:4px 9px; border-radius:999px; background:var(--vert-light); color:var(--vert-dark); font-size:.72rem; font-weight:700; }
+.conciergerie-table { width:100%; min-width:820px; border-collapse:collapse; }
+.conciergerie-table th { padding:10px 14px; border-bottom:1px solid var(--gris-border); background:#fafbfa; color:var(--gris-text); font-size:.7rem; font-weight:700; letter-spacing:.03em; text-align:left; text-transform:uppercase; }
+.conciergerie-table td { padding:11px 14px; border-bottom:1px solid var(--gris-border); font-size:.82rem; vertical-align:middle; }
+.conciergerie-table tbody tr:last-child td { border-bottom:0; }
+.conciergerie-table tbody tr:hover { background:#fbfcfb; }
+.conciergerie-partner { font-weight:600; color:var(--noir); }
+.conciergerie-status { display:inline-flex; align-items:center; padding:4px 9px; border-radius:999px; font-size:.72rem; font-weight:700; }
+.conciergerie-status.accepted { background:var(--vert-light); color:var(--vert-dark); }
+.conciergerie-status.proposed { background:var(--gris-light); color:var(--gris-text); }
+.conciergerie-empty-cell { color:#a4aaa5; }
+.conciergerie-state, .conciergerie-empty { padding:28px; border:1.5px dashed var(--gris-border); border-radius:var(--radius-md); background:var(--blanc); color:var(--gris-text); text-align:center; }
+.conciergerie-error { border-color:#e8b4b4; background:#fff7f7; color:#9e2929; }
+.conciergerie-empty { display:flex; flex-direction:column; align-items:center; gap:7px; }
+.conciergerie-empty i { color:var(--vert); font-size:1.5rem; }
+.conciergerie-empty strong { color:var(--noir); }
+@media (max-width:760px) { .conciergerie-summary { width:100%; } .conciergerie-summary > div { flex:1; } }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   BESOINS EXPRIMÉS PAR LE PARTENAIRE
+   ════════════════════════════════════════════════════════════════════════ */
+.partner-needs {
+  overflow: hidden;
+  border: 1.5px solid var(--gris-border);
+  border-radius: var(--radius-md);
+  background: var(--blanc);
+  box-shadow: var(--shadow-sm);
+}
+
+.partner-needs-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 18px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.partner-needs-summary::-webkit-details-marker { display: none; }
+
+.partner-needs-title {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 11px;
+}
+.partner-needs-icon {
+  display: inline-grid;
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--vert-light);
+  color: var(--vert-dark);
+}
+.partner-needs-title strong {
+  display: block;
+  color: var(--noir);
+  font-family: var(--font-title);
+  font-size: .9rem;
+}
+.partner-needs-title div > span {
+  display: block;
+  margin-top: 2px;
+  color: var(--gris-text);
+  font-size: .73rem;
+}
+
+.partner-needs-summary-right {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 10px;
+}
+.partner-needs-state {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: var(--gris-light);
+  color: var(--gris-text);
+  font-size: .7rem;
+  font-weight: 700;
+}
+.partner-needs-state.received {
+  background: var(--vert-light);
+  color: var(--vert-dark);
+}
+.partner-needs-state.error {
+  background: #fff0f0;
+  color: #a12b2b;
+}
+.partner-needs-state.empty {
+  background: #f3f4f3;
+  color: #747a75;
+}
+.partner-needs-chevron {
+  color: var(--gris-text);
+  font-size: .76rem;
+  transition: transform .18s ease;
+}
+.partner-needs[open] .partner-needs-chevron { transform: rotate(180deg); }
+
+.partner-needs-body {
+  padding: 0 18px 18px;
+  border-top: 1px solid var(--gris-border);
+}
+.partner-needs-date {
+  padding: 11px 0 10px;
+  color: var(--gris-text);
+  font-size: .72rem;
+}
+.partner-needs-date i { margin-right: 5px; }
+
+.partner-needs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.partner-needs-group {
+  padding: 14px;
+  border: 1px solid var(--gris-border);
+  border-radius: var(--radius-sm);
+  background: #fcfdfc;
+}
+.partner-needs-group h4 {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 12px;
+  color: var(--noir);
+  font-family: var(--font-title);
+  font-size: .79rem;
+}
+.partner-needs-group h4 i { color: var(--vert-dark); }
+
+.partner-needs-field + .partner-needs-field { margin-top: 10px; }
+.partner-needs-label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--gris-text);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+.partner-needs-value {
+  color: var(--noir);
+  font-size: .82rem;
+  line-height: 1.45;
+}
+.partner-needs-value a {
+  color: var(--vert-dark);
+  text-decoration: none;
+}
+.partner-needs-value a:hover { text-decoration: underline; }
+
+.partner-needs-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.partner-needs-tags > span {
+  display: inline-flex;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--vert-light);
+  color: var(--vert-dark);
+  font-size: .7rem;
+  font-weight: 600;
+}
+.partner-needs-multiline { white-space: pre-wrap; }
+.partner-needs-empty { color: #a4aaa5; }
+
+.partner-needs-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 0 0;
+  color: var(--gris-text);
+  font-size: .8rem;
+}
+.partner-needs-message.error { color: #a12b2b; }
+
+@media (max-width: 820px) {
+  .partner-needs-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  .partner-needs-summary { align-items: flex-start; }
+  .partner-needs-title div > span { display: none; }
+  .partner-needs-state { display: none; }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   FILTRES VUE CONCIERGERIE — modes + état des rendez-vous
+   Réutilise le composant .segment déjà présent dans admin-partenaire.html.
+   ════════════════════════════════════════════════════════════════════════ */
+.conciergerie-filterbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 12px 14px;
+  border: 1.5px solid var(--gris-border);
+  border-radius: var(--radius-md);
+  background: var(--blanc);
+  box-shadow: var(--shadow-sm);
+}
+
+.conciergerie-filtergroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.conciergerie-filterlabel {
+  color: var(--gris-text);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.conciergerie-filterbar .segment button span {
+  margin-left: 4px;
+  color: inherit;
+  opacity: .72;
+  font-size: .75em;
+}
+
+.conciergerie-table a {
+  color: var(--vert-dark);
+  text-decoration: none;
+}
+
+.conciergerie-table a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 760px) {
+  .conciergerie-filterbar {
+    align-items: stretch;
+  }
+
+  .conciergerie-filtergroup {
+    width: 100%;
+  }
+
+  .conciergerie-filtergroup .segment {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .conciergerie-filtergroup .segment button {
+    flex: 1 0 auto;
+    white-space: nowrap;
+  }
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   PLANIFICATION MANUELLE DES RENDEZ-VOUS — vue Conciergerie
+   ════════════════════════════════════════════════════════════════════════ */
+.conciergerie-savebar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--gris-border);
+  border-radius: var(--radius-md);
+  background: var(--blanc);
+  box-shadow: var(--shadow-sm);
+}
+.conciergerie-savebar > span {
+  margin-right: auto;
+  color: var(--gris-text);
+  font-size: .78rem;
+}
+.conciergerie-rdv-input {
+  width: 100%;
+  min-width: 126px;
+  padding: 7px 8px;
+  border: 1.5px solid var(--gris-border);
+  border-radius: 7px;
+  background: var(--blanc);
+  color: var(--noir);
+  font-family: var(--font-main);
+  font-size: .75rem;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.conciergerie-rdv-input:focus {
+  border-color: var(--vert);
+  box-shadow: 0 0 0 2px rgba(111,191,74,.13);
+}
+.conciergerie-time { min-width: 92px; }
+.conciergerie-room { min-width: 100px; }
+.conciergerie-row-dirty { background: #fffdf4; }
+.conciergerie-table th:nth-last-child(3),
+.conciergerie-table td:nth-last-child(3) { min-width: 145px; }
+.conciergerie-table th:nth-last-child(2),
+.conciergerie-table td:nth-last-child(2) { min-width: 105px; }
+.conciergerie-table th:last-child,
+.conciergerie-table td:last-child { min-width: 120px; }
+
+@media (max-width: 760px) {
+  .conciergerie-savebar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .conciergerie-savebar .btn { width: 100%; }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   PLANNING 30 MINUTES — CONCIERGERIE
+   ════════════════════════════════════════════════════════════════════════ */
+.conciergerie-room-add {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.conciergerie-room-add-form {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.conciergerie-room-add-form[hidden] {
+  display: none;
+}
+
+.conciergerie-room-add-form input {
+  width: 170px;
+  padding: 7px 9px;
+  border: 1.5px solid var(--gris-border);
+  border-radius: var(--radius-sm);
+  background: var(--blanc);
+  color: var(--noir);
+  font: inherit;
+  font-size: .76rem;
+  outline: none;
+}
+
+.conciergerie-room-add-form input:focus {
+  border-color: var(--vert);
+  box-shadow: 0 0 0 2px rgba(111,191,74,.13);
+}
+
+.conciergerie-email {
+  min-width: 180px;
+}
+
+.conciergerie-rdv-input {
+  cursor: pointer;
+}
+
+.conciergerie-email {
+  cursor: text;
+}
+
+.conciergerie-row-conflict {
+  background: #fff3f3 !important;
+}
+
+.conciergerie-row-conflict .conciergerie-rdv-input {
+  border-color: #d64045;
+}
+
+.conciergerie-conflict-message {
+  max-width: 220px;
+  margin-top: 4px;
+  color: #b52f34;
+  font-size: .62rem;
+  line-height: 1.25;
+}
+
+@media (max-width: 900px) {
+  .conciergerie-room-add {
+    width: 100%;
+  }
+
+  .conciergerie-room-add-form {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .conciergerie-room-add-form input {
+    flex: 1;
+    min-width: 170px;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   CALENDRIER PAR SALLE — LECTURE SEULE
+   ════════════════════════════════════════════════════════════════════════ */
+.conciergerie-calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.calendar-toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 12px 14px;
+  border: 1.5px solid var(--gris-border);
+  border-radius: var(--radius-md);
+  background: var(--blanc);
+  box-shadow: var(--shadow-sm);
+}
+
+.calendar-toolbar > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.calendar-day-segment button {
+  white-space: nowrap;
+}
+
+.calendar-readonly {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--gris-light);
+  color: var(--gris-text);
+  font-size: .7rem;
+  font-weight: 700;
+}
+
+.calendar-scroll {
+  width: 100%;
+  overflow-x: auto;
+  border: 1.5px solid var(--gris-border);
+  border-radius: var(--radius-md);
+  background: var(--blanc);
+  box-shadow: var(--shadow-sm);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns:
+    84px
+    repeat(var(--calendar-room-count), minmax(160px, 1fr));
+  min-width: var(--calendar-min-width);
+}
+
+.calendar-corner,
+.calendar-room-head,
+.calendar-time,
+.calendar-slot {
+  border-right: 1px solid var(--gris-border);
+  border-bottom: 1px solid var(--gris-border);
+}
+
+.calendar-corner,
+.calendar-room-head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  min-height: 48px;
+  background: #fafbfa;
+}
+
+.calendar-corner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gris-text);
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.calendar-room-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 12px;
+  color: var(--noir);
+  font-size: .76rem;
+  font-weight: 800;
+}
+
+.calendar-room-head i {
+  color: var(--vert-dark);
+}
+
+.calendar-time {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 76px;
+  padding: 12px 8px;
+  background: #fcfdfc;
+  color: var(--noir);
+  font-family: var(--font-title);
+  font-size: .78rem;
+  font-weight: 800;
+}
+
+.calendar-slot {
+  position: relative;
+  min-height: 76px;
+  padding: 7px;
+  background: var(--blanc);
+}
+
+.calendar-slot-free {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-slot-free::before {
+  position: absolute;
+  inset: 7px;
+  border: 1.5px dashed var(--gris-border);
+  border-radius: 8px;
+  content: "";
+}
+
+.calendar-slot-free span {
+  position: relative;
+  z-index: 1;
+  color: #a4aaa5;
+  font-size: .62rem;
+}
+
+.calendar-slot-occupied {
+  background: var(--vert-light);
+}
+
+.calendar-meeting {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 7px;
+  border-radius: 7px;
+  background: rgba(255,255,255,.58);
+}
+
+.calendar-meeting + .calendar-meeting {
+  margin-top: 5px;
+}
+
+.calendar-meeting strong {
+  color: var(--vert-dark);
+  font-size: .72rem;
+  line-height: 1.2;
+}
+
+.calendar-meeting span {
+  color: var(--noir);
+  font-size: .66rem;
+  line-height: 1.25;
+}
+
+.calendar-slot.is-conflict {
+  background: #fff2e2;
+  box-shadow: inset 0 0 0 2px #e6a23c;
+}
+
+.calendar-conflict-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 5px;
+  padding: 3px 6px;
+  border-radius: 999px;
+  background: #fff;
+  color: #9a5b00;
+  font-size: .58rem;
+  font-weight: 800;
+}
+
+.calendar-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 9px 12px;
+  border: 1.5px solid var(--gris-border);
+  border-radius: var(--radius-sm);
+  background: var(--blanc);
+  color: var(--gris-text);
+  font-size: .72rem;
+}
+
+.calendar-footer strong {
+  color: var(--noir);
+}
+
+.calendar-footer-conflict,
+.calendar-footer-conflict strong {
+  color: #9a5b00;
+}
+
+@media (max-width: 760px) {
+  .calendar-toolbar {
+    align-items: stretch;
+  }
+
+  .calendar-day-segment {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .calendar-day-segment button {
+    flex: 1 0 auto;
+  }
+
+  .calendar-readonly {
+    align-self: flex-start;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   CORRECTIF MODE CALENDRIER — RESPECT DE [hidden]
+   ════════════════════════════════════════════════════════════════════════ */
+.conciergerie-savebar[hidden],
+.conciergerie-filtergroup[hidden] {
+  display: none !important;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   CALENDRIER COMPACT PLEIN ÉCRAN
+   Objectif : afficher les 16 créneaux 09:00→16:30 sans devoir descendre.
+   Les vues Par organisation / Par partenaire restent inchangées.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* Réduit uniquement la vue Conciergerie lorsque Calendrier est actif. */
+.conciergerie-view.calendar-mode {
+  padding: 10px 16px 12px;
+  gap: 7px;
+}
+
+/* Le titre + KPI existent toujours dans les autres modes.
+   On les masque seulement en calendrier pour libérer la hauteur utile. */
+.conciergerie-view.calendar-mode .conciergerie-view-head {
+  display: none;
+}
+
+.conciergerie-view.calendar-mode .conciergerie-filterbar {
+  padding: 5px 8px;
+  gap: 6px;
+  border-radius: 10px;
+}
+
+.conciergerie-view.calendar-mode .conciergerie-filterlabel {
+  display: none;
+}
+
+.conciergerie-view.calendar-mode .conciergerie-filtergroup {
+  gap: 0;
+}
+
+.conciergerie-view.calendar-mode .segment {
+  padding: 3px;
+}
+
+.conciergerie-view.calendar-mode .segment button {
+  min-height: 30px;
+  padding: 5px 11px;
+  font-size: .7rem;
+}
+
+.conciergerie-view.calendar-mode .conciergerie-content {
+  gap: 6px;
+}
+
+/* Barre du jour compacte. */
+.conciergerie-view.calendar-mode .calendar-toolbar {
+  padding: 5px 8px;
+  gap: 8px;
+  border-radius: 10px;
+}
+
+.conciergerie-view.calendar-mode .calendar-toolbar > div:first-child {
+  gap: 3px;
+}
+
+.conciergerie-view.calendar-mode .calendar-day-segment button {
+  min-height: 27px;
+  padding: 4px 9px;
+  font-size: .66rem;
+}
+
+.conciergerie-view.calendar-mode .calendar-readonly {
+  padding: 4px 8px;
+  font-size: .62rem;
+}
+
+/* 1 ligne d'en-tête + 16 créneaux compacts.
+   34 + (16 × 27) = 466 px pour la grille entière. */
+.conciergerie-view.calendar-mode .calendar-grid {
+  grid-template-rows: 34px repeat(16, 27px);
+}
+
+.conciergerie-view.calendar-mode .calendar-corner,
+.conciergerie-view.calendar-mode .calendar-room-head {
+  min-height: 0;
+  height: 34px;
+  padding: 4px 8px;
+}
+
+.conciergerie-view.calendar-mode .calendar-corner {
+  font-size: .6rem;
+}
+
+.conciergerie-view.calendar-mode .calendar-room-head {
+  gap: 5px;
+  font-size: .66rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.conciergerie-view.calendar-mode .calendar-time,
+.conciergerie-view.calendar-mode .calendar-slot {
+  min-height: 0;
+  height: 27px;
+}
+
+.conciergerie-view.calendar-mode .calendar-time {
+  align-items: center;
+  padding: 0 5px;
+  font-size: .66rem;
+}
+
+.conciergerie-view.calendar-mode .calendar-slot {
+  padding: 2px 4px;
+  overflow: hidden;
+}
+
+.conciergerie-view.calendar-mode .calendar-slot-free::before {
+  inset: 3px;
+  border-width: 1px;
+  border-radius: 5px;
+}
+
+.conciergerie-view.calendar-mode .calendar-slot-free span {
+  display: none;
+}
+
+/* Un RDV tient sur une seule ligne dans la grille compacte. */
+.conciergerie-view.calendar-mode .calendar-meeting {
+  display: flex;
+  min-width: 0;
+  height: 23px;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 4px;
+  border-radius: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.conciergerie-view.calendar-mode .calendar-meeting strong,
+.conciergerie-view.calendar-mode .calendar-meeting span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.conciergerie-view.calendar-mode .calendar-meeting strong {
+  flex: 0 1 42%;
+  font-size: .59rem;
+}
+
+.conciergerie-view.calendar-mode .calendar-meeting strong::after {
+  content: " ·";
+}
+
+.conciergerie-view.calendar-mode .calendar-meeting span {
+  flex: 1 1 58%;
+  font-size: .58rem;
+}
+
+.conciergerie-view.calendar-mode .calendar-meeting + .calendar-meeting {
+  margin-top: 1px;
+}
+
+/* Conflit visible sans agrandir la ligne. */
+.conciergerie-view.calendar-mode .calendar-conflict-badge {
+  position: absolute;
+  z-index: 3;
+  top: 2px;
+  right: 2px;
+  margin: 0;
+  padding: 2px 4px;
+  font-size: .5rem;
+}
+
+/* Pied compact. */
+.conciergerie-view.calendar-mode .calendar-footer {
+  min-height: 28px;
+  gap: 12px;
+  padding: 4px 9px;
+  font-size: .63rem;
+}
+
+/* La grille reste horizontalement scrollable si beaucoup de salles. */
+.conciergerie-view.calendar-mode .calendar-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Sur les petits écrans, on conserve le scroll vertical normal :
+   l'objectif "tout tenir" concerne surtout l'usage desktop admin. */
+@media (max-height: 760px) and (min-width: 900px) {
+  .conciergerie-view.calendar-mode {
+    padding-top: 6px;
+    gap: 5px;
+  }
+
+  .conciergerie-view.calendar-mode .calendar-grid {
+    grid-template-rows: 30px repeat(16, 24px);
+  }
+
+  .conciergerie-view.calendar-mode .calendar-corner,
+  .conciergerie-view.calendar-mode .calendar-room-head {
+    height: 30px;
+  }
+
+  .conciergerie-view.calendar-mode .calendar-time,
+  .conciergerie-view.calendar-mode .calendar-slot {
+    height: 24px;
+  }
+
+  .conciergerie-view.calendar-mode .calendar-meeting {
+    height: 20px;
+  }
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   NOTIFICATIONS FORMULAIRE — sidebar partenaires
+   Le libellé passe en gras et une pastille apparaît à droite tant que
+   l'administrateur n'a pas ouvert la fiche du partenaire.
+   ════════════════════════════════════════════════════════════════════════ */
+.partner-nav-item {
+  justify-content: space-between;
+}
+
+.partner-nav-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.partner-nav-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.partner-nav-item.has-form-update .partner-nav-label {
+  font-weight: 800;
+  color: var(--blanc);
+}
+
+.partner-nav-dot {
+  width: 8px;
+  height: 8px;
+  margin-left: auto;
+  flex: 0 0 8px;
+  border-radius: 50%;
+  background: var(--vert);
+  box-shadow: 0 0 0 3px rgba(111,191,74,.16);
+}
+
+.partner-nav-item.active .partner-nav-dot {
+  background: var(--blanc);
+  box-shadow: 0 0 0 3px rgba(255,255,255,.18);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   HISTORIQUE DU FORMULAIRE — accordéon dans la fiche partenaire
+   ════════════════════════════════════════════════════════════════════════ */
+.partner-history {
+  margin: 0 0 14px;
+  border: 1px solid var(--gris-border);
+  border-radius: var(--radius-sm);
+  background: #fafbfa;
+  overflow: hidden;
+}
+
+.partner-history-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  list-style: none;
+  color: var(--noir);
+  font-size: .76rem;
+  font-weight: 800;
+}
+
+.partner-history-summary::-webkit-details-marker,
+.partner-history-event > summary::-webkit-details-marker {
+  display: none;
+}
+
+.partner-history-summary > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.partner-history-summary i {
+  color: var(--vert-dark);
+}
+
+.partner-history-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--gris-light);
+  color: var(--gris-text);
+  font-size: .66rem;
+}
+
+.partner-history-list {
+  padding: 0 10px 10px;
+}
+
+.partner-history-event {
+  border-top: 1px solid var(--gris-border);
+  background: var(--blanc);
+}
+
+.partner-history-event:first-child {
+  border-top: 0;
+}
+
+.partner-history-event > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 11px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.partner-history-event > summary > span:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.partner-history-event > summary strong {
+  color: var(--noir);
+  font-size: .75rem;
+}
+
+.partner-history-event > summary small {
+  color: var(--gris-text);
+  font-size: .65rem;
+}
+
+.partner-history-event.is-unread {
+  box-shadow: inset 3px 0 0 var(--vert);
+}
+
+.partner-history-new {
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: var(--vert-light);
+  color: var(--vert-dark);
+  font-size: .62rem;
+  font-weight: 800;
+}
+
+.partner-history-event-body {
+  padding: 0 11px 11px;
+}
+
+.partner-history-creation {
+  margin: 0;
+  color: var(--gris-text);
+  font-size: .72rem;
+  line-height: 1.45;
+}
+
+.partner-history-section + .partner-history-section {
+  margin-top: 12px;
+}
+
+.partner-history-section h5 {
+  margin: 0 0 7px;
+  color: var(--vert-dark);
+  font-size: .68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+.partner-history-change {
+  padding: 7px 0;
+  border-top: 1px dashed var(--gris-border);
+}
+
+.partner-history-change:first-of-type {
+  border-top: 0;
+}
+
+.partner-history-change > strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--noir);
+  font-size: .69rem;
+}
+
+.partner-history-change > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 7px;
+  color: var(--gris-text);
+  font-size: .67rem;
+}
+
+.partner-history-change .before {
+  text-decoration: line-through;
+  opacity: .72;
+}
+
+.partner-history-change .after {
+  color: var(--noir);
+  font-weight: 600;
+}
+
+.partner-history-change i {
+  color: var(--vert-dark);
+  font-size: .6rem;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   ALERTE DISPONIBILITÉ — planification des rendez-vous
+   Avertissement non bloquant : les conflits techniques restent bloquants.
+   ════════════════════════════════════════════════════════════════════════ */
+.conciergerie-row-availability-warning:not(.conciergerie-row-conflict) {
+  background: #fff9e8 !important;
+}
+
+.conciergerie-row-availability-warning:not(.conciergerie-row-conflict) .conciergerie-rdv-input {
+  border-color: #d6a72f;
+}
+
+.conciergerie-availability-message {
+  max-width: 240px;
+  margin-top: 4px;
+  color: #8a6513;
+  font-size: .62rem;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+.conciergerie-availability-message:empty {
+  display: none;
+}

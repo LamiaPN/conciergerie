@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- ════════════════════════════════════════════════════════════════════════
      FICHIER : partenaire-formulaire.html
-     RÔLE    : Page formulaire de besoins (une page, 5 sections + récap).
+     RÔLE    : Page formulaire de besoins (une page, 6 sections + récap).
                Style = charte PN ; structure/ton = méthodologie MTL connecte.
 
      ┌─ SOMMAIRE ─────────────────────────────────────────────────────────┐
@@ -9,10 +9,11 @@
      │  SECTION B — Barre de progression collante                          │
      │  SECTION C — En-tête (kicker + titre + intro)                       │
      │  SECTION 1 — Votre organisation                                     │
-     │  SECTION 2 — Votre profil et vos coordonnées                        │
+     │  SECTION 2 — Personne responsable des rendez-vous                    │
      │  SECTION 3 — Qui souhaitez-vous rencontrer ?                        │
      │  SECTION 4 — Que recherchez-vous à travers ces rencontres ?         │
-     │  SECTION 5 — Quelque chose à ajouter ?                              │
+     │  SECTION 5 — Disponibilités réservées à la Conciergerie               │
+     │  SECTION 6 — Quelque chose à ajouter ?                              │
      │  SECTION R — Récapitulatif (section à part)                         │
      │  SECTION S — Barre d'envoi + scripts                                │
      └────────────────────────────────────────────────────────────────────┘
@@ -25,18 +26,54 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=20260824-form-v18">
 <!-- SECTION A — styles communs (charte PN + composants + page formulaire) dans style.css -->
 </head>
-<body>
+<body data-partner-page="besoins">
 
 <!-- ═══ SECTION B — BARRE DE PROGRESSION ═══ -->
 <div class="progress-sticky">
-  <div class="steps" id="progressSteps"><div class="step"></div><div class="step"></div><div class="step"></div><div class="step"></div><div class="step"></div></div>
-  <div class="progress-label" id="progressLabel">Section 1 sur 5 — Votre organisation</div>
+  <div class="steps" id="progressSteps"><div class="step"></div><div class="step"></div><div class="step"></div><div class="step"></div><div class="step"></div><div class="step"></div></div>
+  <div class="progress-label" id="progressLabel">Section 1 sur 6 — Votre organisation</div>
 </div>
 
 <div class="form-page">
+
+  <!-- ═══ MESSAGE DE CONFIRMATION APRÈS ENREGISTREMENT ═══ -->
+  <section class="form-success-panel" id="formSuccess" hidden>
+    <div class="form-success-icon">
+      <i class="fas fa-check"></i>
+    </div>
+    <span class="form-success-kicker">Informations enregistrées</span>
+    <h1>Merci !</h1>
+    <p>
+      Vos informations ont bien été enregistrées.
+      Notre équipe peut maintenant préparer votre sélection pour la conciergerie.
+    </p>
+    <a class="btn btn-primary btn-large form-success-next"
+       href="partenaire-selection.html"
+       data-partner-nav="choix">
+      Voir mes choix
+      <i class="fas fa-arrow-right"></i>
+    </a>
+  </section>
+
+  <nav class="partner-space-nav" aria-label="Espace Conciergerie">
+    <span class="partner-space-nav-title">Espace partenaire</span>
+    <a href="partenaire-formulaire.html" data-partner-nav="besoins">
+      <i class="fas fa-clipboard-list"></i>
+      <span>Mes besoins</span>
+    </a>
+    <a href="partenaire-selection.html" data-partner-nav="choix">
+      <i class="fas fa-list-check"></i>
+      <span>Mes choix</span>
+    </a>
+    <a href="partenaire-rendezvous.html" data-partner-nav="rendezvous">
+      <i class="fas fa-calendar-check"></i>
+      <span>Mes rendez-vous</span>
+    </a>
+  </nav>
+
   <!-- ═══ SECTION C — EN-TÊTE ═══ -->
   <div class="form-hero">
     <span class="form-kicker" id="partnerTag">MTL connecte 2026 — Service conciergerie</span>
@@ -57,30 +94,22 @@
       </div>
       <div class="field full">
         <label>Secteur(s) d'activité <span class="req">*</span> <span class="optional">— plusieurs choix</span></label>
-        <div class="choice-grid" id="f_secteurs" data-multi>
-          <button type="button" class="choice-chip" data-val="Technologie"><i class="fas fa-plus"></i> Technologie</button>
-          <button type="button" class="choice-chip" data-val="Éducation"><i class="fas fa-plus"></i> Éducation</button>
-          <button type="button" class="choice-chip" data-val="Culture"><i class="fas fa-plus"></i> Culture</button>
-          <button type="button" class="choice-chip" data-val="Finance"><i class="fas fa-plus"></i> Finance</button>
-          <button type="button" class="choice-chip" data-val="Santé"><i class="fas fa-plus"></i> Santé</button>
-          <button type="button" class="choice-chip" data-val="Autre"><i class="fas fa-plus"></i> Autre</button>
+        <div class="choice-grid vivier-choice-grid vivier-sector-grid" id="f_secteurs" data-multi>
+          <!-- Généré depuis les appellations exactes du vivier (data.json). -->
         </div>
       </div>
       <div class="field full">
         <label>Type d'organisation <span class="req">*</span></label>
         <select id="f_type">
           <option value="">Choisir…</option>
-          <option>Grande entreprise</option><option>PME</option><option>Startup</option>
-          <option>Institution publique</option><option>OBNL</option>
-          <option>Université / Centre de recherche</option><option>Autre</option>
+          <!-- Options générées depuis le vivier (data.json). -->
         </select>
       </div>
       <div class="field">
         <label>Taille de l'organisation</label>
         <select id="f_taille">
           <option value="">Choisir…</option>
-          <option>Micro (1-9)</option><option>Petite (10-49)</option>
-          <option>Moyenne (50-249)</option><option>Grande (250+)</option>
+          <!-- Options générées depuis le vivier (data.json). -->
         </select>
       </div>
       <div class="field"><label>Site web</label><input type="url" id="f_site" placeholder="https://…"></div>
@@ -95,13 +124,13 @@
   <!-- ═══ SECTION 2 — VOTRE PROFIL ET VOS COORDONNÉES ═══ -->
   <section class="form-section" data-section="1">
     <div class="section-head">
-      <h2><span class="sec-num">2.</span> Votre profil et vos coordonnées</h2>
-      <p class="welcome">Nous aimerions en savoir davantage sur vous ou sur la personne que vous représentez.</p>
+      <h2><span class="sec-num">2.</span> Personne responsable des rendez-vous de la conciergerie</h2>
+      <p class="welcome">Indiquez la personne qui participera aux rendez-vous. Elle recevra les communications et invitations de prise de rendez-vous via Pairconnex.</p>
     </div>
     <div class="grid2">
-      <div class="field"><label>Nom complet <span class="req">*</span></label><input type="text" id="f_nom" placeholder="Prénom Nom"></div>
+      <div class="field"><label>Nom complet du participant <span class="req">*</span></label><input type="text" id="f_nom" placeholder="Prénom Nom"></div>
       <div class="field"><label>Fonction au sein de l'organisation <span class="req">*</span></label><input type="text" id="f_poste" placeholder="Ex. Directrice développement"></div>
-      <div class="field"><label>Adresse courriel professionnelle <span class="req">*</span></label><input type="email" id="f_email" placeholder="nom@organisation.com"></div>
+      <div class="field"><label>Adresse courriel pour les invitations RDV <span class="req">*</span></label><input type="email" id="f_email" placeholder="nom@organisation.com"></div>
       <div class="field"><label>Numéro de téléphone</label><input type="tel" id="f_tel" placeholder="+1 …"></div>
       <div class="field full">
         <label>Langue(s) de communication préférée(s) <span class="optional">— plusieurs choix</span></label>
@@ -123,32 +152,20 @@
     <div class="grid2">
       <div class="field full">
         <div class="subq">Quel type d'organisation souhaitez-vous rencontrer&nbsp;? <span class="optional">— plusieurs choix</span></div>
-        <div class="choice-grid" id="f_type_rech" data-multi>
-          <button type="button" class="choice-chip" data-val="Entreprise privée"><i class="fas fa-plus"></i> Entreprise privée</button>
-          <button type="button" class="choice-chip" data-val="OBNL"><i class="fas fa-plus"></i> Organisme à but non lucratif</button>
-          <button type="button" class="choice-chip" data-val="Institution publique"><i class="fas fa-plus"></i> Institution publique</button>
-          <button type="button" class="choice-chip" data-val="Université / Recherche"><i class="fas fa-plus"></i> Université / Centre de recherche</button>
-          <button type="button" class="choice-chip" data-val="Autre"><i class="fas fa-plus"></i> Autre</button>
+        <div class="choice-grid vivier-choice-grid" id="f_type_rech" data-multi>
+          <!-- Généré depuis les appellations exactes du vivier (data.json). -->
         </div>
       </div>
       <div class="field full">
         <div class="subq">Quel(s) secteur(s) d'activité ciblez-vous&nbsp;? <span class="optional">— plusieurs choix</span></div>
-        <div class="choice-grid" id="f_secteurs_cibles" data-multi>
-          <button type="button" class="choice-chip" data-val="Technologie"><i class="fas fa-plus"></i> Technologie</button>
-          <button type="button" class="choice-chip" data-val="Éducation"><i class="fas fa-plus"></i> Éducation</button>
-          <button type="button" class="choice-chip" data-val="Culture"><i class="fas fa-plus"></i> Culture</button>
-          <button type="button" class="choice-chip" data-val="Finance"><i class="fas fa-plus"></i> Finance</button>
-          <button type="button" class="choice-chip" data-val="Santé"><i class="fas fa-plus"></i> Santé</button>
-          <button type="button" class="choice-chip" data-val="Autre"><i class="fas fa-plus"></i> Autre</button>
+        <div class="choice-grid vivier-choice-grid vivier-sector-grid" id="f_secteurs_cibles" data-multi>
+          <!-- Généré depuis les appellations exactes du vivier (data.json). -->
         </div>
       </div>
       <div class="field full">
         <div class="subq">Quelle taille d'organisation visez-vous&nbsp;? <span class="optional">— plusieurs choix</span></div>
-        <div class="choice-grid" id="f_taille_rech" data-multi>
-          <button type="button" class="choice-chip" data-val="Micro"><i class="fas fa-plus"></i> Micro</button>
-          <button type="button" class="choice-chip" data-val="PME"><i class="fas fa-plus"></i> PME</button>
-          <button type="button" class="choice-chip" data-val="Grande entreprise"><i class="fas fa-plus"></i> Grande entreprise</button>
-          <button type="button" class="choice-chip" data-val="Indifférent"><i class="fas fa-plus"></i> Indifférent</button>
+        <div class="choice-grid vivier-choice-grid" id="f_taille_rech" data-multi>
+          <!-- Généré depuis les appellations exactes du vivier (data.json). -->
         </div>
       </div>
       <div class="field full">
@@ -171,7 +188,7 @@
         <button type="button" class="choice-chip" data-val="Partenariat stratégique"><i class="fas fa-plus"></i> Partenariat stratégique</button>
         <button type="button" class="choice-chip" data-val="Collaboration R&D"><i class="fas fa-plus"></i> Collaboration en R&D</button>
         <button type="button" class="choice-chip" data-val="Investissement"><i class="fas fa-plus"></i> Investissement / financement</button>
-        <button type="button" class="choice-chip" data-val="Bonnes pratiques"><i class="fas fa-plus"></i> Échange de bonnes pratiques</button>
+        <button type="button" class="choice-chip" data-val="Réseautage et rencontres"><i class="fas fa-plus"></i> Réseautage et rencontres</button>
         <button type="button" class="choice-chip" data-val="Autre"><i class="fas fa-plus"></i> Autre</button>
       </div>
     </div>
@@ -181,10 +198,43 @@
     </div>
   </section>
 
-  <!-- ═══ SECTION 5 — COMPLÉMENTS ═══ -->
-  <section class="form-section" data-section="4">
+  <!-- ═══ SECTION 5 — DISPONIBILITÉS CONCIERGERIE ═══ -->
+  <section class="form-section availability-section" data-section="4">
     <div class="section-head">
-      <h2><span class="sec-num">5.</span> Quelque chose à ajouter&nbsp;?</h2>
+      <h2><span class="sec-num">5.</span> Vos disponibilités pour les rencontres Conciergerie</h2>
+      <p class="welcome">
+        Afin de nous permettre de planifier vos rendez-vous sans conflit avec les autres activités de MTL connecte,
+        merci de sélectionner les plages horaires que vous vous engagez à garder disponibles pour la Conciergerie.
+      </p>
+    </div>
+
+    <div class="field full">
+      <div class="subq">
+        Quelles plages pouvez-vous réserver à vos rendez-vous&nbsp;?
+        <span class="req">*</span>
+        <span class="optional">— plusieurs choix</span>
+      </div>
+
+      <div class="choice-grid availability-grid" id="f_disponibilites" data-multi>
+        <button type="button" class="choice-chip availability-chip" data-val="Mardi matin"><i class="fas fa-plus"></i> Mardi 13 oct. · matin</button>
+        <button type="button" class="choice-chip availability-chip" data-val="Mardi après-midi"><i class="fas fa-plus"></i> Mardi 13 oct. · après-midi</button>
+        <button type="button" class="choice-chip availability-chip" data-val="Mercredi matin"><i class="fas fa-plus"></i> Mercredi 14 oct. · matin</button>
+        <button type="button" class="choice-chip availability-chip" data-val="Mercredi après-midi"><i class="fas fa-plus"></i> Mercredi 14 oct. · après-midi</button>
+        <button type="button" class="choice-chip availability-chip" data-val="Jeudi matin"><i class="fas fa-plus"></i> Jeudi 15 oct. · matin</button>
+        <button type="button" class="choice-chip availability-chip" data-val="Jeudi après-midi"><i class="fas fa-plus"></i> Jeudi 15 oct. · après-midi</button>
+      </div>
+
+      <p class="availability-note">
+        <i class="fas fa-calendar-check"></i>
+        Les plages sélectionnées seront considérées comme réservées à vos rendez-vous Conciergerie.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ SECTION 6 — COMPLÉMENTS ═══ -->
+  <section class="form-section" data-section="5">
+    <div class="section-head">
+      <h2><span class="sec-num">6.</span> Quelque chose à ajouter&nbsp;?</h2>
       <p class="welcome">Ces détails, facultatifs, nous aident à affiner encore la mise en relation.</p>
     </div>
     <div class="field full"><label>Avez-vous déjà identifié des organisations que vous souhaitez rencontrer&nbsp;? <span class="optional">— facultatif</span></label><textarea id="f_contacts_ident" placeholder="Si oui, précisez nom / organisation."></textarea></div>
@@ -204,12 +254,70 @@
 <div class="form-submit-bar">
   <div class="form-submit-inner">
     <div class="status" id="formStatus">Vos réponses aideront notre équipe à préparer votre sélection.</div>
-    <button class="btn btn-primary btn-large" id="submitForm"><i class="fas fa-paper-plane"></i> Enregistrer mes informations</button>
+    <button type="button" class="btn btn-primary btn-large" id="submitForm"><i class="fas fa-paper-plane"></i> Enregistrer mes informations</button>
   </div>
 </div>
 
-<script src="js/config.js"></script>
-<script src="js/api.js"></script>
-<script src="js/partenaire-formulaire.js"></script>
+<script src="js/config.js?v=20260824-form-v12"></script>
+<script src="js/api.js?v=20260824-form-v12"></script>
+<script src="js/partenaire-espace.js?v=20260824-form-v12"></script>
+<script src="js/partenaire-formulaire.js?v=20260824-form-v13"></script>
+<script>
+/* Affichage du référentiel en français uniquement.
+   La valeur source data-val / option.value reste intacte pour les enregistrements. */
+(() => {
+  const chipIds = ["f_secteurs", "f_secteurs_cibles", "f_type_rech", "f_taille_rech"];
+  const selectIds = ["f_type", "f_taille"];
+  const frenchOnly = value => String(value || "").split("/")[0].trim();
+
+  function cleanChip(chip) {
+    const source = chip.dataset.val || chip.textContent || "";
+    const label = frenchOnly(source);
+    if (!label) return;
+    const icon = chip.querySelector("i");
+    const textNodes = Array.from(chip.childNodes).filter(node => node !== icon);
+    const current = textNodes.map(node => node.textContent || "").join("").trim();
+    if (current === label) return;
+    textNodes.forEach(node => node.remove());
+    chip.append(document.createTextNode(" " + label));
+  }
+
+  function cleanSelect(select) {
+    Array.from(select.options).forEach(option => {
+      if (!option.value) return;
+      const label = frenchOnly(option.textContent);
+      if (label && option.textContent.trim() !== label) option.textContent = label;
+    });
+  }
+
+  function applyFrenchLabels() {
+    let ready = true;
+    chipIds.forEach(id => {
+      const root = document.getElementById(id);
+      if (!root) return;
+      const chips = root.querySelectorAll(".choice-chip");
+      if (!chips.length) ready = false;
+      chips.forEach(cleanChip);
+    });
+    selectIds.forEach(id => {
+      const select = document.getElementById(id);
+      if (!select) return;
+      if (select.options.length <= 1) ready = false;
+      cleanSelect(select);
+    });
+    return ready;
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    let attempts = 0;
+    const timer = setInterval(() => {
+      attempts += 1;
+      if (applyFrenchLabels() || attempts >= 120) clearInterval(timer);
+    }, 250);
+    applyFrenchLabels();
+  });
+})();
+</script>
+
 </body>
 </html>
