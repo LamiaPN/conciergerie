@@ -21,6 +21,7 @@
 const SPREADSHEET_ID = "1XPBIFw_0AZQEQIlAxCiDXEh4eybZHT4SbihiLdLxp0c";
 const SHEET_PARTENAIRES = "Partenaires";
 const SHEET_SELECTIONS = "Selections";
+const SHEET_SELECTION_STATUS = "Selections_statut";
 const SHEET_FORMULAIRES = "Formulaires";
 const SHEET_FORMULAIRES_HISTORIQUE = "Formulaires_historique";
 const SHEET_PROPOSITIONS = "Propositions";
@@ -39,6 +40,10 @@ function doGet(e) {
       requirePartnerToken_(p, token);
       return json_({ selections: readSelections_(p) });
     }
+    if (action === "get_selection_status") {
+      requirePartnerToken_(p, token);
+      return json_({ status: readSelectionStatus_(p) });
+    }
     if (action === "get_propositions") {
       requirePartnerToken_(p, token);
       return json_({ propositions: readPropositions_(p) });
@@ -46,15 +51,6 @@ function doGet(e) {
     if (action === "get_formulaire") {
       requirePartnerToken_(p, token);
       return json_({ formulaire: readFormulaire_(p) });
-    }
-    if (action === "get_formulaire_jsonp") {
-      const callback = (e.parameter.callback || "").toString().trim();
-      try {
-        requirePartnerToken_(p, token);
-        return jsonp_(callback, { formulaire: readFormulaire_(p) });
-      } catch (err) {
-        return jsonp_(callback, { error: err.message });
-      }
     }
     if (action === "get_rencontres") {
       requirePartnerToken_(p, token);
@@ -64,6 +60,10 @@ function doGet(e) {
     if (action === "admin_get") {
       requireAdminToken_(token);
       return json_({ selections: readSelections_(p) });
+    }
+    if (action === "admin_get_selection_status") {
+      requireAdminToken_(token);
+      return json_({ status: readSelectionStatus_(p) });
     }
     if (action === "admin_get_propositions") {
       requireAdminToken_(token);
@@ -93,7 +93,7 @@ function doGet(e) {
     }
     if (action === "build_info") {
       return json_({
-        build: "2026-08-24-beta-form-notif-v10",
+        build: "2026-08-25-selection-lock-v11",
         delete_referentiel: true,
         get_formulaire: true,
         admin_get_formulaire: true,
@@ -105,6 +105,8 @@ function doGet(e) {
         save_rencontres: true,
         get_rencontres: true,
         rdv_conflict_lock: true,
+        selection_lock: true,
+        admin_unlock_selections: true,
         admin_token_rotation_helper: true
       });
     }
@@ -125,8 +127,21 @@ function doPost(e) {
     if (action === "save") {
       requirePartnerToken_(p, token);
       const selections = Array.isArray(body.selections) ? body.selections : [];
-      writeSelections_(p, selections);
+      saveSelectionsIfUnlocked_(p, selections);
       return json_({ ok: true, count: selections.length });
+    }
+
+    if (action === "finalize_selections") {
+      requirePartnerToken_(p, token);
+      const selections = Array.isArray(body.selections) ? body.selections : [];
+      const status = finalizeSelections_(p, selections);
+      return json_({ ok: true, count: selections.length, locked: true, status });
+    }
+
+    if (action === "admin_unlock_selections") {
+      requireAdminToken_(token);
+      const status = unlockSelections_(p);
+      return json_({ ok: true, locked: false, status });
     }
 
     if (action === "save_formulaire") {
@@ -271,6 +286,136 @@ function readSelections_(partenaireId) {
     .filter(Boolean);
 }
 
+
+/* ═══ SECTION 4B — STATUT DE VALIDATION DES SÉLECTIONS ══════════════════ */
+function ensureSelectionStatusSheet_() {
+  const ss = ss_();
+  let sh = ss.getSheetByName(SHEET_SELECTION_STATUS);
+
+  if (!sh) {
+    sh = ss.insertSheet(SHEET_SELECTION_STATUS);
+    sh.getRange(1, 1, 1, 4).setValues([[
+      "partenaire_id",
+      "statut",
+      "date_validation",
+      "date_modification"
+    ]]);
+  }
+
+  return sh;
+}
+
+function readSelectionStatus_(partenaireId) {
+  const sh = ensureSelectionStatusSheet_();
+  const rows = sh.getDataRange().getValues();
+  if (rows.length < 2) {
+    return { locked: false, statut: "modifiable", date_validation: "", date_modification: "" };
+  }
+
+  const header = rows[0].map(value => String(value).trim());
+  const iP = header.indexOf("partenaire_id");
+  const iS = header.indexOf("statut");
+  const iV = header.indexOf("date_validation");
+  const iM = header.indexOf("date_modification");
+  if (iP === -1 || iS === -1) throw new Error("Colonnes Selections_statut introuvables.");
+
+  const row = rows.slice(1).find(item => String(item[iP] || "").trim() === partenaireId);
+  if (!row) {
+    return { locked: false, statut: "modifiable", date_validation: "", date_modification: "" };
+  }
+
+  const formatValue = value => value instanceof Date
+    ? Utilities.formatDate(value, Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm")
+    : String(value || "").trim();
+
+  const statut = String(row[iS] || "modifiable").trim() || "modifiable";
+  return {
+    locked: statut === "verrouille",
+    statut,
+    date_validation: iV === -1 ? "" : formatValue(row[iV]),
+    date_modification: iM === -1 ? "" : formatValue(row[iM])
+  };
+}
+
+function writeSelectionStatusSansLock_(partenaireId, locked) {
+  const sh = ensureSelectionStatusSheet_();
+  const rows = sh.getDataRange().getValues();
+  const header = rows[0].map(value => String(value).trim());
+  const iP = header.indexOf("partenaire_id");
+  const iS = header.indexOf("statut");
+  const iV = header.indexOf("date_validation");
+  const iM = header.indexOf("date_modification");
+  if (iP === -1 || iS === -1 || iV === -1 || iM === -1) {
+    throw new Error("Colonnes Selections_statut introuvables.");
+  }
+
+  const stamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm");
+  let rowIndex = -1;
+
+  for (let i = 1; i < rows.length; i++) {
+    if (String(rows[i][iP] || "").trim() === partenaireId) {
+      rowIndex = i + 1;
+      break;
+    }
+  }
+
+  const row = new Array(header.length).fill("");
+  row[iP] = partenaireId;
+  row[iS] = locked ? "verrouille" : "modifiable";
+  row[iV] = locked ? stamp : "";
+  row[iM] = stamp;
+
+  if (rowIndex === -1) {
+    sh.getRange(sh.getLastRow() + 1, 1, 1, header.length).setValues([row]);
+  } else {
+    sh.getRange(rowIndex, 1, 1, header.length).setValues([row]);
+  }
+
+  return {
+    locked: Boolean(locked),
+    statut: locked ? "verrouille" : "modifiable",
+    date_validation: locked ? stamp : "",
+    date_modification: stamp
+  };
+}
+
+function saveSelectionsIfUnlocked_(partenaireId, orgIds) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    const status = readSelectionStatus_(partenaireId);
+    if (status.locked) {
+      throw new Error("Vos choix ont été validés et sont maintenant en lecture seule. Contactez l'équipe de MTL connecte pour demander une modification.");
+    }
+    writeSelectionsSansLock_(partenaireId, orgIds);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function finalizeSelections_(partenaireId, orgIds) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    const status = readSelectionStatus_(partenaireId);
+    if (status.locked) return status;
+    writeSelectionsSansLock_(partenaireId, orgIds);
+    return writeSelectionStatusSansLock_(partenaireId, true);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function unlockSelections_(partenaireId) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    return writeSelectionStatusSansLock_(partenaireId, false);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
 /* ═══ SECTION 5 — LECTURE / ÉCRITURE DES PROPOSITIONS ═══════════════════ */
 function readPropositions_(partenaireId) {
   const sh = ss_().getSheetByName(SHEET_PROPOSITIONS);
@@ -326,28 +471,32 @@ function writeSelections_(partenaireId, orgIds) {
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
-    const sh = ss_().getSheetByName(SHEET_SELECTIONS);
-    if (!sh) throw new Error("Feuille Selections introuvable.");
-    const rows = sh.getDataRange().getValues();
-    if (!rows.length) throw new Error("La feuille Selections ne contient pas d'en-têtes.");
-
-    const header = rows[0].map(v => String(v).trim());
-    const iP = header.indexOf("partenaire_id");
-    if (iP === -1) throw new Error("Colonne partenaire_id introuvable.");
-
-    for (let r = rows.length - 1; r >= 1; r--) {
-      if (String(rows[r][iP]).trim() === partenaireId) sh.deleteRow(r + 1);
-    }
-
-    const ids = [...new Set(orgIds.map(id => String(id).trim()).filter(Boolean))];
-    if (!ids.length) return;
-
-    const stamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm");
-    const nouvellesLignes = ids.map(id => [partenaireId, id, stamp]);
-    sh.getRange(sh.getLastRow() + 1, 1, nouvellesLignes.length, 3).setValues(nouvellesLignes);
+    writeSelectionsSansLock_(partenaireId, orgIds);
   } finally {
     lock.releaseLock();
   }
+}
+
+function writeSelectionsSansLock_(partenaireId, orgIds) {
+  const sh = ss_().getSheetByName(SHEET_SELECTIONS);
+  if (!sh) throw new Error("Feuille Selections introuvable.");
+  const rows = sh.getDataRange().getValues();
+  if (!rows.length) throw new Error("La feuille Selections ne contient pas d'en-têtes.");
+
+  const header = rows[0].map(v => String(v).trim());
+  const iP = header.indexOf("partenaire_id");
+  if (iP === -1) throw new Error("Colonne partenaire_id introuvable.");
+
+  for (let r = rows.length - 1; r >= 1; r--) {
+    if (String(rows[r][iP]).trim() === partenaireId) sh.deleteRow(r + 1);
+  }
+
+  const ids = [...new Set(orgIds.map(id => String(id).trim()).filter(Boolean))];
+  if (!ids.length) return;
+
+  const stamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm");
+  const nouvellesLignes = ids.map(id => [partenaireId, id, stamp]);
+  sh.getRange(sh.getLastRow() + 1, 1, nouvellesLignes.length, 3).setValues(nouvellesLignes);
 }
 
 /* ═══ SECTION 7 — FORMULAIRE, DISPONIBILITÉS ET HISTORIQUE ═════════════ */
@@ -1522,16 +1671,4 @@ function ss_() {
 
 function json_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
-}
-
-function jsonp_(callback, obj) {
-  const cb = String(callback || "").trim();
-  if (!/^[A-Za-z_$][0-9A-Za-z_$]*$/.test(cb)) {
-    return ContentService
-      .createTextOutput('throw new Error("Callback JSONP invalide.");')
-      .setMimeType(ContentService.MimeType.JAVASCRIPT);
-  }
-  return ContentService
-    .createTextOutput(`${cb}(${JSON.stringify(obj)});`)
-    .setMimeType(ContentService.MimeType.JAVASCRIPT);
 }

@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pilote — Maquette globale</title>
+<link rel="stylesheet" href="CSS/app.css">
+</head>
+<body>
+<!-- =====================================================
+     PILOTE - INDEX.HTML
+
+     SOMMAIRE
+     1. Structure générale
+     2. Barre latérale
+     3. En-tête principal
+     4. Page Aujourd’hui
+     5. Page Organisations
+     6. Page Pipeline CRM
+     7. Page Activations
+     8. Page Courriels
+     9. Page Transcription
+     10. Import Airtable
+     11. Actions rapides et fenêtres modales
+
+     RÈGLE DE MAINTENANCE
+     - Conserver les identifiants utilisés par JavaScript.
+     - Mettre à jour ce sommaire si une section est ajoutée.
+===================================================== -->
+
+<!-- =====================================================
+     1. STRUCTURE GÉNÉRALE
+===================================================== -->
+<div class="shell">
+  <!-- =====================================================
+     2. BARRE LATÉRALE
+===================================================== -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">P</div>
+      <div class="brand-copy">
+        <div class="brand-name">Pilote</div>
+        <div class="brand-tag">PARTENARIATS</div>
+      </div>
+    </div>
+
+    <nav class="nav" id="nav">
+      <div class="nav-label">MON ESPACE</div>
+      <button class="active" data-page="today"><span class="nav-ico">⌂</span><span>Aujourd’hui</span></button>
+      <button data-page="organisations"><span class="nav-ico">▣</span><span>Organisations</span></button>
+
+      <div class="nav-label nav-label-spaced">PILOTAGE</div>
+      <button data-page="pipeline"><span class="nav-ico">≋</span><span>Pipeline CRM</span></button>
+      <button data-page="activations"><span class="nav-ico">✓</span><span>Activations</span></button>
+
+      <div class="nav-label nav-label-spaced">COMMUNICATION</div>
+      <button data-page="emails"><span class="nav-ico">✉</span><span>Courriels</span></button>
+      <button data-page="transcription"><span class="nav-ico">◉</span><span>Transcription</span></button>
+
+      <div class="nav-label nav-label-spaced">OUTILS</div>
+      <button type="button" class="nav-tool" id="exportJsonBtn"><span class="nav-ico">⇩</span><span>Exporter JSON</span></button>
+      <button type="button" class="nav-tool" id="importCsvBtn"><span class="nav-ico">＋</span><span>Prévisualiser CSV Airtable</span></button>
+      <input class="file-input-hidden" type="file" id="importCsvInput" accept=".csv,text/csv">
+      <button type="button" class="nav-tool" id="importJsonBtn"><span class="nav-ico">⇧</span><span>Importer JSON</span></button>
+      <input class="file-input-hidden" type="file" id="importJsonInput" accept=".json,application/json">
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="badge-demo"><span class="dot"></span> Mode local</div>
+      <div class="sidebar-note">Aucun envoi réseau · aucune synchronisation · aucune API.</div>
+      <div class="storage-status" id="storageStatus"><strong>Stockage</strong><br>Initialisation…</div>
+    </div>
+  </aside>
+
+  <main class="main">
+<!-- =====================================================
+     3. EN-TÊTE PRINCIPAL
+===================================================== -->
+    <header class="topbar">
+      <div>
+        <h1 id="pageTitle">Aujourd’hui</h1>
+        <div class="subtle">Lundi 24 août 2026 · Vue de travail personnelle</div>
+      </div>
+      <div class="quick-actions">
+        <button class="btn" id="newMeetingBtn">+ Rencontre</button>
+        <button class="btn primary" id="quickNoteTop">+ Pense-bête</button>
+      </div>
+    </header>
+
+<!-- =====================================================
+     4. PAGE AUJOURD’HUI
+===================================================== -->
+    <section class="page active" id="page-today">
+      <div class="kpis">
+        <div class="card kpi"><b>7</b><span>actions dues aujourd’hui</span></div>
+        <div class="card kpi"><b>3</b><span>courriels à traiter</span></div>
+        <div class="card kpi"><b>2</b><span>rencontres aujourd’hui</span></div>
+        <div class="card kpi"><b>2</b><span>dossiers bloqués</span></div>
+      </div>
+
+      <div class="grid-today">
+        <div class="stack">
+          <div class="card panel">
+            <div class="panel-head">
+              <div>
+                <h2>File d’actions</h2>
+                <div class="subtle">Uniquement les actions datées · aujourd’hui et retards</div>
+              </div>
+              <select class="btn small" id="actionFilter">
+                <option value="all">Aujourd’hui + retards</option>
+                <option value="overdue">Retards</option>
+                <option value="today">Aujourd’hui</option>
+              </select>
+            </div>
+            <div class="action-list" id="actionList"></div>
+          </div>
+
+          <div class="card panel">
+            <div class="panel-head">
+              <div>
+                <h2>Planning proposé</h2>
+                <div class="subtle">Maquette : proposition modifiable, pas de moteur automatique actif</div>
+              </div>
+              <span class="fake-label">PRÉVU PLUS TARD</span>
+            </div>
+            <div class="timeline">
+              <div class="timeline-row"><div class="timeline-time">08:00</div><div class="timeline-item"><b>Relances prioritaires</b><div class="subtle">R2i · VO2 Group · Spak</div></div></div>
+              <div class="timeline-row"><div class="timeline-time">09:30</div><div class="timeline-item"><b>Rencontre partenaire</b><div class="subtle">Préparation + notes</div></div></div>
+              <div class="timeline-row"><div class="timeline-time">11:00</div><div class="timeline-item"><b>Ententes / validations</b><div class="subtle">Vérifier les dossiers bloqués</div></div></div>
+              <div class="timeline-row"><div class="timeline-time">14:00</div><div class="timeline-item"><b>Conciergerie</b><div class="subtle">Suivi des organisations proposées</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stack">
+          <div class="card panel">
+            <div class="panel-head">
+              <div>
+                <h3>Pense-bêtes à traiter</h3>
+                <div class="subtle">Aucune date ni rattachement obligatoire</div>
+              </div>
+              <button class="btn small primary" id="quickNoteSide">+ Ajouter</button>
+            </div>
+            <div class="note-list" id="noteList"></div>
+          </div>
+
+          <div class="card panel">
+            <div class="panel-head"><h3>Prochaine rencontre</h3></div>
+            <div class="meeting">
+              <strong>11:30 · Dialog Insight</strong>
+              <div class="subtle">Sujet : suivi de l’entente et visibilité</div>
+              <div style="margin-top:9px"><button class="btn small">Ouvrir la fiche</button> <button class="btn small">Prendre des notes</button></div>
+            </div>
+          </div>
+
+          <div class="card panel">
+            <div class="panel-head"><h3>Dossiers bloqués</h3></div>
+            <div class="stack">
+              <div class="blocked"><b>R2i</b><div class="subtle">Validation d’un élément de communication</div></div>
+              <div class="blocked"><b>UM6P</b><div class="subtle">Action interne à confirmer</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<!-- =====================================================
+     5. PAGE ORGANISATIONS
+===================================================== -->
+    <section class="page" id="page-organisations">
+      <div class="org-layout">
+        <div class="card org-directory">
+          <input class="search" id="orgSearch" placeholder="Rechercher une organisation">
+          <div id="orgDirectory"></div>
+        </div>
+        <div class="card detail">
+          <div class="detail-head">
+            <div>
+              <h2 id="orgName">R2i</h2>
+              <div class="subtle" id="orgMeta">Partenaire · Activation</div>
+            </div>
+            <span class="chip green" id="orgStatus">Actif</span>
+          </div>
+          <div class="tabs" id="orgTabs">
+            <button class="active">Vue générale</button>
+            <button>Contacts</button>
+            <button>Projets</button>
+            <button>Courriels</button>
+            <button>Rencontres</button>
+            <button>Ententes</button>
+            <button>Historique</button>
+          </div>
+          <div class="detail-grid">
+            <div class="mini">
+              <b>Prochaine action</b>
+              <div id="orgNextAction">Valider l’élément de communication</div>
+              <div class="subtle" id="orgNextDate">Échéance : aujourd’hui</div>
+            </div>
+            <div class="mini">
+              <b>Projet principal</b>
+              <div id="orgProject">MTL connecte 2026</div>
+              <div class="subtle" id="orgProjectMeta">Partenariat en activation</div>
+            </div>
+            <div class="mini">
+              <b>Contact principal</b>
+              <div id="orgContact">Kim Boisseau-Chin</div>
+              <div class="subtle" id="orgContactMeta">R2i</div>
+            </div>
+            <div class="mini">
+              <b>État du dossier</b>
+              <div id="orgState">Activation et suivi</div>
+              <div class="subtle" id="orgStateMeta">3 éléments en cours</div>
+            </div>
+          </div>
+          <div class="legend">Principe validé : l’Organisation est l’objet central. Contacts, projets, courriels, rencontres, ententes, activations et tâches s’y rattachent.</div>
+        </div>
+      </div>
+    </section>
+
+<!-- =====================================================
+     6. PAGE PIPELINE CRM
+===================================================== -->
+    <section class="page" id="page-pipeline">
+      <div class="section-tools">
+        <input class="search" placeholder="Rechercher dans le pipeline">
+        <select class="btn"><option>Tous les projets</option><option>MTL connecte 2026</option><option>Conciergerie</option><option>MTL Tech Awards</option></select>
+        <div class="view-toggle" id="viewToggle">
+          <button class="active" data-view="kanban">Kanban</button>
+          <button data-view="list">Liste</button>
+          <button data-view="table">Tableau</button>
+        </div>
+      </div>
+
+      <div class="crm-view active" id="crm-kanban">
+        <div class="columns">
+          <div class="kanban-col">
+            <div class="kanban-title">À contacter / discussion <span class="chip">3</span></div>
+            <div class="org-card"><strong>Organisation A</strong><span class="chip">Prospect</span><div class="next">Prochaine action : premier contact · 25 août</div></div>
+            <div class="org-card"><strong>Organisation B</strong><span class="chip warn">Relance</span><div class="next">Prochaine action : relancer · aujourd’hui</div></div>
+          </div>
+          <div class="kanban-col">
+            <div class="kanban-title">Proposition / entente <span class="chip">4</span></div>
+            <div class="org-card"><strong>Spak</strong><span class="chip">Proposition</span><div class="next">Prochaine action : envoyer le plan de commandite</div></div>
+            <div class="org-card"><strong>Organisation C</strong><span class="chip">Entente</span><div class="next">Prochaine action : valider les clauses</div></div>
+          </div>
+          <div class="kanban-col">
+            <div class="kanban-title">Signature <span class="chip">2</span></div>
+            <div class="org-card"><strong>Organisation D</strong><span class="chip green">À signer</span><div class="next">Prochaine action : contre-signature</div></div>
+          </div>
+          <div class="kanban-col">
+            <div class="kanban-title">Activation et suivi <span class="chip">6</span></div>
+            <div class="org-card"><strong>R2i</strong><span class="chip green">Signé</span><div class="next">Prochaine action : validation communication</div></div>
+            <div class="org-card"><strong>UM6P</strong><span class="chip green">Signé</span><div class="next">Prochaine action : suivi des activations</div></div>
+            <div class="org-card"><strong>VO2 Group</strong><span class="chip green">Signé</span><div class="next">Prochaine action : conciergerie</div></div>
+          </div>
+        </div>
+        <div class="legend">Le changement de phase n’est pas automatique : l’application pourra le proposer, mais Lamia valide le déplacement.</div>
+      </div>
+
+      <div class="crm-view" id="crm-list">
+        <div class="list-row">
+          <div class="list-summary"><b>R2i</b><span class="chip green">Activation</span><span>Valider l’élément de communication</span><button class="btn small toggle-details">Détails</button></div>
+          <div class="list-details">Sous-tâches : panel · billetterie · visibilité. Les dates et responsables alimentent la file d’actions.</div>
+        </div>
+        <div class="list-row">
+          <div class="list-summary"><b>Spak</b><span class="chip">Proposition</span><span>Envoyer le plan de commandite</span><button class="btn small toggle-details">Détails</button></div>
+          <div class="list-details">Dossier commercial actif. Prochaine action à dater / confirmer.</div>
+        </div>
+        <div class="list-row">
+          <div class="list-summary"><b>UM6P</b><span class="chip green">Activation</span><span>Suivi des éléments convenus</span><button class="btn small toggle-details">Détails</button></div>
+          <div class="list-details">Plusieurs activations parallèles rattachées à la même organisation.</div>
+        </div>
+      </div>
+
+      <div class="crm-view" id="crm-table">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Organisation</th><th>Phase</th><th>Projet</th><th>Prochaine action</th><th>Date</th><th>Responsable</th></tr></thead>
+            <tbody>
+              <tr><td>R2i</td><td>Activation et suivi</td><td>MTL connecte 2026</td><td>Validation communication</td><td>24 août</td><td>Lamia</td></tr>
+              <tr><td>Spak</td><td>Proposition / entente</td><td>MTL connecte 2026</td><td>Plan de commandite</td><td>24 août</td><td>Lamia</td></tr>
+              <tr><td>UM6P</td><td>Activation et suivi</td><td>MTL connecte 2026</td><td>Suivi activations</td><td>25 août</td><td>Lamia</td></tr>
+              <tr><td>VO2 Group</td><td>Activation et suivi</td><td>Conciergerie</td><td>Préparer la sélection</td><td>26 août</td><td>Lamia</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="legend">Vue secondaire de gestion : utile pour filtrer, corriger et contrôler plusieurs champs. Elle ne remplace pas le Kanban au quotidien.</div>
+      </div>
+    </section>
+
+<!-- =====================================================
+     7. PAGE ACTIVATIONS
+===================================================== -->
+    <section class="page" id="page-activations">
+      <div class="filters">
+        <select><option>Vue par partenaire</option><option>Vue par type</option></select>
+        <select><option>Tous les statuts</option><option>À faire</option><option>En attente</option><option>En cours</option><option>Fait</option></select>
+        <select><option>Tous les responsables</option><option>Moi</option><option>Collègue</option></select>
+      </div>
+      <div class="activations-grid">
+        <div class="card panel">
+          <div class="panel-head"><h2>Activations en cours</h2><button class="btn small primary">+ Activation</button></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Organisation</th><th>Type</th><th>Responsable</th><th>Statut</th><th>Prochaine action</th></tr></thead>
+              <tbody>
+                <tr><td>R2i</td><td>Visibilité</td><td>Collègue</td><td><span class="chip warn">En attente</span></td><td>26 août</td></tr>
+                <tr><td>VO2 Group</td><td>Conciergerie</td><td>Moi</td><td><span class="chip green">En cours</span></td><td>25 août</td></tr>
+                <tr><td>UM6P</td><td>Billetterie</td><td>Moi</td><td><span class="chip">À faire</span></td><td>28 août</td></tr>
+                <tr><td>Organisation D</td><td>Kiosque</td><td>Collègue</td><td><span class="chip green">En cours</span></td><td>27 août</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card panel">
+          <div class="panel-head"><h3>Types proposés</h3></div>
+          <div class="stack">
+            <span class="chip">Entente / facture</span>
+            <span class="chip">Billetterie</span>
+            <span class="chip">Avantages / activités</span>
+            <span class="chip">Obligations</span>
+            <span class="chip">Visibilité</span>
+            <span class="chip">Kiosque</span>
+            <span class="chip">Conciergerie</span>
+          </div>
+          <div class="legend">Un type personnalisé reste possible. La date de prochaine action est conservée pour faire remonter les éléments en attente dans Aujourd’hui.</div>
+        </div>
+      </div>
+    </section>
+
+<!-- =====================================================
+     8. PAGE COURRIELS
+===================================================== -->
+    <section class="page" id="page-emails">
+      <div class="card panel">
+        <div class="panel-head">
+          <div>
+            <h2>Réponses à suivre</h2>
+            <div class="subtle">Brique Email Analytics Studio · import manuel dans le MVP</div>
+          </div>
+          <div><button class="btn small">Importer</button> <button class="btn small">Importer ce mois</button></div>
+        </div>
+        <div class="filters">
+          <input placeholder="Rechercher un message">
+          <select><option>Tous les statuts</option><option>À répondre</option><option>Relance</option><option>Traité</option></select>
+          <select><option>Toutes les organisations</option><option>R2i</option><option>UM6P</option><option>VO2 Group</option></select>
+        </div>
+        <div class="mail-list">
+          <div class="mail"><div><strong>R2i — participation MTL connecte 2026</strong><div class="snippet">Message rattaché automatiquement à l’organisation par l’adresse normalisée.</div></div><div><span class="chip red">À répondre</span></div></div>
+          <div class="mail"><div><strong>Spak — Plan de commandite 2026</strong><div class="snippet">Demande explicite détectée dans l’historique importé.</div></div><div><span class="chip warn">Relance</span></div></div>
+          <div class="mail"><div><strong>Dialog Insight — suivi entente</strong><div class="snippet">Conversation rattachée au dossier partenaire.</div></div><div><span class="chip green">Suivi</span></div></div>
+        </div>
+        <div class="legend">Aucun envoi automatique dans cette maquette. Une future assistance peut préparer une réponse, mais l’envoi restera soumis à validation.</div>
+      </div>
+    </section>
+
+<!-- =====================================================
+     9. PAGE TRANSCRIPTION
+===================================================== -->
+    <section class="page" id="page-transcription">
+      <div class="transcription-layout">
+        <div class="card panel">
+          <div class="panel-head">
+            <div><h2>Nouvelle transcription</h2><div class="subtle">À rattacher ensuite à une rencontre ou une organisation</div></div>
+          </div>
+          <div class="drop">
+            <div style="font-size:34px">🎙️</div>
+            <b>Importer un fichier audio</b>
+            <p class="subtle">ou enregistrer directement depuis l’application</p>
+            <button class="btn">Choisir un fichier</button>
+            <button class="btn">Enregistrer</button>
+          </div>
+          <div style="margin-top:12px">
+            <label class="subtle">Rattachement</label>
+            <select class="search" style="width:100%;margin-top:5px"><option>R2i — rencontre du 24 août</option><option>UM6P</option><option>Autre organisation…</option></select>
+          </div>
+        </div>
+        <div class="card panel">
+          <div class="panel-head">
+            <div><h2>Résultat proposé</h2><div class="subtle">Toute création de tâche ou de courriel reste à valider</div></div>
+            <span class="fake-label">MAQUETTE</span>
+          </div>
+          <div class="output">
+            <div class="output-block"><h3>Résumé fidèle</h3><div>Résumé de la rencontre présenté ici après transcription.</div></div>
+            <div class="output-block"><h3>Actions et responsables</h3><div>1. Valider l’élément de visibilité — Lamia<br>2. Faire le suivi interne — collègue</div></div>
+            <div class="output-block"><h3>Échéances mentionnées</h3><div>26 août · 1er septembre</div></div>
+            <div class="output-block"><h3>Courriel de suivi proposé</h3><div class="subtle">Le texte proposé pourra être modifié avant validation. Aucun envoi automatique.</div><div style="margin-top:8px"><button class="btn small">Prévisualiser</button> <button class="btn small primary">Valider comme brouillon</button></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- =====================================================
+     10. IMPORT AIRTABLE
+===================================================== -->
+<div class="modal" id="csvImportModal">
+  <div class="modal-card import-modal-card">
+    <div class="import-modal-head">
+      <div>
+        <h2>Prévisualisation import Airtable</h2>
+        <div class="subtle">Lecture locale du CSV · aucune écriture dans Pilote tant que l’import n’est pas validé.</div>
+      </div>
+      <button class="btn small ghost" data-close="csvImportModal">Fermer</button>
+    </div>
+
+    <div class="import-safe-banner">
+      <strong>Mode prévisualisation uniquement</strong>
+      <span>Les objets sont construits en mémoire. PiloteState et IndexedDB ne sont pas modifiés.</span>
+    </div>
+
+    <div class="import-file-row">
+      <div>
+        <strong id="csvImportFileName">Aucun fichier sélectionné</strong>
+        <div class="subtle" id="csvImportSourceInfo">Choisissez l’export complet Airtable.</div>
+      </div>
+      <button class="btn small" id="changeCsvBtn">Choisir un CSV</button>
+    </div>
+
+    <div id="csvImportLoading" class="import-loading hidden">Analyse du fichier en cours…</div>
+
+    <div id="csvImportResults" class="hidden">
+      <div class="import-kpis">
+        <div class="import-kpi"><b id="importPrivateCount">0</b><span>partenaires privés</span></div>
+        <div class="import-kpi"><b id="importActiveCount">0</b><span>actifs</span></div>
+        <div class="import-kpi"><b id="importDormantCount">0</b><span>dormants</span></div>
+        <div class="import-kpi"><b id="importVerifyCount">0</b><span>phase à vérifier</span></div>
+      </div>
+
+      <div class="import-grid">
+        <section class="import-section">
+          <div class="import-section-title">Phases calculées</div>
+          <div class="import-phase-list">
+            <div><span>Prospection</span><b id="importPhaseProspection">0</b></div>
+            <div><span>Négociation</span><b id="importPhaseNegociation">0</b></div>
+            <div><span>Signature</span><b id="importPhaseSignature">0</b></div>
+            <div><span>Activation</span><b id="importPhaseActivation">0</b></div>
+          </div>
+        </section>
+
+        <section class="import-section">
+          <div class="import-section-title">Objets préparés en mémoire</div>
+          <div class="import-object-list" id="importObjectCounts"></div>
+        </section>
+      </div>
+
+      <section class="import-section">
+        <div class="import-section-title">Statuts Airtable — information seulement</div>
+        <div class="import-status-list" id="importPartnerStatusCounts"></div>
+      </section>
+
+      <section class="import-section">
+        <div class="import-section-title">À vérifier — phase uniquement</div>
+        <div class="subtle import-section-note">Un Suivi renseigné reste actif. Ici, seule la phase n’est pas attribuée automatiquement.</div>
+        <div id="importVerifyRows"></div>
+      </section>
+
+      <section class="import-section">
+        <div class="import-section-title">Noms présents plusieurs fois</div>
+        <div class="subtle import-section-note">Les lignes restent séparées grâce à leur ID Airtable unique. Aucune fusion automatique.</div>
+        <div id="importDuplicateRows"></div>
+      </section>
+    </div>
+
+    <div class="import-error hidden" id="csvImportError"></div>
+
+    <div class="modal-actions import-actions">
+      <button class="btn" data-close="csvImportModal">Annuler</button>
+      <button class="btn primary" id="validateCsvImportBtn" disabled>Valider l’import — après contrôle</button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     11. ACTIONS RAPIDES ET FENÊTRES MODALES
+===================================================== -->
+<button class="fab" id="quickNoteFab">＋ Pense-bête</button>
+
+<div class="modal" id="noteModal">
+  <div class="modal-card">
+    <h2>Pense-bête rapide</h2>
+    <div class="subtle">Saisissez juste ce que vous ne voulez pas oublier. Aucun autre champ n’est obligatoire.</div>
+    <textarea id="noteText" rows="4" placeholder="Ex. demander à Raphaëlle si l’horaire du panel est confirmé"></textarea>
+    <div class="modal-actions">
+      <button class="btn" data-close="noteModal">Annuler</button>
+      <button class="btn primary" id="saveNote">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="taskModal">
+  <div class="modal-card">
+    <h2>Transformer en tâche</h2>
+    <label class="subtle">Tâche</label>
+    <input id="taskText">
+    <label class="subtle">Organisation / projet</label>
+    <select><option>Sans rattachement pour l’instant</option><option>R2i</option><option>UM6P</option><option>VO2 Group</option><option>MTL connecte 2026</option></select>
+    <label class="subtle">Échéance</label>
+    <input type="date" value="2026-08-24">
+    <div class="modal-actions">
+      <button class="btn" data-close="taskModal">Annuler</button>
+      <button class="btn primary" id="saveTask">Créer la tâche</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="meetingModal">
+  <div class="modal-card">
+    <h2>Capture de rencontre</h2>
+    <label class="subtle">Avec qui</label>
+    <input placeholder="Organisation ou contact">
+    <label class="subtle">Résumé en une ligne</label>
+    <input placeholder="Objet principal de l’échange">
+    <label class="subtle">Prochaine action</label>
+    <input placeholder="Ce qu’il faut faire ensuite">
+    <label class="subtle">Quand</label>
+    <input type="date" value="2026-08-24">
+    <div class="subtle">Lieu, durée, sujet détaillé et autres informations pourront être ajoutés plus tard depuis la fiche.</div>
+    <div class="modal-actions" style="margin-top:14px">
+      <button class="btn" data-close="meetingModal">Annuler</button>
+      <button class="btn primary" id="saveMeeting">Enregistrer la capture</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="JS/utils.js"></script>
+<script src="JS/storage.js"></script>
+<script src="JS/ui.js"></script>
+<script src="JS/app.js"></script>
+</body>
+</html>

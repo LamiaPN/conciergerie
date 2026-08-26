@@ -144,6 +144,45 @@ const API = (() => {
     return data.selections || [];
   }
 
+  /* ═══ STATUT DE VALIDATION DES CHOIX ═══════════════════════════════════ */
+  async function getSelectionStatus(partenaireId, token) {
+    if (!CONFIG.SHEET_API_URL) return { locked: false, statut: "modifiable", date_validation: "" };
+    const url = `${CONFIG.SHEET_API_URL}?action=get_selection_status&p=${encodeURIComponent(partenaireId)}&token=${encodeURIComponent(token)}&_=${Date.now()}`;
+    const data = await _fetchJSON(url);
+    if (data.error) throw new Error(data.error);
+    return data.status || { locked: false, statut: "modifiable", date_validation: "" };
+  }
+
+  async function getSelectionStatusAdmin(partenaireId, adminToken) {
+    if (!CONFIG.SHEET_API_URL) return { locked: false, statut: "modifiable", date_validation: "" };
+    const url = `${CONFIG.SHEET_API_URL}?action=admin_get_selection_status&p=${encodeURIComponent(partenaireId)}&token=${encodeURIComponent(adminToken)}&_=${Date.now()}`;
+    const data = await _fetchJSON(url);
+    if (data.error) throw new Error(data.error);
+    return data.status || { locked: false, statut: "modifiable", date_validation: "" };
+  }
+
+  async function finalizeSelections(partenaireId, token, organisationIds) {
+    if (!CONFIG.SHEET_API_URL) return { ok: true, demo: true, locked: true };
+    const data = await _fetchJSON(CONFIG.SHEET_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ action: "finalize_selections", p: partenaireId, token, selections: organisationIds })
+    });
+    if (data.error) throw new Error(data.error);
+    return data;
+  }
+
+  async function unlockSelectionsAdmin(partenaireId, adminToken) {
+    if (!CONFIG.SHEET_API_URL) return { ok: true, demo: true, locked: false };
+    const data = await _fetchJSON(CONFIG.SHEET_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ action: "admin_unlock_selections", p: partenaireId, token: adminToken })
+    });
+    if (data.error) throw new Error(data.error);
+    return data;
+  }
+
 
   /* ═══ RENDEZ-VOUS PARTENAIRE ══════════════════════════════════════════ */
   async function getRencontres(partenaireId, token) {
@@ -165,29 +204,13 @@ const API = (() => {
 
   async function saveFormulaire(partenaireId, token, reponses) {
     if (!CONFIG.SHEET_API_URL) return { ok: true, demo: true };
-
-    // Écriture opaque : Apps Script peut rediriger la réponse POST vers une page HTML.
-    // On ne tente donc pas de parser cette réponse.
-    await fetch(CONFIG.SHEET_API_URL, {
+    const data = await _fetchJSON(CONFIG.SHEET_API_URL, {
       method: "POST",
-      mode: "no-cors",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify({ action: "save_formulaire", p: partenaireId, token, reponses })
     });
-
-    // Vérification indépendante en JSONP : évite les problèmes CORS/redirect de ContentService.
-    const verificationUrl = `${CONFIG.SHEET_API_URL}?action=get_formulaire_jsonp&p=${encodeURIComponent(partenaireId)}&token=${encodeURIComponent(token)}&_=${Date.now()}`;
-    const verification = await _fetchJSONP(verificationUrl);
-    if (verification.error) throw new Error(verification.error);
-
-    const formulaire = verification.formulaire || null;
-    if (!formulaire) throw new Error("Le serveur n'a pas confirmé l'enregistrement du formulaire.");
-
-    const normalize = value => String(value ?? "").trim();
-    const nonConfirmes = Object.keys(reponses || {}).filter(cle => normalize(formulaire[cle]) !== normalize(reponses[cle]));
-    if (nonConfirmes.length) throw new Error("L'enregistrement n'a pas été confirmé pour certains champs. Réessayez.");
-
-    return { ok: true, changed: true, verified: true };
+    if (data.error) throw new Error(data.error);
+    return data;
   }
 
   async function getFormulaireAdmin(partenaireId, adminToken) {
@@ -401,31 +424,6 @@ const API = (() => {
   }
 
   /* ═══ SECTION 7 — REQUÊTES HTTP ═════════════════════════════════════════ */
-  function _fetchJSONP(url) {
-    return new Promise((resolve, reject) => {
-      const callback = `__conciergerie_jsonp_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-      const script = document.createElement("script");
-      const timer = setTimeout(() => finish(new Error("La vérification de l'enregistrement a dépassé le délai autorisé.")), CONFIG.TIMEOUT_MS);
-
-      function cleanup() {
-        clearTimeout(timer);
-        try { delete window[callback]; } catch (_) { window[callback] = undefined; }
-        script.remove();
-      }
-
-      function finish(error, data) {
-        cleanup();
-        if (error) reject(error);
-        else resolve(data);
-      }
-
-      window[callback] = data => finish(null, data);
-      script.onerror = () => finish(new Error("Impossible de vérifier l'enregistrement auprès du serveur."));
-      script.src = `${url}&callback=${encodeURIComponent(callback)}`;
-      document.head.appendChild(script);
-    });
-  }
-
   async function _fetchJSON(url, options = {}) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), CONFIG.TIMEOUT_MS);
@@ -457,6 +455,10 @@ const API = (() => {
     saveSelections,
     getRencontres,
     getSelectionsAdmin,
+    getSelectionStatus,
+    getSelectionStatusAdmin,
+    finalizeSelections,
+    unlockSelectionsAdmin,
     getFormulaire,
     saveFormulaire,
     getFormulaireAdmin,
@@ -479,8 +481,71 @@ const API = (() => {
   };
 })();
 
+/* ═══ ADMIN — CONSERVATION DU JETON ENTRE LES VUES ══════════════════════ */
+(function preserveAdminTokenBetweenViews_() {
+  if (typeof document === "undefined" || typeof location === "undefined") return;
+  if (!document.querySelector("#admin-dashboard")) return;
+
+  const STORAGE_KEY = "conciergerie_admin_token_session";
+  const url = new URL(location.href);
+  const tokenInUrl = String(url.searchParams.get("token") || "").trim();
+
+  if (tokenInUrl) {
+    sessionStorage.setItem(STORAGE_KEY, tokenInUrl);
+  } else {
+    const savedToken = String(sessionStorage.getItem(STORAGE_KEY) || "").trim();
+    if (savedToken) {
+      url.searchParams.set("token", savedToken);
+      history.replaceState(history.state, "", url.toString());
+    }
+  }
+
+  // Garde-fou avant le gestionnaire de la vue globale Conciergerie.
+  document.addEventListener("click", event => {
+    if (!event.target.closest("#navConciergerie")) return;
+    const current = new URL(location.href);
+    if (current.searchParams.get("token")) return;
+    const savedToken = String(sessionStorage.getItem(STORAGE_KEY) || "").trim();
+    if (!savedToken) return;
+    current.searchParams.set("token", savedToken);
+    history.replaceState(history.state, "", current.toString());
+  }, true);
+})();
+
+/* ═══ INTERFACE VERROUILLAGE — CHARGEMENT DU MODULE ═════════════════════ */
+(function loadSelectionLockUi_() {
+  if (typeof document === "undefined") return;
+  if (!document.querySelector("#admin-dashboard") && !document.querySelector("#orgGrid")) return;
+
+  const current = document.currentScript;
+  const script = document.createElement("script");
+  script.src = current?.src
+    ? new URL("selection-lock.js?v=20260825-lock11", current.src).toString()
+    : "js/selection-lock.js?v=20260825-lock11";
+  script.async = true;
+  document.head.appendChild(script);
+})();
+
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     mergeVivierOrganisations_: API.__test_mergeVivierOrganisations_
   };
+}
+
+
+/* ═══ ACTIVATION DU MODULE DE VALIDATION / VERROUILLAGE ════════════════
+   Le module selection-lock.js est partagé par le portail partenaire
+   et l'admin. Il est chargé ici car api.js est déjà présent sur les
+   deux écrans.
+   ═══════════════════════════════════════════════════════════════════════ */
+if (typeof document !== "undefined") {
+  (() => {
+    if (document.querySelector('script[data-selection-lock-loader]')) return;
+
+    const script = document.createElement("script");
+    script.src = "js/selection-lock.js?v=20260825-lock12";
+    script.defer = true;
+    script.dataset.selectionLockLoader = "true";
+    document.head.appendChild(script);
+  })();
 }
