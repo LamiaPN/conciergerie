@@ -425,19 +425,69 @@ const API = (() => {
 
   /* ═══ SECTION 7 — REQUÊTES HTTP ═════════════════════════════════════════ */
   async function _fetchJSON(url, options = {}) {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), CONFIG.TIMEOUT_MS);
-    try {
-      const res = await fetch(url, { ...options, signal: controller.signal });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Erreur HTTP " + res.status + ".");
-      return data;
-    } catch (err) {
-      if (err.name === "AbortError") throw new Error("La requête a dépassé le délai autorisé.");
-      throw err;
-    } finally {
-      clearTimeout(timeout);
+    const method = String(options.method || "GET").toUpperCase();
+    const maxAttempts = method === "GET" ? 3 : 1;
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), CONFIG.TIMEOUT_MS);
+
+      try {
+        const requestUrl = method === "GET" && attempt > 1
+          ? `${url}${String(url).includes("?") ? "&" : "?"}_retry=${Date.now()}_${attempt}`
+          : url;
+
+        const res = await fetch(requestUrl, {
+          ...options,
+          cache: method === "GET" ? "no-store" : options.cache,
+          signal: controller.signal
+        });
+
+        const text = await res.text();
+        const trimmed = text.trim();
+
+        // Apps Script peut exceptionnellement renvoyer une page HTML
+        // temporaire au lieu du JSON attendu. On retente seulement les GET,
+        // pour éviter tout doublon sur les écritures POST.
+        if (trimmed.startsWith("<!DOCTYPE") || trimmed.startsWith("<html") || trimmed.startsWith("<")) {
+          if (method === "GET" && attempt < maxAttempts) {
+            await new Promise(resolve => setTimeout(resolve, 350 * attempt));
+            continue;
+          }
+          throw new Error("Le service de données a renvoyé une réponse temporaire invalide. Rechargez la page.");
+        }
+
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch (_) {
+          if (method === "GET" && attempt < maxAttempts) {
+            await new Promise(resolve => setTimeout(resolve, 350 * attempt));
+            continue;
+          }
+          throw new Error("Réponse invalide du service de données.");
+        }
+
+        if (!res.ok) throw new Error(data.error || "Erreur HTTP " + res.status + ".");
+        return data;
+      } catch (err) {
+        if (err.name === "AbortError") {
+          if (method === "GET" && attempt < maxAttempts) continue;
+          throw new Error("La requête a dépassé le délai autorisé.");
+        }
+
+        if (method === "GET" && attempt < maxAttempts &&
+            /réponse temporaire invalide|réponse invalide/i.test(String(err.message || ""))) {
+          continue;
+        }
+
+        throw err;
+      } finally {
+        clearTimeout(timeout);
+      }
     }
+
+    throw new Error("Impossible de charger les données après plusieurs tentatives.");
   }
 
   /* ═══ SECTION 8 — REPLI LOCAL ═══════════════════════════════════════════ */
@@ -520,9 +570,77 @@ const API = (() => {
   const current = document.currentScript;
   const script = document.createElement("script");
   script.src = current?.src
-    ? new URL("selection-lock.js?v=20260825-lock11", current.src).toString()
-    : "js/selection-lock.js?v=20260825-lock11";
+    ? new URL("selection-lock.js?v=20260826-lock17", current.src).toString()
+    : "js/selection-lock.js?v=20260826-lock17";
   script.async = true;
+  document.head.appendChild(script);
+})();
+
+
+/* ═══ ADMIN — PRIORITÉ VISUELLE ET ORDRE DES CHOIX ══════════════════════ */
+(function loadAdminPriorites_() {
+  if (typeof document === "undefined") return;
+  if (!document.querySelector("#admin-dashboard")) return;
+  if (document.querySelector('script[data-admin-priorites-loader]')) return;
+
+  const current = document.currentScript;
+  const script = document.createElement("script");
+  script.src = current?.src
+    ? new URL("admin-priorites.js?v=20260826-admin19", current.src).toString()
+    : "js/admin-priorites.js?v=20260826-admin19";
+  script.defer = true;
+  script.dataset.adminPrioritesLoader = "true";
+  document.head.appendChild(script);
+})();
+
+
+/* ═══ ADMIN — CORRECTION DES DISPONIBILITÉS CONCIERGERIE ════════════════ */
+(function loadAdminDisponibilites_() {
+  if (typeof document === "undefined") return;
+  if (!document.querySelector("#admin-dashboard")) return;
+  if (document.querySelector('script[data-admin-disponibilites-loader]')) return;
+
+  const current = document.currentScript;
+  const script = document.createElement("script");
+  script.src = current?.src
+    ? new URL("admin-disponibilites.js?v=20260826-dispo30", current.src).toString()
+    : "js/admin-disponibilites.js?v=20260826-dispo30";
+  script.defer = true;
+  script.dataset.adminDisponibilitesLoader = "true";
+  document.head.appendChild(script);
+})();
+
+
+/* ═══ ADMIN — FEEDBACK ENREGISTREMENT + ACCORDÉON PARTENAIRES ══════════ */
+(function loadAdminPlanningUi_() {
+  if (typeof document === "undefined") return;
+  if (!document.querySelector("#admin-dashboard")) return;
+  if (document.querySelector('script[data-admin-planning-ui-loader]')) return;
+
+  const current = document.currentScript;
+  const script = document.createElement("script");
+  script.src = current?.src
+    ? new URL("admin-planning-ui.js?v=20260826-planning23", current.src).toString()
+    : "js/admin-planning-ui.js?v=20260826-planning23";
+  script.defer = true;
+  script.dataset.adminPlanningUiLoader = "true";
+  document.head.appendChild(script);
+})();
+
+
+/* ═══ ADMIN — EXPORT PDF DU PLANNING COMPLET ════════════════════════════ */
+(function loadAdminPlanningExport_() {
+  if (typeof document === "undefined") return;
+  if (!document.querySelector("#admin-dashboard")) return;
+  if (document.querySelector('script[data-admin-planning-export-loader]')) return;
+
+  const current = document.currentScript;
+  const script = document.createElement("script");
+  script.src = current?.src
+    ? new URL("admin-planning-export.js?v=20260827-export31", current.src).toString()
+    : "js/admin-planning-export.js?v=20260827-export31";
+  script.defer = true;
+  script.dataset.adminPlanningExportLoader = "true";
   document.head.appendChild(script);
 })();
 
@@ -530,22 +648,4 @@ if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     mergeVivierOrganisations_: API.__test_mergeVivierOrganisations_
   };
-}
-
-
-/* ═══ ACTIVATION DU MODULE DE VALIDATION / VERROUILLAGE ════════════════
-   Le module selection-lock.js est partagé par le portail partenaire
-   et l'admin. Il est chargé ici car api.js est déjà présent sur les
-   deux écrans.
-   ═══════════════════════════════════════════════════════════════════════ */
-if (typeof document !== "undefined") {
-  (() => {
-    if (document.querySelector('script[data-selection-lock-loader]')) return;
-
-    const script = document.createElement("script");
-    script.src = "js/selection-lock.js?v=20260825-lock12";
-    script.defer = true;
-    script.dataset.selectionLockLoader = "true";
-    document.head.appendChild(script);
-  })();
 }

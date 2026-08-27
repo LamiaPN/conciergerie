@@ -40,7 +40,7 @@
     const grid = document.querySelector("#orgGrid");
     const saveBtn = document.querySelector("#saveBtn");
     const postActions = document.querySelector("#postListActions");
-    if (!grid || !saveBtn || !postActions || !window.API?.getSelectionStatus) return;
+    if (!grid || !saveBtn || !postActions || typeof API === "undefined" || typeof API.getSelectionStatus !== "function") return;
 
     const params = new URLSearchParams(location.search);
     const partenaireId = String(params.get("p") || "").trim();
@@ -49,25 +49,24 @@
 
     let locked = false;
 
-    const banner = document.createElement("div");
-    banner.className = "selection-lock-banner";
-    banner.hidden = true;
-    banner.innerHTML = `<i class="fas fa-lock"></i><span><strong>Choix validés — consultation uniquement.</strong><br>Vos choix ont été validés définitivement. Pour demander une modification, veuillez contacter l'équipe de MTL connecte.</span>`;
-    postActions.insertBefore(banner, postActions.firstChild);
-
     const finalBtn = document.createElement("button");
     finalBtn.type = "button";
     finalBtn.className = "btn btn-outline btn-medium selection-lock-final";
-    finalBtn.innerHTML = `<i class="fas fa-lock"></i> Valider définitivement mes choix`;
+    finalBtn.innerHTML = `<i class="fas fa-lock"></i> Valider mes choix`;
     saveBtn.insertAdjacentElement("afterend", finalBtn);
 
     const applyLockedState = status => {
       locked = Boolean(status?.locked);
       document.body.dataset.selectionLocked = locked ? "true" : "false";
-      banner.hidden = !locked;
-      finalBtn.hidden = locked;
+
       saveBtn.setAttribute("aria-disabled", locked ? "true" : "false");
       grid.setAttribute("aria-readonly", locked ? "true" : "false");
+
+      finalBtn.hidden = false;
+      finalBtn.disabled = locked;
+      finalBtn.innerHTML = locked
+        ? `<i class="fas fa-check"></i> Choix validés`
+        : `<i class="fas fa-lock"></i> Valider mes choix`;
     };
 
     const refreshStatus = async () => {
@@ -101,11 +100,6 @@
         .filter(Boolean);
       const uniques = [...new Set(ids)];
 
-      const ok = window.confirm(
-        `Vous êtes sur le point de valider définitivement ${uniques.length} organisation${uniques.length > 1 ? "s" : ""}.\n\nAprès cette validation, vous pourrez consulter vos choix mais vous ne pourrez plus les modifier sans intervention de l'équipe de MTL connecte.\n\nConfirmer la validation définitive ?`
-      );
-      if (!ok) return;
-
       const original = finalBtn.innerHTML;
       finalBtn.disabled = true;
       finalBtn.innerHTML = `<span class="spinner"></span> Validation…`;
@@ -113,12 +107,13 @@
       try {
         const result = await API.finalizeSelections(partenaireId, token, uniques);
         applyLockedState(result.status || { locked: true });
-        toast("Vos choix sont maintenant validés définitivement.");
       } catch (error) {
         toast(error.message || "Impossible de valider définitivement vos choix.", true);
       } finally {
-        finalBtn.disabled = false;
-        finalBtn.innerHTML = original;
+        if (!locked) {
+          finalBtn.disabled = false;
+          finalBtn.innerHTML = `<i class="fas fa-lock"></i> Valider mes choix`;
+        }
       }
     });
 
@@ -130,7 +125,7 @@
   function initAdminLock() {
     const dashboard = document.querySelector("#admin-dashboard");
     const toolbar = document.querySelector("#partnerAdminView .table-toolbar");
-    if (!dashboard || !toolbar || !window.API?.getSelectionStatusAdmin) return;
+    if (!dashboard || !toolbar || typeof API === "undefined" || typeof API.getSelectionStatusAdmin !== "function") return;
 
     const lastMod = toolbar.querySelector(".last-mod");
     const right = document.createElement("div");
@@ -172,7 +167,7 @@
       const locked = Boolean(status?.locked);
       badge.className = `selection-lock-badge ${locked ? "is-locked" : "is-open"}`;
       badge.innerHTML = locked
-        ? `<i class="fas fa-lock"></i> Choix validés — verrouillés`
+        ? `<i class="fas fa-lock"></i> Choix validés`
         : `<i class="fas fa-lock-open"></i> Choix modifiables`;
       unlockBtn.hidden = !locked;
     };
