@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : partenaire-formulaire.js
-   VERSION : v15 — tailles ordonnées, référentiels dédupliqués, récap organisation en ligne
+   VERSION : v17 — suppression du message de mise à jour du vivier
    VERSION : v14 — ordre logique des tailles
    RÔLE    : Formulaire de besoins du partenaire (une page, 6 sections).
              Pré-remplit les champs depuis le vivier via ?p=<partenaire>,
@@ -49,7 +49,11 @@
      - sinon, les réponses enregistrées restent prioritaires, mais une valeur
        vide ne remplace jamais une information disponible dans le vivier. */
   async function prefill() {
-    if (!pid) return;
+    if (!pid) {
+      const loadingNotice = $("#formLoadingNotice");
+      if (loadingNotice) loadingNotice.hidden = true;
+      return;
+    }
 
     try {
       const [snapshot, formulaireEnregistre] = await Promise.all([
@@ -77,7 +81,7 @@
         applySavedForm(formulaireEnregistre, { refreshOrganisation: vivierPlusRecent });
 
         $("#formStatus").textContent = vivierPlusRecent
-          ? "Les informations de votre organisation ont été actualisées depuis le dernier vivier. Vos autres réponses sont conservées."
+          ? ""
           : "Vos dernières réponses sont chargées. Vous pouvez les modifier puis enregistrer.";
       }
 
@@ -85,6 +89,9 @@
     } catch (e) {
       console.error("Erreur pré-remplissage :", e);
       setSubmitStatus("Impossible de charger les informations du formulaire.", true);
+    } finally {
+      const loadingNotice = $("#formLoadingNotice");
+      if (loadingNotice) loadingNotice.hidden = true;
     }
   }
 
