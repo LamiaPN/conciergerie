@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <!-- Charte PN existante -->
-<link rel="stylesheet" href="css/admin.css?v=20260824-avail-notif1">
+<link rel="stylesheet" href="css/admin.css?v=20260911-v45">
 <style>
   /* Styles manquants — bâtis sur les variables PN */
   .sidebar-section-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,.35); font-weight: 700; padding: 16px 14px 6px; }
@@ -44,6 +44,287 @@
   .table-meta-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
   .last-mod { font-size: 0.78rem; color: var(--gris-text); }
   .last-mod b { color: var(--noir); font-weight: 600; }
+  .vivier-org-id { display: none !important; }
+
+  /* ═══ Calendrier RDV v56 — style PN validé sur la maquette ═══ */
+  .pn-rdv-calendar{
+    background:#fff;
+    border:1px solid #DDE0DC;
+    border-radius:14px;
+    overflow:hidden;
+  }
+  .pn-calendar-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+    padding:14px 16px;
+    border-bottom:1px solid #DDE0DC;
+    background:#fff;
+  }
+  .pn-calendar-tabs{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .pn-calendar-tabs button,
+  .pn-calendar-pills button{
+    border:1px solid #DDE0DC;
+    background:#fff;
+    color:#0B0D0C;
+    border-radius:999px;
+    padding:9px 15px;
+    font:600 .82rem var(--font-main);
+    cursor:pointer;
+    transition:.15s ease;
+  }
+  .pn-calendar-tabs button:hover,
+  .pn-calendar-pills button:hover{
+    border-color:#6FBF4A;
+  }
+  .pn-calendar-tabs button.active{
+    background:#6FBF4A;
+    border-color:#6FBF4A;
+    color:#fff;
+  }
+  .pn-calendar-pills button.active{
+    background:#E9F7E3;
+    border-color:#6FBF4A;
+    color:#58A038;
+  }
+  .pn-calendar-readonly{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    color:#7b817b;
+    font-size:.78rem;
+    font-weight:600;
+  }
+  .pn-calendar-toolbar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    padding:14px 16px;
+    border-bottom:1px solid #DDE0DC;
+    background:#fff;
+  }
+  .pn-calendar-label{
+    font-size:.78rem;
+    font-weight:700;
+    color:#6f756f;
+  }
+  .pn-calendar-pills{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .pn-calendar-select{
+    min-width:250px;
+    border:1px solid #DDE0DC;
+    border-radius:8px;
+    padding:9px 11px;
+    background:#fff;
+    color:#0B0D0C;
+    font:500 .84rem var(--font-main);
+  }
+  .pn-calendar-note{
+    color:#7b817b;
+    font-size:.78rem;
+  }
+  .pn-calendar-table-wrap{
+    overflow:auto;
+    width:100%;
+  }
+  .pn-calendar-table,
+  .pn-room-table,
+  .pn-partner-table{
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed;
+  }
+  .pn-calendar-table th,
+  .pn-room-table th,
+  .pn-partner-table th{
+    background:#FAFBFA;
+    color:#6f756f;
+    font-size:.71rem;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    text-align:left;
+    padding:9px 12px;
+    border-bottom:1px solid #DDE0DC;
+  }
+  .pn-calendar-table td,
+  .pn-room-table td,
+  .pn-partner-table td{
+    padding:9px 12px;
+    border-bottom:1px solid #DDE0DC;
+    vertical-align:top;
+  }
+  .pn-calendar-time-head,
+  .pn-calendar-time{
+    width:74px;
+  }
+  .pn-calendar-time{
+    white-space:nowrap;
+    font-size:.78rem;
+  }
+  .pn-calendar-free{
+    min-height:38px;
+    border:1px dashed #DDE0DC;
+    border-radius:7px;
+    background:#fff;
+  }
+  .pn-calendar-cell{
+    min-height:38px;
+  }
+  .pn-calendar-cell.is-conflict{
+    background:#fff6f2;
+    border-radius:8px;
+    padding:4px;
+  }
+  .pn-calendar-meeting{
+    background:#E9F7E3;
+    border:1px solid #BFE4AF;
+    border-left:4px solid #6FBF4A;
+    border-radius:7px;
+    padding:7px 9px;
+    line-height:1.25;
+  }
+  .pn-calendar-meeting + .pn-calendar-meeting{
+    margin-top:5px;
+  }
+  .pn-calendar-meeting strong{
+    display:block;
+    font-size:.78rem;
+    color:#0B0D0C;
+  }
+  .pn-calendar-meeting span{
+    display:block;
+    margin-top:2px;
+    font-size:.74rem;
+    color:#6f756f;
+  }
+  .pn-calendar-conflict{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    margin-bottom:5px;
+    padding:4px 7px;
+    border-radius:999px;
+    background:#ffe6dc;
+    color:#a43f1c;
+    font-size:.68rem;
+    font-weight:700;
+  }
+  .pn-room-view{
+    background:#F4F5F4;
+    padding:14px;
+  }
+  .pn-room-day{
+    background:#fff;
+    border:1px solid #DDE0DC;
+    border-radius:10px;
+    overflow:hidden;
+    margin-bottom:14px;
+  }
+  .pn-room-day:last-child{
+    margin-bottom:0;
+  }
+  .pn-room-day-title{
+    padding:11px 13px;
+    border-bottom:1px solid #DDE0DC;
+    background:#FBFCFB;
+    font-weight:700;
+    color:#0B0D0C;
+  }
+  .pn-room-table th:first-child,
+  .pn-room-table td:first-child{
+    width:90px;
+  }
+  .pn-room-table th:last-child,
+  .pn-room-table td:last-child{
+    width:110px;
+  }
+  .pn-room-table tr.is-free td{
+    color:#9aa09a;
+    background:#FCFDFC;
+  }
+  .pn-free-badge,
+  .pn-rdv-badge{
+    display:inline-flex;
+    align-items:center;
+    padding:4px 8px;
+    border-radius:999px;
+    font-size:.68rem;
+    font-weight:700;
+  }
+  .pn-free-badge{
+    background:#F1F3F1;
+    color:#7b817b;
+  }
+  .pn-rdv-badge{
+    background:#E9F7E3;
+    color:#58A038;
+  }
+  .pn-partner-sheet{
+    padding:16px;
+  }
+  .pn-partner-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:12px;
+  }
+  .pn-partner-head h3{
+    margin:0;
+    font-size:1rem;
+    font-family:var(--font-title);
+  }
+  .pn-partner-summary{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+  }
+  .pn-partner-summary span{
+    padding:5px 9px;
+    border-radius:999px;
+    background:#F1F3F1;
+    color:#4f554f;
+    font-size:.72rem;
+    font-weight:700;
+  }
+  .pn-partner-table th:nth-child(1),
+  .pn-partner-table td:nth-child(1){width:145px}
+  .pn-partner-table th:nth-child(2),
+  .pn-partner-table td:nth-child(2){width:90px}
+  .pn-partner-table th:nth-child(3),
+  .pn-partner-table td:nth-child(3){width:190px}
+  .pn-empty-row,
+  .pn-calendar-empty{
+    padding:24px !important;
+    text-align:center;
+    color:#7b817b;
+  }
+  .pn-calendar-footer{
+    display:flex;
+    justify-content:flex-end;
+    gap:18px;
+    flex-wrap:wrap;
+    padding:10px 16px;
+    border-top:1px solid #DDE0DC;
+    background:#FAFBFA;
+    color:#6f756f;
+    font-size:.75rem;
+  }
+  .pn-calendar-footer strong{
+    color:#0B0D0C;
+  }
+
 </style>
 </head>
 <body>
@@ -108,7 +389,6 @@
         </div>
       </div>
 
-
       <!-- ═══ BESOINS EXPRIMÉS PAR LE PARTENAIRE ═══ -->
       <details class="partner-needs" id="partnerNeeds">
         <summary class="partner-needs-summary">
@@ -168,7 +448,7 @@
 
         <div class="table-scroll">
           <div class="proposals-bar"><button class="btn btn-primary btn-sm" id="saveProposals"><i class="fas fa-floppy-disk"></i> Enregistrer les propositions</button><span id="saveStatus" class="save-status"></span></div>
-            <table id="resp-table">
+          <table id="resp-table">
             <thead>
               <tr>
                 <th style="width:70px;text-align:center;">Proposer</th>
@@ -186,7 +466,6 @@
           </table>
         </div>
       </div>
-
     </section>
 
     <!-- ═══ VUE CONCIERGERIE — SÉLECTIONS → PRÉPARATION RDV ═══ -->
@@ -250,7 +529,6 @@
   </div>
 </div>
 
-
 <!-- ═══ MODALE — AJOUTER / MODIFIER UNE ORGANISATION ═══ -->
 <div id="organisationModal" class="import-overlay" hidden>
   <div class="import-box edit-org-box">
@@ -274,9 +552,7 @@
       <div class="edit-org-field">
         <label>Expertises</label>
         <div id="orgExpertiseTags" class="expertise-tags" aria-live="polite"></div>
-        <select id="orgEditExpertise">
-          <option value="">+ Ajouter une expertise</option>
-        </select>
+        <select id="orgEditExpertise"><option value="">+ Ajouter une expertise</option></select>
         <div id="newExpertiseWrap" class="new-reference-wrap" hidden>
           <div class="new-expertise-row">
             <input id="orgEditNewExpertise" type="text" placeholder="Nouvelle expertise">
@@ -316,7 +592,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- ═══ MODALE — CONFIRMER LA SUPPRESSION D'UNE ORGANISATION LOCALE ═══ -->
 <div id="organisationDeleteModal" class="import-overlay nested-modal" hidden>
@@ -370,7 +645,6 @@
   </div>
 </div>
 
-
 <!-- ═══ MODALE — CONFIRMER LA SUPPRESSION D'UNE APPELLATION ═══ -->
 <div id="referentielDeleteModal" class="import-overlay nested-modal" hidden>
   <div class="import-box delete-confirm-box" role="dialog" aria-modal="true" aria-labelledby="referentielDeleteTitle">
@@ -379,22 +653,13 @@
       <button class="import-close" id="referentielDeleteClose" aria-label="Fermer"><i class="fas fa-times"></i></button>
     </div>
 
-    <p class="delete-confirm-text">
-      Voulez-vous supprimer définitivement :
-      <strong id="referentielDeleteValue"></strong> ?
-    </p>
-
-    <p class="delete-confirm-warning">
-      Cette action est irréversible. La suppression n’est possible que si aucune organisation n’utilise cette appellation.
-    </p>
-
+    <p class="delete-confirm-text">Voulez-vous supprimer définitivement : <strong id="referentielDeleteValue"></strong> ?</p>
+    <p class="delete-confirm-warning">Cette action est irréversible. La suppression n’est possible que si aucune organisation n’utilise cette appellation.</p>
     <div id="referentielDeleteStatus" class="save-status"></div>
 
     <div class="import-actions">
       <button class="btn btn-outline btn-sm" id="referentielDeleteCancel" type="button">Annuler</button>
-      <button class="btn btn-danger btn-sm" id="referentielDeleteConfirm" type="button">
-        <i class="fas fa-trash"></i> Supprimer
-      </button>
+      <button class="btn btn-danger btn-sm" id="referentielDeleteConfirm" type="button"><i class="fas fa-trash"></i> Supprimer</button>
     </div>
   </div>
 </div>
@@ -406,10 +671,7 @@
       <h2><i class="fas fa-file-import"></i> Importer le vivier</h2>
       <button class="import-close" id="importClose" aria-label="Fermer"><i class="fas fa-times"></i></button>
     </div>
-    <p class="import-intro">
-      Déposez l'export CSV de la vue Airtable. La plateforme génère un fichier
-      <code>data.json</code> à télécharger, que vous déposez ensuite dans le dossier <code>js/</code> du site.
-    </p>
+    <p class="import-intro">Déposez l'export CSV de la vue Airtable. La plateforme génère un fichier <code>data.json</code> à télécharger, que vous déposez ensuite dans le dossier <code>js/</code> du site.</p>
 
     <label class="import-drop" id="importDrop">
       <input type="file" id="importFile" accept=".csv" hidden>
@@ -421,16 +683,21 @@
 
     <div class="import-actions">
       <button class="btn btn-ghost-sm" id="importCancel">Annuler</button>
+      <button class="btn btn-outline btn-sm" id="importSyncContacts" disabled><i class="fas fa-address-book"></i> Synchroniser les contacts privés</button>
       <button class="btn btn-primary btn-sm" id="importDownload" disabled><i class="fas fa-download"></i> Télécharger data.json</button>
     </div>
   </div>
 </div>
 
-<script src="js/config.js?v=20260824-avail-notif1"></script>
-<script src="js/api.js?v=20260824-avail-notif1"></script>
-<script src="js/noms-courts.js?v=20260824-avail-notif1"></script>
-<script src="js/admin-partenaire.js?v=20260824-avail-notif1"></script>
-<script src="js/admin-conciergerie.js?v=20260824-avail-notif1"></script>
-<script src="js/admin-import.js?v=20260824-form-v12"></script>
+<!-- Scripts de production — v45 : cache busting -->
+<script src="js/config.js?v=20260911-v45"></script>
+<script src="js/api.js?v=20260911-v45"></script>
+<script src="js/noms-courts.js?v=20260911-v45"></script>
+<script src="js/admin-partenaire.js?v=20260911-v45"></script>
+<script src="js/admin-conciergerie.js?v=20260914-v56"></script>
+<script src="js/admin-import.js?v=20260913-v54"></script>
+<script src="js/admin-form-status.js?v=20260911-v45"></script>
+<script src="js/admin-default-conciergerie.js?v=20260911-v45"></script>
+<script src="js/admin-vivier.js?v=20260913-v52"></script>
 </body>
 </html>

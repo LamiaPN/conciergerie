@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="css/style.css?v=20260824-form-v18">
+<link rel="stylesheet" href="css/style.css?v=20260914-form-v15">
 <!-- SECTION A — styles communs (charte PN + composants + page formulaire) dans style.css -->
 </head>
 <body data-partner-page="besoins">
@@ -261,63 +261,6 @@
 <script src="js/config.js?v=20260824-form-v12"></script>
 <script src="js/api.js?v=20260824-form-v12"></script>
 <script src="js/partenaire-espace.js?v=20260824-form-v12"></script>
-<script src="js/partenaire-formulaire.js?v=20260824-form-v13"></script>
-<script>
-/* Affichage du référentiel en français uniquement.
-   La valeur source data-val / option.value reste intacte pour les enregistrements. */
-(() => {
-  const chipIds = ["f_secteurs", "f_secteurs_cibles", "f_type_rech", "f_taille_rech"];
-  const selectIds = ["f_type", "f_taille"];
-  const frenchOnly = value => String(value || "").split("/")[0].trim();
-
-  function cleanChip(chip) {
-    const source = chip.dataset.val || chip.textContent || "";
-    const label = frenchOnly(source);
-    if (!label) return;
-    const icon = chip.querySelector("i");
-    const textNodes = Array.from(chip.childNodes).filter(node => node !== icon);
-    const current = textNodes.map(node => node.textContent || "").join("").trim();
-    if (current === label) return;
-    textNodes.forEach(node => node.remove());
-    chip.append(document.createTextNode(" " + label));
-  }
-
-  function cleanSelect(select) {
-    Array.from(select.options).forEach(option => {
-      if (!option.value) return;
-      const label = frenchOnly(option.textContent);
-      if (label && option.textContent.trim() !== label) option.textContent = label;
-    });
-  }
-
-  function applyFrenchLabels() {
-    let ready = true;
-    chipIds.forEach(id => {
-      const root = document.getElementById(id);
-      if (!root) return;
-      const chips = root.querySelectorAll(".choice-chip");
-      if (!chips.length) ready = false;
-      chips.forEach(cleanChip);
-    });
-    selectIds.forEach(id => {
-      const select = document.getElementById(id);
-      if (!select) return;
-      if (select.options.length <= 1) ready = false;
-      cleanSelect(select);
-    });
-    return ready;
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    let attempts = 0;
-    const timer = setInterval(() => {
-      attempts += 1;
-      if (applyFrenchLabels() || attempts >= 120) clearInterval(timer);
-    }, 250);
-    applyFrenchLabels();
-  });
-})();
-</script>
-
+<script src="js/partenaire-formulaire.js?v=20260914-form-v15"></script>
 </body>
 </html>

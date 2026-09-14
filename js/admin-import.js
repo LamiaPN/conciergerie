@@ -1,5 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-import.js
+   VERSION : v54 — téléchargement data.json séparé de la synchro contacts privés
    RÔLE    : Convertisseur CSV Airtable → data.json pour le vivier admin.
 
    ┌─ SOMMAIRE ───────────────────────────────────────────────────────────┐
@@ -9,7 +10,7 @@
    │  4 — Résolution tolérante des colonnes Airtable                    │
    │  5 — Transformation CSV → data.json + snapshot formulaire           │
    │  6 — Nettoyage / confidentialité                                   │
-   │  7 — Rapport + téléchargement                                      │
+   │  7 — Synchronisation contacts privés + téléchargement               │
    └──────────────────────────────────────────────────────────────────────┘
 
    IMPORTANT
@@ -22,6 +23,8 @@
   "use strict";
 
   let generated = null;
+  let pendingContacts = [];
+  let contactsSynced = false;
   const $ = selector => document.querySelector(selector);
 
   /* ═══ SECTION 1 — OUVERTURE / FERMETURE ═══════════════════════════════ */
@@ -36,9 +39,12 @@
 
   function resetUI() {
     generated = null;
+    pendingContacts = [];
+    contactsSynced = false;
     $("#importReport").hidden = true;
     $("#importReport").innerHTML = "";
     $("#importDownload").disabled = true;
+    $("#importSyncContacts").disabled = true;
     $("#importDropText").textContent = "Cliquez ou glissez votre fichier CSV ici";
     $("#importFile").value = "";
   }
@@ -108,17 +114,21 @@
         report(
           `✅ <b>${data.organisations.length}</b> organisations · ` +
           `<b>${data.partenaires.length}</b> partenaires conciergerie · ` +
-          `<b>${data.propositions.length}</b> propositions.<br>` +
-          `<span class="import-muted">Les référentiels du formulaire sont intégrés automatiquement à ce data.json. ` +
-          `Cliquez « Télécharger data.json », puis déposez le fichier dans le dossier <code>js/</code>.</span>`,
+          `<b>${data.propositions.length}</b> propositions · ` +
+          `<b>${pendingContacts.length}</b> contact(s) privé(s) détecté(s).<br>` +
+          `<span class="import-muted">Les coordonnées privées ne sont jamais écrites dans data.json. ` +
+          `Téléchargez d’abord data.json, puis lancez séparément « Synchroniser les contacts privés ». ` +
+          `Ainsi, un problème de synchro ne peut plus casser le fichier data.json.</span>`,
           false
         );
 
         $("#importDownload").disabled = false;
+        $("#importSyncContacts").disabled = pendingContacts.length === 0;
       } catch (error) {
         generated = null;
         report("❌ " + (error.message || "Fichier illisible."), true);
         $("#importDownload").disabled = true;
+        $("#importSyncContacts").disabled = true;
       }
     };
 
@@ -240,6 +250,24 @@
       ]),
       theme: resolveColumn(headers, ["Thème", "Theme"]),
       expertise: resolveColumn(headers, ["Expertise"]),
+
+      contactPrincipal: resolveColumn(headers, ["Contact principal"]),
+      contactFonction: resolveColumn(headers, [
+        "Fonction (from Contact principal)",
+        "Fonction"
+      ]),
+      contactTelephone: resolveColumn(headers, [
+        "Téléphone (from Contact principal)",
+        "Telephone (from Contact principal)",
+        "Téléphone"
+      ]),
+      contactEmail: resolveColumn(headers, [
+        "Courriel (from Contact principal)",
+        "Email (from Contact principal)",
+        "Courriel",
+        "Email"
+      ]),
+
       description: headers.find(header =>
         normalizeHeader(header).startsWith("description")
       ) || ""
@@ -248,8 +276,10 @@
     const keyColumns = new Set(Object.values(COL).filter(Boolean));
     const organisations = [];
     const partenaires = [];
+    const contactsPrives = [];
     const seenOrganisationIds = new Set();
     const seenPartnerIds = new Set();
+    const seenContactKeys = new Set();
 
     for (const row of rows) {
       const id = getValue(row, COL.cid);
@@ -268,6 +298,7 @@
         organisations.push({
           id,
           nom,
+          statut: getValue(row, COL.statut),
           secteur: getValue(row, COL.secteur),
           type: getValue(row, COL.type),
           taille: getValue(row, COL.taille),
@@ -281,6 +312,33 @@
 
         seenOrganisationIds.add(id);
       }
+
+      // Les coordonnées restent PRIVÉES : elles ne sont jamais écrites dans data.json.
+      const contactNames = splitContactValues(getValue(row, COL.contactPrincipal));
+      const contactFunctions = splitContactValues(getValue(row, COL.contactFonction));
+      const contactEmails = splitContactValues(getValue(row, COL.contactEmail));
+      const contactPhones = splitContactValues(getValue(row, COL.contactTelephone));
+
+      contactNames.forEach((contactName, index) => {
+        const email = contactEmails[index] || (contactEmails.length === 1 && index === 0 ? contactEmails[0] : "");
+        const telephone = contactPhones[index] || (contactPhones.length === 1 && index === 0 ? contactPhones[0] : "");
+        const fonction = contactFunctions[index] || (contactFunctions.length === 1 && index === 0 ? contactFunctions[0] : "");
+        const contactKey = `${id}::${String(email || contactName).trim().toLowerCase()}`;
+
+        if (!contactName || seenContactKeys.has(contactKey)) return;
+        seenContactKeys.add(contactKey);
+
+        contactsPrives.push({
+          organisation_id: id,
+          nom: contactName,
+          fonction,
+          email,
+          telephone,
+          role: index === 0 ? "Contact principal" : "Contact associé",
+          principal: index === 0,
+          source: "Airtable"
+        });
+      });
 
       const meetingQuota = quota(getValue(row, COL.nb));
 
@@ -307,6 +365,9 @@
     // Il est régénéré à chaque nouvel import CSV : le formulaire n'a plus
     // besoin de recalculer les secteurs / types / tailles à chaque ouverture.
     data._formulaire = buildFormSnapshot(organisations, partenaires);
+
+    pendingContacts = contactsPrives;
+    contactsSynced = false;
 
     return data;
   }
@@ -412,6 +473,99 @@
       normalized.startsWith("contact principal");
   }
 
+  function splitContactValues(value) {
+    return String(value || "")
+      .split(",")
+      .map(item => item.trim())
+      .filter(Boolean);
+  }
+
+  function adminToken() {
+    return String(new URLSearchParams(location.search).get("token") || "").trim();
+  }
+
+  function contactsEndpoint(action) {
+    const url = new URL(CONFIG.SHEET_API_URL);
+    url.searchParams.set("action", action);
+    url.searchParams.set("token", adminToken());
+    url.searchParams.set("_", Date.now());
+    return url.toString();
+  }
+
+  async function readPrivateContacts() {
+    if (!CONFIG.SHEET_API_URL || !adminToken()) return [];
+
+    const response = await fetch(contactsEndpoint("admin_get_contacts"), {
+      cache: "no-store"
+    });
+
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || data?.ok === false) {
+      throw new Error(data?.error || "Impossible de lire les contacts privés.");
+    }
+
+    return Array.isArray(data.contacts) ? data.contacts : [];
+  }
+
+  async function savePrivateContact(contact) {
+    const response = await fetch(CONFIG.SHEET_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        action: "save_contact",
+        token: adminToken(),
+        contact
+      })
+    });
+
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || data?.ok === false) {
+      throw new Error(data?.error || "Impossible d'enregistrer un contact privé.");
+    }
+
+    return data;
+  }
+
+  function contactMatchKey(contact) {
+    const org = String(contact?.organisation_id || "").trim();
+    const email = String(contact?.email || "").trim().toLowerCase();
+    const nom = String(contact?.nom || "").trim().toLowerCase();
+    return `${org}::${email || nom}`;
+  }
+
+  async function syncPrivateContacts() {
+    if (contactsSynced || !pendingContacts.length) return { saved: 0, total: pendingContacts.length };
+    if (!CONFIG.SHEET_API_URL) throw new Error("URL du backend privé absente.");
+    if (!adminToken()) throw new Error("Jeton admin absent de l'URL.");
+
+    const existing = await readPrivateContacts();
+    const existingByKey = new Map(
+      existing
+        .filter(contact => String(contact?.organisation_id || "").trim())
+        .map(contact => [contactMatchKey(contact), contact])
+    );
+
+    let saved = 0;
+
+    for (const incoming of pendingContacts) {
+      const existingContact = existingByKey.get(contactMatchKey(incoming));
+
+      await savePrivateContact({
+        ...incoming,
+        contact_id: String(existingContact?.contact_id || "").trim()
+      });
+
+      saved++;
+      report(
+        `⏳ Synchronisation des contacts privés : <b>${saved}/${pendingContacts.length}</b>`,
+        false
+      );
+    }
+
+    contactsSynced = true;
+    return { saved, total: pendingContacts.length };
+  }
+
   /* ═══ SECTION 7 — RAPPORT + TÉLÉCHARGEMENT ════════════════════════════ */
   function report(html, isError) {
     const element = $("#importReport");
@@ -434,5 +588,42 @@
     link.download = "data.json";
     link.click();
     URL.revokeObjectURL(url);
+
+    report(
+      `✅ data.json généré : <b>${generated.organisations.length}</b> organisations · ` +
+      `<b>${generated.partenaires.length}</b> partenaires.<br>` +
+      `<span class="import-muted">Le téléchargement est indépendant de la synchronisation des contacts privés.</span>`,
+      false
+    );
   });
+
+  $("#importSyncContacts").addEventListener("click", async () => {
+    if (!pendingContacts.length) return;
+
+    const button = $("#importSyncContacts");
+    button.disabled = true;
+
+    try {
+      report(
+        `⏳ Synchronisation des contacts privés : <b>0/${pendingContacts.length}</b>`,
+        false
+      );
+
+      const result = await syncPrivateContacts();
+
+      report(
+        `✅ Contacts privés synchronisés : <b>${result.saved}/${result.total}</b>.`,
+        false
+      );
+    } catch (error) {
+      report(
+        `❌ ${error.message || "Synchronisation des contacts impossible."}<br>` +
+        `<span class="import-muted">data.json reste intact : vous pouvez le télécharger indépendamment.</span>`,
+        true
+      );
+    } finally {
+      button.disabled = contactsSynced || pendingContacts.length === 0;
+    }
+  });
+
 })();

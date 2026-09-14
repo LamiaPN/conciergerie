@@ -1,5 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-conciergerie.js
+   VERSION : v56 — calendrier PN avec vues par date, salle et partenaire
    RÔLE    : Planning Conciergerie — sélections uniquement.
 
    RÈGLES :
@@ -59,6 +60,9 @@
     rooms: [...DEFAULT_ROOMS],
     calendarRooms: [],
     calendarDate: EVENT_DATES[0].value,
+    calendarView: "date",
+    calendarRoom: DEFAULT_ROOMS[0],
+    calendarPartnerId: "",
     conflicts: new Map(),
     availabilityWarnings: new Map()
   };
@@ -174,6 +178,7 @@
 
     el.content?.addEventListener("input", onMeetingInput);
     el.content?.addEventListener("change", onMeetingInput);
+    el.content?.addEventListener("change", onCalendarPartnerChange);
     el.content?.addEventListener("click", onCalendarClick);
 
     el.saveBtn?.addEventListener("click", saveDirtyMeetings);
@@ -612,16 +617,67 @@
 
   /* ═══ VUE CALENDRIER PAR SALLE — LECTURE SEULE ═══════════════════════ */
 
-  function onCalendarClick(event) {
-    const button = event.target.closest("[data-calendar-date]");
-    if (!button || state.mode !== "calendrier") return;
+  function onCalendarPartnerChange(event) {
+    const select = event.target.closest("#calendarPartnerFilter");
+    if (!select || state.mode !== "calendrier") return;
 
-    const date = exactId(button.dataset.calendarDate);
-
-    if (!EVENT_DATES.some(item => item.value === date)) return;
-
-    state.calendarDate = date;
+    state.calendarPartnerId = exactId(select.value);
     renderCalendar();
+  }
+
+  function calendarPartnerOptions() {
+    const partners = new Map();
+
+    state.relations.forEach(relation => {
+      const id = exactId(relation.partenaire?.id);
+      if (!id) return;
+
+      partners.set(id, {
+        id,
+        label: nomAffiche(relation.partenaire)
+      });
+    });
+
+    return [...partners.values()].sort((a, b) =>
+      String(a.label || "").localeCompare(
+        String(b.label || ""),
+        "fr",
+        { sensitivity: "base" }
+      )
+    );
+  }
+
+  function onCalendarClick(event) {
+    if (state.mode !== "calendrier") return;
+
+    const viewButton = event.target.closest("[data-calendar-view]");
+    if (viewButton) {
+      const view = exactId(viewButton.dataset.calendarView);
+      if (["date", "salle", "partenaire"].includes(view)) {
+        state.calendarView = view;
+        renderCalendar();
+      }
+      return;
+    }
+
+    const dateButton = event.target.closest("[data-calendar-date]");
+    if (dateButton) {
+      const date = exactId(dateButton.dataset.calendarDate);
+      if (EVENT_DATES.some(item => item.value === date)) {
+        state.calendarDate = date;
+        renderCalendar();
+      }
+      return;
+    }
+
+    const roomButton = event.target.closest("[data-calendar-room]");
+    if (roomButton) {
+      const room = exactId(roomButton.dataset.calendarRoom);
+      if (state.calendarRooms.includes(room)) {
+        state.calendarRoom = room;
+        renderCalendar();
+      }
+    }
   }
 
   function buildCalendarOccupancy(
@@ -664,8 +720,25 @@
     return `${exactId(room)}\u0000${exactId(time)}`;
   }
 
-  function renderCalendar() {
-    const rooms = [...state.calendarRooms];
+  function completeCalendarRelations(relations = state.relations) {
+    return (relations || []).filter(relation =>
+      isCompleteMeeting(relation?.rdv || {})
+    );
+  }
+
+  function calendarMeetingCard(relation) {
+    return `
+      <div class="pn-calendar-meeting">
+        <strong>${escapeHtml(nomAffiche(relation.partenaire))}</strong>
+        <span>${escapeHtml(
+          relation.organisation?.nom
+          || relation.organisation?.id
+          || "Organisation"
+        )}</span>
+      </div>`;
+  }
+
+  function renderCalendarDateView(rooms) {
     const selectedDate = EVENT_DATES.some(
       item => item.value === state.calendarDate
     )
@@ -673,6 +746,257 @@
       : EVENT_DATES[0].value;
 
     state.calendarDate = selectedDate;
+
+    const occupancy = buildCalendarOccupancy(
+      completeCalendarRelations(),
+      selectedDate,
+      rooms
+    );
+
+    const header = rooms.map(room => `
+      <th>${escapeHtml(room)}</th>
+    `).join("");
+
+    const body = TIME_SLOTS.map(time => `
+      <tr>
+        <td class="pn-calendar-time"><strong>${escapeHtml(time)}</strong></td>
+        ${rooms.map(room => {
+          const meetings = occupancy.get(calendarCellKey(room, time)) || [];
+          if (!meetings.length) {
+            return `<td><div class="pn-calendar-free"></div></td>`;
+          }
+
+          const conflict = meetings.length > 1;
+          return `
+            <td>
+              <div class="pn-calendar-cell${conflict ? " is-conflict" : ""}">
+                ${conflict
+                  ? `<div class="pn-calendar-conflict">
+                       <i class="fas fa-triangle-exclamation"></i>
+                       Conflit ×${meetings.length}
+                     </div>`
+                  : ""}
+                ${meetings.map(calendarMeetingCard).join("")}
+              </div>
+            </td>`;
+        }).join("")}
+      </tr>
+    `).join("");
+
+    return `
+      <div class="pn-calendar-toolbar">
+        <span class="pn-calendar-label">Date :</span>
+        <div class="pn-calendar-pills">
+          ${EVENT_DATES.map(item => `
+            <button type="button"
+                    data-calendar-date="${escapeHtml(item.value)}"
+                    class="${item.value === selectedDate ? "active" : ""}">
+              ${escapeHtml(item.label)}
+            </button>
+          `).join("")}
+        </div>
+      </div>
+
+      <div class="pn-calendar-table-wrap">
+        <table class="pn-calendar-table">
+          <thead>
+            <tr>
+              <th class="pn-calendar-time-head">Heure</th>
+              ${header}
+            </tr>
+          </thead>
+          <tbody>${body}</tbody>
+        </table>
+      </div>`;
+  }
+
+  function renderCalendarRoomView(rooms) {
+    const selectedRoom = rooms.includes(state.calendarRoom)
+      ? state.calendarRoom
+      : rooms[0];
+
+    state.calendarRoom = selectedRoom;
+
+    const complete = completeCalendarRelations();
+
+    const sections = EVENT_DATES.map(dateItem => {
+      const byDate = complete.filter(relation =>
+        exactId(relation.rdv?.date) === dateItem.value
+        && exactId(relation.rdv?.salle) === selectedRoom
+      );
+
+      const byTime = new Map();
+      byDate.forEach(relation => {
+        const time = exactId(relation.rdv?.heure);
+        if (!byTime.has(time)) byTime.set(time, []);
+        byTime.get(time).push(relation);
+      });
+
+      return `
+        <section class="pn-room-day">
+          <div class="pn-room-day-title">${escapeHtml(dateItem.label)}</div>
+          <table class="pn-room-table">
+            <thead>
+              <tr>
+                <th>Heure</th>
+                <th>Partenaire</th>
+                <th>Organisation rencontrée</th>
+                <th>État</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${TIME_SLOTS.map(time => {
+                const meetings = byTime.get(time) || [];
+                if (!meetings.length) {
+                  return `
+                    <tr class="is-free">
+                      <td><strong>${escapeHtml(time)}</strong></td>
+                      <td colspan="2">Libre</td>
+                      <td><span class="pn-free-badge">Disponible</span></td>
+                    </tr>`;
+                }
+
+                return meetings.map((relation, index) => `
+                  <tr>
+                    <td><strong>${index === 0 ? escapeHtml(time) : ""}</strong></td>
+                    <td>${escapeHtml(nomAffiche(relation.partenaire))}</td>
+                    <td>${escapeHtml(
+                      relation.organisation?.nom
+                      || relation.organisation?.id
+                      || "Organisation"
+                    )}</td>
+                    <td><span class="pn-rdv-badge">RDV</span></td>
+                  </tr>
+                `).join("");
+              }).join("")}
+            </tbody>
+          </table>
+        </section>`;
+    }).join("");
+
+    return `
+      <div class="pn-calendar-toolbar">
+        <span class="pn-calendar-label">Salle :</span>
+        <div class="pn-calendar-pills">
+          ${rooms.map(room => `
+            <button type="button"
+                    data-calendar-room="${escapeHtml(room)}"
+                    class="${room === selectedRoom ? "active" : ""}">
+              ${escapeHtml(room)}
+            </button>
+          `).join("")}
+        </div>
+      </div>
+
+      <div class="pn-room-view">${sections}</div>`;
+  }
+
+  function renderCalendarPartnerView() {
+    const complete = completeCalendarRelations();
+    const partners = calendarPartnerOptions().filter(item =>
+      complete.some(relation =>
+        exactId(relation.partenaire?.id) === item.id
+      )
+    );
+
+    const selectedPartnerId = partners.some(
+      item => item.id === state.calendarPartnerId
+    )
+      ? state.calendarPartnerId
+      : (partners[0]?.id || "");
+
+    state.calendarPartnerId = selectedPartnerId;
+
+    const meetings = complete
+      .filter(relation =>
+        exactId(relation.partenaire?.id) === selectedPartnerId
+      )
+      .sort((a, b) =>
+        exactId(a.rdv?.date).localeCompare(exactId(b.rdv?.date))
+        || exactId(a.rdv?.heure).localeCompare(exactId(b.rdv?.heure))
+      );
+
+    const selectedPartner = partners.find(
+      item => item.id === selectedPartnerId
+    );
+
+    const dayCount = new Set(
+      meetings.map(relation => exactId(relation.rdv?.date))
+    ).size;
+
+    const roomCount = new Set(
+      meetings.map(relation => exactId(relation.rdv?.salle))
+    ).size;
+
+    return `
+      <div class="pn-calendar-toolbar">
+        <span class="pn-calendar-label">Partenaire :</span>
+        <select id="calendarPartnerFilter"
+                class="pn-calendar-select"
+                aria-label="Choisir un partenaire">
+          ${partners.map(item => `
+            <option value="${escapeHtml(item.id)}"
+                    ${item.id === selectedPartnerId ? "selected" : ""}>
+              ${escapeHtml(item.label)}
+            </option>
+          `).join("")}
+        </select>
+        <span class="pn-calendar-note">
+          Tous ses rendez-vous sur les 3 jours, dans une seule vue.
+        </span>
+      </div>
+
+      ${selectedPartnerId
+        ? `
+          <div class="pn-partner-sheet">
+            <div class="pn-partner-head">
+              <h3>${escapeHtml(selectedPartner?.label || "Partenaire")}</h3>
+              <div class="pn-partner-summary">
+                <span>${meetings.length} RDV</span>
+                <span>${dayCount} jour${dayCount > 1 ? "s" : ""}</span>
+                <span>${roomCount} salle${roomCount > 1 ? "s" : ""}</span>
+              </div>
+            </div>
+
+            <div class="pn-calendar-table-wrap">
+              <table class="pn-partner-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Heure</th>
+                    <th>Salle</th>
+                    <th>Organisation rencontrée</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${meetings.length
+                    ? meetings.map(relation => {
+                        const dateLabel = EVENT_DATES.find(
+                          item => item.value === exactId(relation.rdv?.date)
+                        )?.label || relation.rdv?.date || "—";
+
+                        return `
+                          <tr>
+                            <td><strong>${escapeHtml(dateLabel)}</strong></td>
+                            <td>${escapeHtml(relation.rdv?.heure || "—")}</td>
+                            <td>${escapeHtml(relation.rdv?.salle || "—")}</td>
+                            <td>${escapeHtml(
+                              relation.organisation?.nom
+                              || relation.organisation?.id
+                              || "Organisation"
+                            )}</td>
+                          </tr>`;
+                      }).join("")
+                    : `<tr><td colspan="4" class="pn-empty-row">Aucun rendez-vous planifié.</td></tr>`}
+                </tbody>
+              </table>
+            </div>
+          </div>`
+        : `<div class="pn-calendar-empty">Aucun partenaire avec rendez-vous planifié.</div>`}`;
+  }
+
+  function renderCalendar() {
+    const rooms = [...state.calendarRooms];
 
     if (!rooms.length) {
       el.content.innerHTML = `
@@ -689,121 +1013,56 @@
       return;
     }
 
-    const occupancy = buildCalendarOccupancy(
-      state.relations,
-      selectedDate,
-      rooms
-    );
+    const view = ["date", "salle", "partenaire"].includes(state.calendarView)
+      ? state.calendarView
+      : "date";
 
-    const roomCount = rooms.length;
-    const totalCases = TIME_SLOTS.length * roomCount;
-    const occupiedCases = occupancy.size;
-    const placedMeetings = [...occupancy.values()]
-      .reduce((total, list) => total + list.length, 0);
-    const freeCases = Math.max(0, totalCases - occupiedCases);
-    const conflicts = [...occupancy.values()]
-      .filter(list => list.length > 1)
-      .length;
+    state.calendarView = view;
 
-    const minWidth = 84 + (roomCount * 160);
+    const complete = completeCalendarRelations();
+    const totalRdv = complete.length;
 
-    const headerCells = rooms
-      .map(room => `
-        <div class="calendar-room-head">
-          <i class="fas fa-door-open"></i>
-          <span>${escapeHtml(room)}</span>
-        </div>`)
-      .join("");
-
-    const rows = TIME_SLOTS
-      .map(time => {
-        const cells = rooms
-          .map(room => {
-            const meetings =
-              occupancy.get(calendarCellKey(room, time)) || [];
-
-            if (!meetings.length) {
-              return `
-                <div class="calendar-slot calendar-slot-free"
-                     aria-label="${escapeHtml(room)} ${escapeHtml(time)} libre">
-                  <span>Libre</span>
-                </div>`;
-            }
-
-            const conflict = meetings.length > 1;
-
-            const cards = meetings
-              .map(relation => `
-                <div class="calendar-meeting">
-                  <strong>${escapeHtml(
-                    nomAffiche(relation.partenaire)
-                  )}</strong>
-                  <span>${escapeHtml(
-                    relation.organisation?.nom
-                    || relation.organisation?.id
-                    || "Organisation"
-                  )}</span>
-                </div>`)
-              .join("");
-
-            return `
-              <div class="calendar-slot calendar-slot-occupied${conflict ? " is-conflict" : ""}">
-                ${conflict
-                  ? `<span class="calendar-conflict-badge">
-                       <i class="fas fa-triangle-exclamation"></i>
-                       Conflit ×${meetings.length}
-                     </span>`
-                  : ""}
-                ${cards}
-              </div>`;
-          })
-          .join("");
-
-        return `
-          <div class="calendar-time">${escapeHtml(time)}</div>
-          ${cells}`;
-      })
-      .join("");
+    const content = view === "salle"
+      ? renderCalendarRoomView(rooms)
+      : view === "partenaire"
+        ? renderCalendarPartnerView()
+        : renderCalendarDateView(rooms);
 
     el.content.innerHTML = `
-      <section class="conciergerie-calendar" aria-label="Calendrier des salles">
-        <div class="calendar-toolbar">
-          <div>
-            <span class="conciergerie-filterlabel">Jour</span>
-            <div class="segment calendar-day-segment">
-              ${EVENT_DATES.map(item => `
-                <button type="button"
-                        data-calendar-date="${escapeHtml(item.value)}"
-                        class="${item.value === selectedDate ? "on" : ""}">
-                  ${escapeHtml(item.label)}
-                </button>
-              `).join("")}
-            </div>
+      <section class="pn-rdv-calendar" aria-label="Calendrier des rendez-vous">
+        <div class="pn-calendar-top">
+          <div class="pn-calendar-tabs">
+            <button type="button"
+                    data-calendar-view="date"
+                    class="${view === "date" ? "active" : ""}">
+              Par date
+            </button>
+            <button type="button"
+                    data-calendar-view="salle"
+                    class="${view === "salle" ? "active" : ""}">
+              Par salle
+            </button>
+            <button type="button"
+                    data-calendar-view="partenaire"
+                    class="${view === "partenaire" ? "active" : ""}">
+              Par partenaire
+            </button>
           </div>
 
-          <div class="calendar-readonly">
+          <div class="pn-calendar-readonly">
             <i class="fas fa-eye"></i>
             Lecture seule
           </div>
         </div>
 
-        <div class="calendar-scroll">
-          <div class="calendar-grid"
-               style="--calendar-room-count:${roomCount};--calendar-min-width:${minWidth}px;">
-            <div class="calendar-corner">Heure</div>
-            ${headerCells}
-            ${rows}
-          </div>
-        </div>
+        ${content}
 
-        <footer class="calendar-footer">
-          <span><strong>${placedMeetings}</strong> RDV placés</span>
-          <span><strong>${freeCases}</strong> créneaux libres</span>
-          ${conflicts
-            ? `<span class="calendar-footer-conflict">
-                 <strong>${conflicts}</strong> conflit${conflicts > 1 ? "s" : ""}
-               </span>`
-            : ""}
+        <footer class="pn-calendar-footer">
+          <span><strong>${totalRdv}</strong> RDV planifiés</span>
+          <span>
+            <strong>${rooms.length}</strong>
+            salle${rooms.length > 1 ? "s" : ""}
+          </span>
         </footer>
       </section>`;
 

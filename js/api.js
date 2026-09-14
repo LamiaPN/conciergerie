@@ -1,5 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : api.js
+   VERSION : v43 — vivier Airtable toujours relu depuis data.json
    RÔLE    : Couche d'accès aux données de la Conciergerie MTLC 2026.
 
    SOURCES :
@@ -13,107 +14,124 @@
    - Les IDs Airtable sont sensibles à la casse : jamais de toLowerCase()
 
    ┌─ SOMMAIRE ───────────────────────────────────────────────────────────┐
-   │  1 — Chargement + fusion du vivier                                   │
-   │  2 — Utilitaires du vivier                                           │
-   │  3 — Sélections partenaire / admin                                   │
-   │  4 — Formulaire, historique et notifications                          │
-   │  5 — Propositions partenaire / admin                                 │
-   │  6 — Vivier modifiable                                               │
-   │  7 — Référentiels                                                  │
-   │  8 — Requêtes HTTP                                                   │
-   │  9 — Repli local                                                     │
-   │ 10 — API publique                                                    │
+   │  1 — Chargement du vivier Airtable                                 │
+   │  2 — Utilitaires du vivier                                          │
+   │  3 — Sélections partenaire / admin                                  │
+   │  4 — Formulaire, historique et notifications                        │
+   │  5 — Propositions partenaire / admin                                │
+   │  6 — Vivier modifiable                                              │
+   │  7 — Référentiels                                                   │
+   │  8 — Planification des rendez-vous                                  │
+   │  9 — Requêtes HTTP                                                  │
+   │ 10 — Repli local                                                    │
+   │ 11 — API publique                                                   │
+   │ 12 — Modules complémentaires admin                                  │
    └──────────────────────────────────────────────────────────────────────┘
    ════════════════════════════════════════════════════════════════════════ */
 
 const API = (() => {
   let _vivier = null;
 
-  /* ═══ SECTION 1 — CHARGEMENT + FUSION DU VIVIER ═══════════════════════ */
+  /* ═══ SECTION 1 — CHARGEMENT DU VIVIER AIRTABLE ════════════════════════ */
   async function loadVivier() {
-    if (_vivier) return _vivier;
+    /*
+     * v43 — pas de retour anticipé depuis _vivier.
+     * Chaque appel relit le data.json courant avec cache-buster.
+     * Cela garantit que l'admin voit immédiatement le dernier import Airtable.
+     */
+    const baseUrl = String(CONFIG.DATA_URL || "js/data.json");
+    const separator = baseUrl.includes("?") ? "&" : "?";
+    const res = await fetch(`${baseUrl}${separator}_=${Date.now()}`, {
+      cache: "no-store"
+    });
 
-    const res = await fetch(CONFIG.DATA_URL, { cache: "no-store" });
-    if (!res.ok) throw new Error("Impossible de charger le vivier (" + res.status + ").");
+    if (!res.ok) {
+      throw new Error("Impossible de charger le vivier (" + res.status + ").");
+    }
+
     const base = await res.json();
 
     const organisationsBase = Array.isArray(base.organisations)
       ? base.organisations.map(o => ({ ...o }))
       : [];
+    const partenairesBase = Array.isArray(base.partenaires)
+      ? base.partenaires.map(p => ({ ...p }))
+      : [];
 
+    /*
+     * Airtable/data.json reste la source de vérité.
+     * Les anciennes corrections Vivier_modifs ne peuvent pas écraser
+     * une organisation Airtable. On conserve uniquement les orgs locales
+     * loc-* qui n'existent pas dans la base.
+     */
     let organisations = organisationsBase;
 
     try {
       const modifs = await getVivierModifs();
-      organisations = mergeVivierOrganisations_(organisationsBase, modifs);
+      const idsBase = new Set(
+        organisationsBase
+          .map(o => String(o?.id ?? "").trim())
+          .filter(Boolean)
+      );
+
+      const locales = (Array.isArray(modifs) ? modifs : [])
+        .map(cleanOrg)
+        .filter(org => {
+          const id = String(org?.id ?? "").trim();
+          return id.startsWith("loc-") && !idsBase.has(id);
+        });
+
+      organisations = [...organisationsBase, ...locales];
     } catch (err) {
       console.warn("Vivier_modifs indisponible : data.json utilisé seul.", err);
     }
 
-    _vivier = { ...base, organisations };
+    _vivier = {
+      ...base,
+      partenaires: partenairesBase,
+      organisations
+    };
+
     return _vivier;
   }
 
-
   /**
-   * Fusion data.json + Vivier_modifs.
-   *
-   * RÈGLE MÉTIER :
-   * - une organisation Airtable (id non "loc-*") n'existe que si son id
-   *   est encore présent dans data.json ;
-   * - une organisation locale (id "loc-*") peut exister uniquement dans
-   *   Vivier_modifs et doit survivre aux prochains imports Airtable.
-   *
-   * Les IDs restent sensibles à la casse : aucun toLowerCase().
+   * Compatibilité interne : la fusion ne donne plus priorité aux anciennes
+   * corrections locales. Elle conserve uniquement les organisations "loc-*"
+   * absentes de la base Airtable.
    */
   function mergeVivierOrganisations_(baseOrganisations, modifs) {
     const base = Array.isArray(baseOrganisations)
       ? baseOrganisations.map(org => ({ ...org }))
       : [];
 
-    const baseIds = new Set(
-      base
-        .map(org => String(org?.id ?? "").trim())
-        .filter(Boolean)
+    const idsBase = new Set(
+      base.map(org => String(org?.id ?? "").trim()).filter(Boolean)
     );
 
-    const parId = new Map(
-      base
-        .filter(org => String(org?.id ?? "").trim())
-        .map(org => [String(org.id).trim(), org])
-    );
+    const locales = (Array.isArray(modifs) ? modifs : [])
+      .map(cleanOrg)
+      .filter(org => {
+        const id = String(org?.id ?? "").trim();
+        return id.startsWith("loc-") && !idsBase.has(id);
+      });
 
-    (Array.isArray(modifs) ? modifs : []).forEach(modif => {
-      const propre = cleanOrg(modif);
-      const id = String(propre.id || "").trim();
-
-      if (!id) return;
-
-      const estLocale = id.startsWith("loc-");
-      const existeDansBase = baseIds.has(id);
-
-      // Orphelin Airtable : on l'ignore volontairement.
-      if (!estLocale && !existeDansBase) return;
-
-      const existante = parId.get(id);
-
-      parId.set(
-        id,
-        existante
-          ? { ...existante, ...propre }
-          : propre
-      );
-    });
-
-    return [...parId.values()];
+    return [...base, ...locales];
   }
 
-  /* ═══ SECTION 2 — UTILITAIRES DU VIVIER ════════════════════════════════ */
+  /** Les anciennes corrections locales ne modifient plus les partenaires Airtable. */
+  function mergeVivierPartenaires_(basePartenaires) {
+    return Array.isArray(basePartenaires)
+      ? basePartenaires.map(partenaire => ({ ...partenaire }))
+      : [];
+  }
+
+  /* ═══ SECTION 2 — UTILITAIRES DU VIVIER ═══════════════════════════════ */
   function getPartenaire(vivier, partenaireId) {
     return vivier.partenaires.find(partenaire => partenaire.id === partenaireId) || null;
   }
 
-  /* ═══ SECTION 3 — SÉLECTIONS PARTENAIRE / ADMIN ═════════════════════════ */
+  /* ═══ SECTION 3 — SÉLECTIONS PARTENAIRE / ADMIN ═══════════════════════ */
   async function getSelections(partenaireId, token) {
     if (!CONFIG.SHEET_API_URL) return _local.get(partenaireId);
     const url = `${CONFIG.SHEET_API_URL}?action=get&p=${encodeURIComponent(partenaireId)}&token=${encodeURIComponent(token)}`;
@@ -144,7 +162,6 @@ const API = (() => {
     return data.selections || [];
   }
 
-  /* ═══ STATUT DE VALIDATION DES CHOIX ═══════════════════════════════════ */
   async function getSelectionStatus(partenaireId, token) {
     if (!CONFIG.SHEET_API_URL) return { locked: false, statut: "modifiable", date_validation: "" };
     const url = `${CONFIG.SHEET_API_URL}?action=get_selection_status&p=${encodeURIComponent(partenaireId)}&token=${encodeURIComponent(token)}&_=${Date.now()}`;
@@ -183,8 +200,6 @@ const API = (() => {
     return data;
   }
 
-
-  /* ═══ RENDEZ-VOUS PARTENAIRE ══════════════════════════════════════════ */
   async function getRencontres(partenaireId, token) {
     if (!CONFIG.SHEET_API_URL) return [];
     const url = `${CONFIG.SHEET_API_URL}?action=get_rencontres&p=${encodeURIComponent(partenaireId)}&token=${encodeURIComponent(token)}`;
@@ -193,7 +208,7 @@ const API = (() => {
     return Array.isArray(data.rencontres) ? data.rencontres : [];
   }
 
-  /* ═══ SECTION 4 — FORMULAIRE, HISTORIQUE ET NOTIFICATIONS ═══════════════ */
+  /* ═══ SECTION 4 — FORMULAIRE, HISTORIQUE ET NOTIFICATIONS ═════════════ */
   async function getFormulaire(partenaireId, token) {
     if (!CONFIG.SHEET_API_URL) return null;
     const url = `${CONFIG.SHEET_API_URL}?action=get_formulaire&p=${encodeURIComponent(partenaireId)}&token=${encodeURIComponent(token)}`;
@@ -242,17 +257,13 @@ const API = (() => {
     const data = await _fetchJSON(CONFIG.SHEET_API_URL, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({
-        action: "mark_form_notifications_read",
-        p: partenaireId,
-        token: adminToken
-      })
+      body: JSON.stringify({ action: "mark_form_notifications_read", p: partenaireId, token: adminToken })
     });
     if (data.error) throw new Error(data.error);
     return data;
   }
 
-  /* ═══ SECTION 5 — PROPOSITIONS PARTENAIRE / ADMIN ═══════════════════════ */
+  /* ═══ SECTION 5 — PROPOSITIONS PARTENAIRE / ADMIN ═════════════════════ */
   async function getPropositions(partenaireId, token) {
     if (!CONFIG.SHEET_API_URL) return [];
     const url = `${CONFIG.SHEET_API_URL}?action=get_propositions&p=${encodeURIComponent(partenaireId)}&token=${encodeURIComponent(token)}`;
@@ -280,8 +291,7 @@ const API = (() => {
     return data;
   }
 
-
-  /* ═══ SECTION 6 — VIVIER MODIFIABLE ════════════════════════════════════ */
+  /* ═══ SECTION 6 — VIVIER MODIFIABLE ═══════════════════════════════════ */
   async function getVivierModifs() {
     if (!CONFIG.SHEET_API_URL) return [];
     const url = `${CONFIG.SHEET_API_URL}?action=get_vivier_modifs`;
@@ -322,7 +332,7 @@ const API = (() => {
 
     champs.forEach(champ => {
       const valeur = String(modif?.[champ] ?? "").trim();
-      if (champ === "id" || champ === "nom" || valeur !== "") propre[champ] = valeur;
+      if (champ === "id" || valeur !== "") propre[champ] = valeur;
     });
 
     const expertise = parseExpertise_(modif?.expertise);
@@ -343,7 +353,7 @@ const API = (() => {
     return [...new Set(text.split(",").map(v => v.trim()).filter(Boolean))];
   }
 
-  /* ═══ SECTION 7 — RÉFÉRENTIELS ═════════════════════════════════════════ */
+  /* ═══ SECTION 7 — RÉFÉRENTIELS ════════════════════════════════════════ */
   async function getReferentiels() {
     if (!CONFIG.SHEET_API_URL) return {};
     const url = `${CONFIG.SHEET_API_URL}?action=get_referentiels`;
@@ -357,12 +367,7 @@ const API = (() => {
     const data = await _fetchJSON(CONFIG.SHEET_API_URL, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({
-        action: "add_referentiel",
-        token: adminToken,
-        categorie,
-        valeur
-      })
+      body: JSON.stringify({ action: "add_referentiel", token: adminToken, categorie, valeur })
     });
     if (data.error) throw new Error(data.error);
     return data;
@@ -373,20 +378,13 @@ const API = (() => {
     const data = await _fetchJSON(CONFIG.SHEET_API_URL, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({
-        action: "delete_referentiel",
-        token: adminToken,
-        categorie,
-        valeur,
-        usage_count: Number(usageCount || 0)
-      })
+      body: JSON.stringify({ action: "delete_referentiel", token: adminToken, categorie, valeur, usage_count: Number(usageCount || 0) })
     });
     if (data.error) throw new Error(data.error);
     return data;
   }
 
-
-  /* ═══ SECTION 7 — PLANIFICATION DES RENDEZ-VOUS ADMIN ══════════════════ */
+  /* ═══ SECTION 8 — PLANIFICATION DES RENDEZ-VOUS ═══════════════════════ */
   async function getRencontresAdmin(adminToken) {
     if (!CONFIG.SHEET_API_URL) return [];
     const url = `${CONFIG.SHEET_API_URL}?action=admin_get_rencontres&token=${encodeURIComponent(adminToken)}`;
@@ -397,33 +395,23 @@ const API = (() => {
 
   async function saveRencontresAdmin(adminToken, rencontres) {
     if (!CONFIG.SHEET_API_URL) return { ok: true, demo: true, count: rencontres.length };
-
     const data = await _fetchJSON(CONFIG.SHEET_API_URL, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({
-        action: "save_rencontres",
-        token: adminToken,
-        rencontres
-      })
+      body: JSON.stringify({ action: "save_rencontres", token: adminToken, rencontres })
     });
 
     if (data.error) {
-      const message = data.details
-        ? `${data.error} — ${data.details}`
-        : data.error;
-
+      const message = data.details ? `${data.error} — ${data.details}` : data.error;
       const error = new Error(message);
       error.code = data.code || "";
       error.details = data.details || "";
-
       throw error;
     }
-
     return data;
   }
 
-  /* ═══ SECTION 7 — REQUÊTES HTTP ═════════════════════════════════════════ */
+  /* ═══ SECTION 9 — REQUÊTES HTTP ═══════════════════════════════════════ */
   async function _fetchJSON(url, options = {}) {
     const method = String(options.method || "GET").toUpperCase();
     const maxAttempts = method === "GET" ? 3 : 1;
@@ -446,9 +434,6 @@ const API = (() => {
         const text = await res.text();
         const trimmed = text.trim();
 
-        // Apps Script peut exceptionnellement renvoyer une page HTML
-        // temporaire au lieu du JSON attendu. On retente seulement les GET,
-        // pour éviter tout doublon sur les écritures POST.
         if (trimmed.startsWith("<!DOCTYPE") || trimmed.startsWith("<html") || trimmed.startsWith("<")) {
           if (method === "GET" && attempt < maxAttempts) {
             await new Promise(resolve => setTimeout(resolve, 350 * attempt));
@@ -476,11 +461,9 @@ const API = (() => {
           throw new Error("La requête a dépassé le délai autorisé.");
         }
 
-        if (method === "GET" && attempt < maxAttempts &&
-            /réponse temporaire invalide|réponse invalide/i.test(String(err.message || ""))) {
+        if (method === "GET" && attempt < maxAttempts && /réponse temporaire invalide|réponse invalide/i.test(String(err.message || ""))) {
           continue;
         }
-
         throw err;
       } finally {
         clearTimeout(timeout);
@@ -490,14 +473,14 @@ const API = (() => {
     throw new Error("Impossible de charger les données après plusieurs tentatives.");
   }
 
-  /* ═══ SECTION 8 — REPLI LOCAL ═══════════════════════════════════════════ */
+  /* ═══ SECTION 10 — REPLI LOCAL ════════════════════════════════════════ */
   const _local = {
     _m: {},
     get(partenaireId) { return this._m[partenaireId] ? [...this._m[partenaireId]] : []; },
     set(partenaireId, organisationIds) { this._m[partenaireId] = [...organisationIds]; }
   };
 
-  /* ═══ SECTION 9 — API PUBLIQUE ══════════════════════════════════════════ */
+  /* ═══ SECTION 11 — API PUBLIQUE ═══════════════════════════════════════ */
   return {
     loadVivier,
     getPartenaire,
@@ -526,12 +509,11 @@ const API = (() => {
     deleteReferentiel,
     getRencontresAdmin,
     saveRencontresAdmin,
-    resetCache,
-    __test_mergeVivierOrganisations_: mergeVivierOrganisations_
+    resetCache
   };
 })();
 
-/* ═══ ADMIN — CONSERVATION DU JETON ENTRE LES VUES ══════════════════════ */
+/* ═══ SECTION 12 — MODULES COMPLÉMENTAIRES ADMIN ════════════════════════ */
 (function preserveAdminTokenBetweenViews_() {
   if (typeof document === "undefined" || typeof location === "undefined") return;
   if (!document.querySelector("#admin-dashboard")) return;
@@ -550,7 +532,6 @@ const API = (() => {
     }
   }
 
-  // Garde-fou avant le gestionnaire de la vue globale Conciergerie.
   document.addEventListener("click", event => {
     if (!event.target.closest("#navConciergerie")) return;
     const current = new URL(location.href);
@@ -562,7 +543,6 @@ const API = (() => {
   }, true);
 })();
 
-/* ═══ INTERFACE VERROUILLAGE — CHARGEMENT DU MODULE ═════════════════════ */
 (function loadSelectionLockUi_() {
   if (typeof document === "undefined") return;
   if (!document.querySelector("#admin-dashboard") && !document.querySelector("#orgGrid")) return;
@@ -576,8 +556,6 @@ const API = (() => {
   document.head.appendChild(script);
 })();
 
-
-/* ═══ ADMIN — PRIORITÉ VISUELLE ET ORDRE DES CHOIX ══════════════════════ */
 (function loadAdminPriorites_() {
   if (typeof document === "undefined") return;
   if (!document.querySelector("#admin-dashboard")) return;
@@ -593,8 +571,6 @@ const API = (() => {
   document.head.appendChild(script);
 })();
 
-
-/* ═══ ADMIN — CORRECTION DES DISPONIBILITÉS CONCIERGERIE ════════════════ */
 (function loadAdminDisponibilites_() {
   if (typeof document === "undefined") return;
   if (!document.querySelector("#admin-dashboard")) return;
@@ -610,8 +586,6 @@ const API = (() => {
   document.head.appendChild(script);
 })();
 
-
-/* ═══ ADMIN — FEEDBACK ENREGISTREMENT + ACCORDÉON PARTENAIRES ══════════ */
 (function loadAdminPlanningUi_() {
   if (typeof document === "undefined") return;
   if (!document.querySelector("#admin-dashboard")) return;
@@ -627,8 +601,6 @@ const API = (() => {
   document.head.appendChild(script);
 })();
 
-
-/* ═══ ADMIN — EXPORT PDF DU PLANNING COMPLET ════════════════════════════ */
 (function loadAdminPlanningExport_() {
   if (typeof document === "undefined") return;
   if (!document.querySelector("#admin-dashboard")) return;
@@ -644,8 +616,17 @@ const API = (() => {
   document.head.appendChild(script);
 })();
 
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = {
-    mergeVivierOrganisations_: API.__test_mergeVivierOrganisations_
-  };
-}
+
+(function loadAdminVivierSync_() {
+  if (typeof document === "undefined") return;
+  if (!document.querySelector("#admin-dashboard")) return;
+  if (document.querySelector('script[data-admin-vivier-sync-loader]')) return;
+  const current = document.currentScript;
+  const script = document.createElement("script");
+  script.src = current?.src
+    ? new URL("admin-vivier-sync.js?v=20260908-v37", current.src).toString()
+    : "js/admin-vivier-sync.js?v=20260908-v37";
+  script.defer = true;
+  script.dataset.adminVivierSyncLoader = "true";
+  document.head.appendChild(script);
+})();

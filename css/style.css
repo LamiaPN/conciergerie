@@ -962,6 +962,29 @@ body {
 .recap-row .k { color:var(--gris-text); min-width:180px; font-weight:600; }
 .recap-sub { font-family:var(--font-title); font-weight:700; font-size:.82rem; color:var(--vert-dark); text-transform:uppercase; letter-spacing:.04em; margin:14px 0 6px; }
 .recap-sub:first-child { margin-top:0; }
+
+.recap-org-inline {
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+  padding:4px 0 8px;
+  border-bottom:1px dashed var(--gris-border);
+  flex-wrap:wrap;
+}
+.recap-org-label {
+  font-family:var(--font-title);
+  font-weight:700;
+  font-size:.82rem;
+  color:var(--vert-dark);
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+.recap-org-name {
+  color:var(--noir);
+  font-weight:500;
+  text-transform:none;
+  letter-spacing:0;
+}
 /* ═══ Écran de remerciement (après envoi du formulaire) ═══ */
 .merci-ecran {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;
@@ -1744,24 +1767,23 @@ body {
 }
 
 .vivier-sector-grid {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 4px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 3px 4px;
 }
 
 /* Même densité visuelle que les filtres de « Mes choix ». */
 .vivier-sector-grid .compact-choice-chip {
-  min-height: 26px;
-  padding: 3px 6px;
+  min-height: 0;
+  padding: 3px 7px;
   gap: 4px;
-  border-width: 1px;
+  border-width: 1.5px;
   border-radius: 7px;
-  font-size: .64rem;
-  line-height: 1.08;
-  white-space: normal;
+  font-size: .60rem;
+  line-height: 1.12;
 }
 
 .vivier-sector-grid .compact-choice-chip i {
-  font-size: .52rem;
+  font-size: .50rem;
 }
 
 .form-submit-bar .status.is-saving {
@@ -1780,7 +1802,7 @@ body {
   }
 
   .vivier-sector-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

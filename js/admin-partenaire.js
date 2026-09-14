@@ -1,5 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-partenaire.js
+   VERSION : v44 — correction concurrence Vivier / vue partenaire
    RÔLE    : Administration fusionnée de la Conciergerie MTLC 2026.
              Gère la pioche des propositions et l'édition du vivier.
 
@@ -185,6 +186,10 @@
     window.setInterval(refreshFormNotifications, 60000);
     window.addEventListener("focus", refreshFormNotifications);
 
+    if (location.hash === "#vivier") {
+      return;
+    }
+
     if (!state.partenaireId) {
       el.title.textContent = "Choisir un partenaire";
       return;
@@ -324,7 +329,12 @@
   function activatePartnerView() {
     const partnerView = document.querySelector("#partnerAdminView");
     const conciergerieView = document.querySelector("#conciergerieView");
+    const vivierView = document.querySelector("#vivierView");
     const navConciergerie = document.querySelector("#navConciergerie");
+    const navVivier = document.querySelector("#navVivier");
+
+    if (vivierView) vivierView.classList.remove("active");
+    if (navVivier) navVivier.classList.remove("active");
     if (partnerView) partnerView.classList.add("active");
     if (conciergerieView) conciergerieView.classList.remove("active");
     if (navConciergerie) navConciergerie.classList.remove("active");
