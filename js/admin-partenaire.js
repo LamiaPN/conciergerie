@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-partenaire.js
-   VERSION : v44 — correction concurrence Vivier / vue partenaire
+   VERSION : v58 — verrouillage accès admin par token
    RÔLE    : Administration fusionnée de la Conciergerie MTLC 2026.
              Gère la pioche des propositions et l'édition du vivier.
 
@@ -148,29 +148,52 @@
   };
 
   /* ═══ SECTION 2 — INITIALISATION ═══════════════════════════════════════ */
+  function showAdminAccessDenied(message = "Accès administrateur requis.") {
+    document.body.className = "admin-access-denied";
+    document.body.innerHTML = `
+      <main style="min-height:100vh;display:grid;place-items:center;padding:24px;background:#F4F5F4;font-family:Inter,Arial,sans-serif;">
+        <section style="width:min(460px,100%);background:#fff;border:1px solid #DDE0DC;border-radius:16px;padding:32px;box-shadow:0 10px 30px rgba(11,13,12,.08);text-align:center;">
+          <div style="width:52px;height:52px;margin:0 auto 16px;border-radius:14px;display:grid;place-items:center;background:#E9F7E3;color:#58A038;font-size:22px;"><i class="fas fa-lock"></i></div>
+          <h1 style="margin:0 0 10px;font-family:'Space Grotesk',Inter,sans-serif;font-size:1.35rem;color:#0B0D0C;">Accès administrateur protégé</h1>
+          <p style="margin:0;color:#6f756f;line-height:1.55;">${escapeHtml(message)}</p>
+        </section>
+      </main>`;
+    document.documentElement.classList.remove("admin-auth-pending");
+  }
+
   async function init() {
     const params = new URLSearchParams(location.search);
     state.partenaireId = (params.get("p") || "").trim();
     state.adminToken = (params.get("token") || "").trim();
 
-    // Chargement lourd unique pour toute la session admin.
+    // Sécurité v58 : aucune donnée ni interface admin n'est chargée avant
+    // validation du token par le backend privé Google Apps Script.
+    if (!state.adminToken) {
+      showAdminAccessDenied("Le lien administrateur doit contenir un jeton valide.");
+      return;
+    }
+    if (!CONFIG.SHEET_API_URL) {
+      showAdminAccessDenied("La vérification de l’accès administrateur est indisponible.");
+      return;
+    }
+
+    let notifications = [];
+    try {
+      notifications = await API.getFormNotificationsAdmin(state.adminToken);
+    } catch (error) {
+      console.warn("Accès admin refusé :", error);
+      showAdminAccessDenied("Jeton administrateur invalide ou expiré.");
+      return;
+    }
+
+    // Le token est validé : seulement maintenant on charge le vivier et l'interface.
     state.vivier = await API.loadVivier();
     state.orgs = state.vivier.organisations || [];
 
-    const [referentielsResult, notificationsResult] = await Promise.allSettled([
-      API.getReferentiels(),
-      state.adminToken
-        ? API.getFormNotificationsAdmin(state.adminToken)
-        : Promise.resolve([])
-    ]);
-
-    state.referentiels = referentielsResult.status === "fulfilled"
-      ? (referentielsResult.value || {})
+    const referentielsResult = await Promise.allSettled([API.getReferentiels()]);
+    state.referentiels = referentielsResult[0].status === "fulfilled"
+      ? (referentielsResult[0].value || {})
       : {};
-
-    const notifications = notificationsResult.status === "fulfilled"
-      ? (notificationsResult.value || [])
-      : [];
 
     state.formNotifications = new Map(
       notifications
@@ -181,6 +204,7 @@
     buildSidebar();
     buildAxisFilters();
     bindEvents();
+    document.documentElement.classList.remove("admin-auth-pending");
 
     // Rafraîchit les pastilles sans recharger toute l'administration.
     window.setInterval(refreshFormNotifications, 60000);
@@ -1493,5 +1517,10 @@
   const escapeHtml = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const escapeAttr = escapeHtml;
 
-  document.addEventListener("DOMContentLoaded", init);
+  document.addEventListener("DOMContentLoaded", () => {
+    init().catch(error => {
+      console.error("Initialisation admin impossible :", error);
+      showAdminAccessDenied("Impossible de vérifier l’accès administrateur pour le moment.");
+    });
+  });
 })();
