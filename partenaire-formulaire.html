@@ -96,7 +96,9 @@
     <div class="grid2">
       <div class="field full">
         <label>Nom de l'organisation <span class="req">*</span><span class="prefilled-note" id="orgPrefill" hidden><i class="fas fa-check"></i> pré-rempli</span></label>
-        <input type="text" id="f_org" placeholder="Nom de votre organisation">
+        <input type="text" id="f_org" placeholder="Nom de votre organisation" readonly aria-readonly="true"
+               title="Le nom de l’organisation est associé à votre lien personnalisé et ne peut pas être modifié."
+               style="background:#F4F5F4;color:#6B716C;cursor:not-allowed;border-color:#DDE0DC;">
       </div>
       <div class="field full">
         <label>Secteur(s) d'activité <span class="req">*</span> <span class="optional">— plusieurs choix</span></label>
@@ -267,6 +269,6 @@
 <script src="js/config.js?v=20260824-form-v12"></script>
 <script src="js/api.js?v=20260824-form-v12"></script>
 <script src="js/partenaire-espace.js?v=20260824-form-v12"></script>
-<script src="js/partenaire-formulaire.js?v=20260914-form-v17"></script>
+<script src="js/partenaire-formulaire.js?v=20260915-form-v18"></script>
 </body>
 </html>

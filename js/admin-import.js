@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-import.js
-   VERSION : v54 — téléchargement data.json séparé de la synchro contacts privés
+   VERSION : v57 — partenaires déterminés par Statut_Conciergerie
    RÔLE    : Convertisseur CSV Airtable → data.json pour le vivier admin.
 
    ┌─ SOMMAIRE ───────────────────────────────────────────────────────────┐
@@ -116,9 +116,9 @@
           `<b>${data.partenaires.length}</b> partenaires conciergerie · ` +
           `<b>${data.propositions.length}</b> propositions · ` +
           `<b>${pendingContacts.length}</b> contact(s) privé(s) détecté(s).<br>` +
-          `<span class="import-muted">Les coordonnées privées ne sont jamais écrites dans data.json. ` +
-          `Téléchargez d’abord data.json, puis lancez séparément « Synchroniser les contacts privés ». ` +
-          `Ainsi, un problème de synchro ne peut plus casser le fichier data.json.</span>`,
+          `<span class="import-muted">Partenaires actifs = Statut_Conciergerie « Partenaire Conciergerie ». ` +
+          `Les coordonnées privées ne sont jamais écrites dans data.json. ` +
+          `Téléchargez d’abord data.json, puis lancez séparément « Synchroniser les contacts privés ».</span>`,
           false
         );
 
@@ -341,9 +341,13 @@
       });
 
       const meetingQuota = quota(getValue(row, COL.nb));
+      const statutConciergerie = getValue(row, COL.statut);
 
-      if (meetingQuota > 0 && !seenPartnerIds.has(id)) {
-        partenaires.push({ id, nom, meeting_quota: meetingQuota });
+      // RÈGLE MÉTIER V57 :
+      // l'appartenance à la Conciergerie dépend uniquement du statut Airtable.
+      // Le quota détermine seulement le nombre de rencontres à assurer.
+      if (statutConciergerie === "Partenaire Conciergerie" && !seenPartnerIds.has(id)) {
+        partenaires.push({ id, nom, meeting_quota: meetingQuota || 0 });
         seenPartnerIds.add(id);
       }
     }
@@ -566,7 +570,7 @@
     return { saved, total: pendingContacts.length };
   }
 
-  /* ═══ SECTION 7 — RAPPORT + TÉLÉCHARGEMENT ════════════════════════════ */
+  /* ═══ SECTION 7 — SYNCHRONISATION CONTACTS + TÉLÉCHARGEMENT ═══════════ */
   function report(html, isError) {
     const element = $("#importReport");
     element.hidden = false;

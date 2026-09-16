@@ -1,7 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : partenaire-formulaire.js
-   VERSION : v17 — suppression du message de mise à jour du vivier
-   VERSION : v14 — ordre logique des tailles
+   VERSION : v18 — organisation verrouillée au partenaire du lien
    RÔLE    : Formulaire de besoins du partenaire (une page, 6 sections).
              Pré-remplit les champs depuis le vivier via ?p=<partenaire>,
              collecte les réponses, affiche un récap, gère l'envoi.
@@ -79,6 +78,10 @@
         );
 
         applySavedForm(formulaireEnregistre, { refreshOrganisation: vivierPlusRecent });
+
+        // Le nom de l'organisation vient toujours du partenaire associé au lien.
+        // Une ancienne réponse enregistrée ne peut jamais le remplacer.
+        if (profil.nom) $("#f_org").value = profil.nom;
 
         $("#formStatus").textContent = vivierPlusRecent
           ? ""
@@ -209,60 +212,10 @@
       </button>`).join("");
   }
 
-  function uniqueNormalized(values) {
-    const seen = new Set();
-    const result = [];
-
-    (values || []).forEach(value => {
-      const original = String(value || "").trim();
-      if (!original) return;
-
-      const key = original
-        .normalize("NFKC")
-        .replace(/[\u00A0\u202F]/g, " ")
-        .replace(/\s+/g, " ")
-        .trim()
-        .toLocaleLowerCase("fr");
-
-      if (seen.has(key)) return;
-      seen.add(key);
-      result.push(original);
-    });
-
-    return result;
-  }
-
-  function sortTailles(values) {
-    const ordre = [
-      "1-10",
-      "11-50",
-      "51-200",
-      "201-500",
-      "501-1000",
-      "1001 -5000",
-      "1001-5000",
-      "5000-10000",
-      "+10 000"
-    ];
-
-    const rang = value => {
-      const texte = String(value || "").trim();
-      const index = ordre.indexOf(texte);
-      return index === -1 ? 999 : index;
-    };
-
-    return [...(values || [])].sort((a, b) => {
-      const diff = rang(a) - rang(b);
-      return diff !== 0
-        ? diff
-        : String(a || "").localeCompare(String(b || ""), "fr", { sensitivity: "base" });
-    });
-  }
-
   function buildVivierControls(referentiels) {
-    const secteurs = uniqueNormalized(Array.isArray(referentiels.secteurs) ? referentiels.secteurs : []);
-    const types = uniqueNormalized(Array.isArray(referentiels.types) ? referentiels.types : []);
-    const tailles = sortTailles(uniqueNormalized(Array.isArray(referentiels.tailles) ? referentiels.tailles : []));
+    const secteurs = Array.isArray(referentiels.secteurs) ? referentiels.secteurs : [];
+    const types = Array.isArray(referentiels.types) ? referentiels.types : [];
+    const tailles = Array.isArray(referentiels.tailles) ? referentiels.tailles : [];
 
     buildChipOptions("f_secteurs", secteurs, true);
     buildSelectOptions("f_type", types);
@@ -321,7 +274,7 @@
     // Section 1 : les données du vivier restent en place si l'ancien formulaire
     // est vide ou si un nouvel import est plus récent que cet enregistrement.
     if (!refreshOrganisation) {
-      if (hasStoredValue(data.organisation)) setFieldValue("f_org", data.organisation);
+      // f_org est volontairement exclu : l'organisation est imposée par le lien partenaire.
       if (hasStoredValue(data.secteurs)) setMultiValues("f_secteurs", data.secteurs);
       if (hasStoredValue(data.type)) setFieldValue("f_type", data.type);
       if (hasStoredValue(data.taille)) setFieldValue("f_taille", data.taille);
@@ -426,20 +379,12 @@
   }
   function sub(t) { return `<div class="recap-sub">${t}</div>`; }
 
-  function recapOrganisation(nom) {
-    if (!nom) return "";
-    return `
-      <div class="recap-org-inline">
-        <span class="recap-org-label">Votre organisation :</span>
-        <span class="recap-org-name">${escapeHtml(nom)}</span>
-      </div>`;
-  }
-
   function updateRecap() {
     const d = collect();
     let html = "";
 
-    html += recapOrganisation(d.organisation);
+    html += sub("Votre organisation");
+    html += row("Organisation", d.organisation);
     html += row("Contact", d.contact_nom);
 
     html += sub("Qui vous souhaitez rencontrer");
