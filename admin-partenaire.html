@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="admin-auth-pending">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +10,10 @@
 <!-- Charte PN existante -->
 <link rel="stylesheet" href="css/admin.css?v=20260911-v45">
 <style>
+  /* Sécurité admin v58 : masque entièrement l’interface tant que le token
+     n’a pas été validé par le backend privé. */
+  html.admin-auth-pending body { visibility: hidden; }
+
   /* Styles manquants — bâtis sur les variables PN */
   .sidebar-section-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,.35); font-weight: 700; padding: 16px 14px 6px; }
 
@@ -693,7 +697,7 @@
 <script src="js/config.js?v=20260911-v45"></script>
 <script src="js/api.js?v=20260911-v45"></script>
 <script src="js/noms-courts.js?v=20260911-v45"></script>
-<script src="js/admin-partenaire.js?v=20260911-v45"></script>
+<script src="js/admin-partenaire.js?v=20260916-v58"></script>
 <script src="js/admin-conciergerie.js?v=20260914-v56"></script>
 <script src="js/admin-import.js?v=20260915-v57"></script>
 <script src="js/admin-form-status.js?v=20260911-v45"></script>
