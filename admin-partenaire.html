@@ -329,6 +329,94 @@
     color:#0B0D0C;
   }
 
+  /* ═══ Filtres multi-sélection v60 — lignes cliquables PN ═══ */
+  .multi-filter-native { display:none !important; }
+  .multi-filter { position:relative; width:100%; }
+  .multi-filter-trigger {
+    width:100%;
+    min-height:42px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    border:1px solid #DDE0DC;
+    border-radius:8px;
+    background:#fff;
+    color:#0B0D0C;
+    padding:10px 12px;
+    font:500 .88rem var(--font-main);
+    cursor:pointer;
+    text-align:left;
+  }
+  .multi-filter-trigger-label {
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .multi-filter-trigger[aria-expanded="true"] {
+    border-color:#6FBF4A;
+    box-shadow:0 0 0 2px rgba(111,191,74,.12);
+  }
+  .multi-filter-panel {
+    position:absolute;
+    z-index:80;
+    top:calc(100% + 6px);
+    left:0;
+    width:max(100%,280px);
+    max-width:380px;
+    background:#fff;
+    border:1px solid #DDE0DC;
+    border-radius:10px;
+    box-shadow:0 12px 28px rgba(11,13,12,.14);
+    overflow:hidden;
+  }
+  .multi-filter-head {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:9px 11px;
+    border-bottom:1px solid #EEF0ED;
+    font-size:.72rem;
+    font-weight:700;
+    color:#6f756f;
+  }
+  .multi-filter-clear {
+    border:0;
+    background:transparent;
+    color:#58A038;
+    font:700 .72rem var(--font-main);
+    cursor:pointer;
+    padding:2px 0;
+  }
+  .multi-filter-options {
+    max-height:280px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding:6px;
+  }
+  .multi-filter-option {
+    width:100%;
+    display:block;
+    border:0;
+    background:#fff;
+    color:#0B0D0C;
+    border-radius:7px;
+    padding:9px 10px;
+    cursor:pointer;
+    text-align:left;
+    font:500 .8rem var(--font-main);
+    line-height:1.25;
+  }
+  .multi-filter-option:hover { background:#F4F5F4; }
+  .multi-filter-option.is-selected {
+    background:#6FBF4A;
+    color:#fff;
+    font-weight:700;
+  }
+  .multi-filter-option.is-selected:hover { background:#58A038; }
+
 </style>
 </head>
 <body>
@@ -694,14 +782,14 @@
 </div>
 
 <!-- Scripts de production — v45 : cache busting -->
-<script src="js/config.js?v=20260911-v45"></script>
-<script src="js/api.js?v=20260911-v45"></script>
-<script src="js/noms-courts.js?v=20260911-v45"></script>
-<script src="js/admin-partenaire.js?v=20260916-v58"></script>
-<script src="js/admin-conciergerie.js?v=20260914-v56"></script>
-<script src="js/admin-import.js?v=20260915-v57"></script>
-<script src="js/admin-form-status.js?v=20260911-v45"></script>
-<script src="js/admin-default-conciergerie.js?v=20260911-v45"></script>
-<script src="js/admin-vivier.js?v=20260913-v52"></script>
+<script src="js/config.js?v=20260917-v60"></script>
+<script src="js/api.js?v=20260917-v60"></script>
+<script src="js/noms-courts.js?v=20260917-v60"></script>
+<script src="js/admin-partenaire.js?v=20260917-v60"></script>
+<script src="js/admin-conciergerie.js?v=20260917-v60"></script>
+<script src="js/admin-import.js?v=20260917-v60"></script>
+<script src="js/admin-form-status.js?v=20260917-v60"></script>
+<script src="js/admin-default-conciergerie.js?v=20260917-v60"></script>
+<script src="js/admin-vivier.js?v=20260917-v60"></script>
 </body>
 </html>
