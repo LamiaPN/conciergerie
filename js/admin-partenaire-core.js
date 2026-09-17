@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-partenaire.js
-   VERSION : v58 — verrouillage accès admin par token
+   VERSION : v60 — filtres multi-sélection depuis les valeurs réelles du vivier
    RÔLE    : Administration fusionnée de la Conciergerie MTLC 2026.
              Gère la pioche des propositions et l'édition du vivier.
 
@@ -40,7 +40,13 @@
     pendingExpertises: new Set(),
     partnerLoadSeq: 0,
     partnerLoading: false,
-    plannedCount: 0
+    plannedCount: 0,
+    filters: {
+      secteur: new Set(),
+      expertise: new Set(),
+      taille: new Set(),
+      type: new Set()
+    }
   };
 
   const $ = s => document.querySelector(s);
@@ -333,9 +339,8 @@
     state.search = "";
 
     if (el.search) el.search.value = "";
-    [el.filterSecteur, el.filterExpertise, el.filterTaille, el.filterType].forEach(select => {
-      if (select) select.value = "";
-    });
+    Object.values(state.filters).forEach(values => values.clear());
+    syncAllFilterControls();
     if (el.segment) el.segment.querySelectorAll("button").forEach(button => {
       button.classList.toggle("on", button.dataset.seg === "all");
     });
@@ -690,11 +695,30 @@
   }
 
   /* ═══ SECTION 5 — FILTRES ET ÉVÉNEMENTS ══════════════════════════════ */
+  function valeursDistinctes(orgs, champ) {
+    const set = new Set();
+
+    (Array.isArray(orgs) ? orgs : []).forEach(org => {
+      if (champ === "expertise") {
+        expertiseValues(org?.expertise).forEach(value => {
+          const text = String(value || "").trim();
+          if (text) set.add(text);
+        });
+        return;
+      }
+
+      const text = String(org?.[champ] || "").trim();
+      if (text) set.add(text);
+    });
+
+    return [...set].sort((a, b) => a.localeCompare(b, "fr", { sensitivity: "base", numeric: true }));
+  }
+
   function buildAxisFilters() {
-    fillFilter(el.filterSecteur, state.referentiels.secteur, "Tous");
-    fillFilter(el.filterExpertise, state.referentiels.expertise, "Toutes");
-    fillFilter(el.filterTaille, state.referentiels.taille, "Toutes");
-    fillFilter(el.filterType, state.referentiels.type, "Tous");
+    buildMultiFilter(el.filterSecteur, "secteur", valeursDistinctes(state.orgs, "secteur"), "Tous");
+    buildMultiFilter(el.filterExpertise, "expertise", valeursDistinctes(state.orgs, "expertise"), "Toutes");
+    buildMultiFilter(el.filterTaille, "taille", valeursDistinctes(state.orgs, "taille"), "Toutes");
+    buildMultiFilter(el.filterType, "type", valeursDistinctes(state.orgs, "type"), "Tous");
   }
 
   function fillFilter(select, values, allLabel) {
@@ -702,6 +726,133 @@
     select.innerHTML = `<option value="">${allLabel}</option>` + list
       .map(value => `<option value="${escapeAttr(value)}">${escapeHtml(value)}</option>`)
       .join("");
+  }
+
+  function filterDisplayLabel(value) {
+    return String(value ?? "").split("/")[0].trim() || String(value ?? "").trim();
+  }
+
+  function buildMultiFilter(select, key, values, allLabel) {
+    if (!select) return;
+
+    const list = Array.isArray(values) ? values : [];
+    const allowed = new Set(list.map(value => String(value).trim()));
+    state.filters[key] = new Set(
+      [...state.filters[key]].filter(value => allowed.has(String(value).trim()))
+    );
+
+    fillFilter(select, list, allLabel);
+    select.classList.add("multi-filter-native");
+    select.dataset.multiKey = key;
+    select.dataset.allLabel = allLabel;
+
+    const existing = select.parentElement?.querySelector(`.multi-filter[data-filter-key="${key}"]`);
+    if (existing) existing.remove();
+
+    const wrap = document.createElement("div");
+    wrap.className = "multi-filter";
+    wrap.dataset.filterKey = key;
+    wrap.innerHTML = `
+      <button type="button" class="multi-filter-trigger" aria-expanded="false">
+        <span class="multi-filter-trigger-label">${escapeHtml(allLabel)}</span>
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </button>
+      <div class="multi-filter-panel" hidden>
+        <div class="multi-filter-head">
+          <span>Sélection multiple</span>
+          <button type="button" class="multi-filter-clear">Effacer</button>
+        </div>
+        <div class="multi-filter-options">
+          ${list.map(value => `
+            <button type="button"
+                    class="multi-filter-option"
+                    data-filter-value="${escapeAttr(value)}"
+                    aria-pressed="false"
+                    title="${escapeAttr(value)}">
+              ${escapeHtml(filterDisplayLabel(value))}
+            </button>`).join("")}
+        </div>
+      </div>`;
+
+    select.insertAdjacentElement("afterend", wrap);
+
+    const trigger = wrap.querySelector(".multi-filter-trigger");
+    const panel = wrap.querySelector(".multi-filter-panel");
+    const clear = wrap.querySelector(".multi-filter-clear");
+
+    trigger.addEventListener("click", event => {
+      event.stopPropagation();
+      const willOpen = panel.hidden;
+      closeAllMultiFilterPanels(wrap);
+      panel.hidden = !willOpen;
+      trigger.setAttribute("aria-expanded", willOpen ? "true" : "false");
+    });
+
+    wrap.querySelectorAll("[data-filter-value]").forEach(button => {
+      button.addEventListener("click", event => {
+        event.preventDefault();
+        const value = String(button.dataset.filterValue || "").trim();
+        if (!value) return;
+
+        const selected = state.filters[key];
+        selected.has(value) ? selected.delete(value) : selected.add(value);
+
+        syncFilterControl(key);
+        render();
+      });
+    });
+
+    clear.addEventListener("click", event => {
+      event.preventDefault();
+      state.filters[key].clear();
+      syncFilterControl(key);
+      render();
+    });
+
+    syncFilterControl(key);
+  }
+
+  function closeAllMultiFilterPanels(exceptWrap = null) {
+    document.querySelectorAll(".multi-filter").forEach(wrap => {
+      if (wrap === exceptWrap) return;
+      const panel = wrap.querySelector(".multi-filter-panel");
+      const trigger = wrap.querySelector(".multi-filter-trigger");
+      if (panel) panel.hidden = true;
+      if (trigger) trigger.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  function syncFilterControl(key) {
+    const wrap = document.querySelector(`.multi-filter[data-filter-key="${key}"]`);
+    if (!wrap) return;
+
+    const selected = state.filters[key];
+    const triggerLabel = wrap.querySelector(".multi-filter-trigger-label");
+    const nativeSelect = document.querySelector(`select[data-multi-key="${key}"]`);
+    const allLabel = nativeSelect?.dataset.allLabel || "Tous";
+
+    wrap.querySelectorAll("[data-filter-value]").forEach(button => {
+      const value = String(button.dataset.filterValue || "").trim();
+      const on = selected.has(value);
+      button.classList.toggle("is-selected", on);
+      button.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+
+    if (nativeSelect) {
+      [...nativeSelect.options].forEach(option => {
+        option.selected = selected.has(String(option.value || "").trim());
+      });
+    }
+
+    if (triggerLabel) {
+      triggerLabel.textContent = selected.size
+        ? `${selected.size} sélectionné${selected.size > 1 ? "s" : ""}`
+        : allLabel;
+    }
+  }
+
+  function syncAllFilterControls() {
+    ["secteur", "expertise", "taille", "type"].forEach(syncFilterControl);
   }
 
   const orgTheme = o => String(o?.theme || o?.thematique || "").trim();
@@ -734,8 +885,13 @@
       el.segment.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b));
       render();
     });
-    [el.filterSecteur, el.filterExpertise, el.filterTaille, el.filterType]
-      .forEach(select => select.addEventListener("change", render));
+    document.addEventListener("click", event => {
+      if (!event.target.closest(".multi-filter")) closeAllMultiFilterPanels();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") closeAllMultiFilterPanels();
+    });
 
     // Cocher / décocher une proposition
     el.tbody.addEventListener("change", e => {
@@ -812,10 +968,15 @@
       if (state.segment === "accepted" && !accepted) return false;
       if (state.segment === "unselected" && prop) return false;
 
-      if (el.filterSecteur.value && String(o.secteur || "").trim() !== el.filterSecteur.value.trim()) return false;
-      if (el.filterExpertise.value && !expertiseValues(o.expertise).includes(el.filterExpertise.value.trim())) return false;
-      if (el.filterTaille.value && String(o.taille || "").trim() !== el.filterTaille.value.trim()) return false;
-      if (el.filterType.value && String(o.type || "").trim() !== el.filterType.value.trim()) return false;
+      const secteur = String(o.secteur || "").trim();
+      const taille = String(o.taille || "").trim();
+      const type = String(o.type || "").trim();
+      const expertises = expertiseValues(o.expertise).map(value => String(value || "").trim());
+
+      if (state.filters.secteur.size && !state.filters.secteur.has(secteur)) return false;
+      if (state.filters.expertise.size && !expertises.some(value => state.filters.expertise.has(value))) return false;
+      if (state.filters.taille.size && !state.filters.taille.has(taille)) return false;
+      if (state.filters.type.size && !state.filters.type.has(type)) return false;
 
       if (state.search) {
         const searchable = [

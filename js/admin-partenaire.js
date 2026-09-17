@@ -34,5 +34,5 @@
   };
 
   /* ═══ SECTION 2 — CHARGEMENT DU CŒUR ADMIN ═══════════════════════════ */
-  document.write('<script src="js/admin-partenaire-core.js?v=20260916-v58-core"><\/script>');
+  document.write('<script src="js/admin-partenaire-core.js?v=20260917-v60-core"><\/script>');
 })();
