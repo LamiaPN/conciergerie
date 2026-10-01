@@ -2,16 +2,6 @@
   "_comment": "Vivier MTLC conciergerie généré depuis Airtable. id = Conciergerie _ID. Tokens et relations gérés dans le Google Sheet.",
   "partenaires": [
     {
-      "id": "recrZFbmpGNNTR2dM",
-      "nom": "UQAC - Université du Québec à Chicoutimi",
-      "meeting_quota": 10
-    },
-    {
-      "id": "recMtq0R2up0qp2il",
-      "nom": "Représentation de l’OIF pour les Amériques (REPAM)",
-      "meeting_quota": 10
-    },
-    {
       "id": "rec6AoALtw3Uko4Qr",
       "nom": "CLIC Network(interpretÔ)",
       "meeting_quota": 5
@@ -22,14 +12,19 @@
       "meeting_quota": 5
     },
     {
-      "id": "recP5cx1LG5BbtXdu",
-      "nom": "Aleia",
-      "meeting_quota": 10
+      "id": "recwAsQ3y9hIavsQu",
+      "nom": "BAnQ",
+      "meeting_quota": 5
     },
     {
-      "id": "recpFvx21dv0c3iqB",
-      "nom": "PairConnex",
+      "id": "recWJkjbunA7OzbDY",
+      "nom": "FAADEV - Femmes Africaines Actives pour le Développement",
       "meeting_quota": 5
+    },
+    {
+      "id": "reciIX5Ta28EDeNh1",
+      "nom": "AWEX - Agence Wallonne à l’Exportation et aux Investissements étrangers,Université de Mons - UMons",
+      "meeting_quota": 8
     },
     {
       "id": "recjuRolApPFbdYAR",
@@ -37,13 +32,28 @@
       "meeting_quota": 10
     },
     {
-      "id": "recsjWZG9REX5unKV",
-      "nom": "UM6P",
+      "id": "recmi5WqB79fMzG9O",
+      "nom": "Akassaa - Sénégal,FESTIC - Association des Femmes Sénégalaises du TIC",
+      "meeting_quota": 5
+    },
+    {
+      "id": "recMtq0R2up0qp2il",
+      "nom": "Représentation de l’OIF pour les Amériques (REPAM)",
       "meeting_quota": 10
     },
     {
-      "id": "recwAsQ3y9hIavsQu",
-      "nom": "BAnQ",
+      "id": "recrZFbmpGNNTR2dM",
+      "nom": "UQAC - Université du Québec à Chicoutimi",
+      "meeting_quota": 10
+    },
+    {
+      "id": "rec9iP1k7nlMWPaC2",
+      "nom": "Institute for Inclusive Digital Africa (IIDIA)",
+      "meeting_quota": 5
+    },
+    {
+      "id": "recpFvx21dv0c3iqB",
+      "nom": "PairConnex",
       "meeting_quota": 5
     },
     {
@@ -57,14 +67,9 @@
       "meeting_quota": 5
     },
     {
-      "id": "recmi5WqB79fMzG9O",
-      "nom": "Akassaa - Sénégal,FESTIC - Association des Femmes Sénégalaises du TIC",
+      "id": "recYcnW19oZk6Jyih",
+      "nom": "RTCA - Réseau Tuniso-Canadien des Affaires",
       "meeting_quota": 5
-    },
-    {
-      "id": "reciIX5Ta28EDeNh1",
-      "nom": "AWEX - Agence Wallonne à l’Exportation et aux Investissements étrangers,Université de Mons - UMons",
-      "meeting_quota": 8
     },
     {
       "id": "rec423rFD3HWS1UDY",
@@ -72,50 +77,17 @@
       "meeting_quota": 8
     },
     {
-      "id": "recWJkjbunA7OzbDY",
-      "nom": "FAADEV - Femmes Africaines Actives pour le Développement",
-      "meeting_quota": 5
+      "id": "recP5cx1LG5BbtXdu",
+      "nom": "Aleia",
+      "meeting_quota": 10
     },
     {
-      "id": "recYcnW19oZk6Jyih",
-      "nom": "RTCA - Réseau Tuniso-Canadien des Affaires",
-      "meeting_quota": 5
-    },
-    {
-      "id": "rec9iP1k7nlMWPaC2",
-      "nom": "Institute for Inclusive Digital Africa (IIDIA)",
-      "meeting_quota": 5
+      "id": "recsjWZG9REX5unKV",
+      "nom": "UM6P",
+      "meeting_quota": 10
     }
   ],
   "organisations": [
-    {
-      "id": "recIzzeITTBwUWFlI",
-      "nom": "Services Québec - Ministère de l’Emploi et de la Solidarité sociale",
-      "statut": "Partenaire confirmé",
-      "secteur": "Intelligence artificielle / Artificial Inteligence",
-      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
-      "taille": "1001 -5000",
-      "localisation": "Canada",
-      "description": "Le ministère de l’Emploi et de la Solidarité sociale du Québec offre des services aux citoyens, aux entreprises et aux organismes en matière d’emploi, de solidarité sociale et de services gouvernementaux de proximité, notamment par l’intermédiaire de Services Québec.",
-      "site_web": "https://www.quebec.ca/gouvernement/ministeres-organismes/emploi-solidarite-sociale",
-      "theme": "",
-      "expertise": [
-        "Conseil / Management"
-      ],
-      "extra": {
-        "Nom délégation / F": "Services Québec - Ministère de l’Emploi et de la Solidarité sociale",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande entreprise",
-        "Responsable PN": "Dominique",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Public",
-        "Niveau partenariat": "Majeur",
-        "Niveau de partenariat": "Majeur",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
     {
       "id": "recPeJt1GFUJsHCN4",
       "nom": "MAMH - Ministère des Affaires municipales et de l'Habitation 1",
@@ -142,7 +114,7 @@
         "Niveau partenariat": "Majeur",
         "Niveau de partenariat": "Majeur",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -171,7 +143,7 @@
         "Niveau partenariat": "Majeur",
         "Niveau de partenariat": "Majeur",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -199,7 +171,7 @@
         "Niveau partenariat": "Majeur",
         "Niveau de partenariat": "Majeur",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -228,7 +200,7 @@
         "Niveau partenariat": "Majeur",
         "Niveau de partenariat": "Majeur",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -254,7 +226,7 @@
         "Niveau partenariat": "Argent",
         "Niveau de partenariat": "Argent",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -280,7 +252,7 @@
         "Niveau partenariat": "Platine",
         "Niveau de partenariat": "Platine",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -308,7 +280,7 @@
         "Niveau partenariat": "Argent- B&S",
         "Niveau de partenariat": "Argent- B&S",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -336,7 +308,7 @@
         "Niveau partenariat": "Bronze- B&S",
         "Niveau de partenariat": "Bronze- B&S",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -364,36 +336,7 @@
         "Niveau partenariat": "Argent- B&S",
         "Niveau de partenariat": "Argent- B&S",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recYDJOonMBJBhefl",
-      "nom": "Pixsenses",
-      "statut": "Partenaire confirmé",
-      "secteur": "Culture et créativité / Culture and creativity",
-      "type": "PME / SME",
-      "taille": "11-50",
-      "localisation": "Canada",
-      "description": "Pixsenses conçoit des expériences numériques immersives et des solutions d’intelligence artificielle. L’entreprise développe notamment des agents IA, des interfaces immersives et des installations interactives intégrées à des environnements physiques ou numériques.",
-      "site_web": "www.pixsenses.com",
-      "theme": "",
-      "expertise": [
-        "IA immersive",
-        "XR"
-      ],
-      "extra": {
-        "Nom délégation / F": "Pixsenses",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Formulaire rempli",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
-        "Responsable PN": "Lamia",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Privé",
-        "Niveau partenariat": "Majeur- B&S",
-        "Niveau de partenariat": "Majeur- B&S",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": "Royal Photo"
       }
     },
     {
@@ -424,36 +367,7 @@
         "Niveau partenariat": "Argent- B&S",
         "Niveau de partenariat": "Argent- B&S",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recHcnLWeHGgXC5xi",
-      "nom": "ISACA",
-      "statut": "Partenaire confirmé",
-      "secteur": "Cybersécurité / Cybersecurity",
-      "type": "PME / SME",
-      "taille": "201-500",
-      "localisation": "Canada",
-      "description": "ISACA est une association professionnelle internationale sans but lucratif qui fait progresser la confiance numérique. Elle fournit des connaissances, des normes, des cadres de référence, des formations, des certifications professionnelles et l’accès à un réseau mondial dans les domaines de la cybersécurité, de l’audit des systèmes d’information, de la gouvernance, de l’assurance, de la gestion des risques, de la confidentialité et des technologies émergentes.",
-      "site_web": "isaca.org",
-      "theme": "Cybersécurité & Identité numérique",
-      "expertise": [
-        "Gouvernance TI",
-        "Cybersécurité"
-      ],
-      "extra": {
-        "Nom délégation / F": "ISACA",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "En attente",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
-        "Responsable PN": "Lamia",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Privé",
-        "Niveau partenariat": "Majeur- B&S",
-        "Niveau de partenariat": "Majeur- B&S",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -482,7 +396,7 @@
         "Niveau partenariat": "Bronze- B&S",
         "Niveau de partenariat": "Bronze- B&S",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -510,7 +424,7 @@
         "Niveau partenariat": "Bronze- B&S",
         "Niveau de partenariat": "Bronze- B&S",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -539,7 +453,7 @@
         "Niveau partenariat": "Argent- B&S",
         "Niveau de partenariat": "Argent- B&S",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -565,7 +479,7 @@
         "Niveau partenariat": "Bronze- B&S",
         "Niveau de partenariat": "Bronze- B&S",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -594,7 +508,7 @@
         "Niveau partenariat": "Bronze",
         "Niveau de partenariat": "Bronze",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": "DataFranca"
       }
     },
     {
@@ -622,7 +536,7 @@
         "Niveau partenariat": "Bronze",
         "Niveau de partenariat": "Bronze",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": "URSA Marketing"
       }
     },
     {
@@ -653,7 +567,7 @@
         "Niveau partenariat": "Argent",
         "Niveau de partenariat": "Argent",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": "Dialog Insight"
       }
     },
     {
@@ -681,7 +595,7 @@
         "Niveau partenariat": "Bronze",
         "Niveau de partenariat": "Bronze",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": "Plumfind"
       }
     },
     {
@@ -710,7 +624,7 @@
         "Niveau partenariat": "Argent",
         "Niveau de partenariat": "Argent",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -742,7 +656,7 @@
         "Niveau partenariat": "Bronze",
         "Niveau de partenariat": "Bronze",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": "Eficio (Intergra-Co )"
       }
     },
     {
@@ -771,7 +685,7 @@
         "Niveau partenariat": "Bronze",
         "Niveau de partenariat": "Bronze",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": "makila ai"
       }
     },
     {
@@ -799,7 +713,7 @@
         "Niveau partenariat": "Bronze",
         "Niveau de partenariat": "Bronze",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": "R2i"
       }
     },
     {
@@ -825,36 +739,7 @@
         "Niveau partenariat": "Bronze- B&S",
         "Niveau de partenariat": "Bronze- B&S",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recpoMlfpG8W7s2CX",
-      "nom": "Concordia University",
-      "statut": "Partenaire confirmé",
-      "secteur": "Éducation et enseignement supérieur / Education and higher education",
-      "type": "Institution Académique / Academic institution",
-      "taille": "5000-10000",
-      "localisation": "Canada",
-      "description": "L’Université Concordia est une université publique de recherche située à Montréal. Elle offre plus de 250 programmes et mène des activités de recherche et d’innovation dans de nombreux domaines, notamment les technologies numériques, l’ingénierie, les villes intelligentes et durables, la santé, les affaires et les industries créatives. Elle se distingue également par ses collaborations avec l’industrie et son approche axée sur l’apprentissage expérientiel.",
-      "site_web": "https://www.concordia.ca/?utm_source=chatgpt.com",
-      "theme": "Intelligence artificielle",
-      "expertise": [
-        "Enseignement supérieur",
-        "Recherche"
-      ],
-      "extra": {
-        "Nom délégation / F": "Concordia University",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
-        "Responsable PN": "Lamia",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Privé",
-        "Niveau partenariat": "Majeur- B&S",
-        "Niveau de partenariat": "Majeur- B&S",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -880,35 +765,7 @@
         "Niveau partenariat": "Argent",
         "Niveau de partenariat": "Argent",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recHByYQJay8qdfrr",
-      "nom": "Women Techmakers Montréal",
-      "statut": "Partenaire confirmé",
-      "secteur": "Culture et créativité / Culture and creativity",
-      "type": "OBNL-OSBL / NPO",
-      "taille": "11-50",
-      "localisation": "Canada",
-      "description": "Women Techmakers Montréal est une communauté qui soutient la visibilité, le développement professionnel et la participation des femmes dans les technologies par des événements, du réseautage et des initiatives communautaires.",
-      "site_web": "https://www.womentechmakers.com/",
-      "theme": "Intelligence artificielle",
-      "expertise": [
-        "Contenu créatif"
-      ],
-      "extra": {
-        "Nom délégation / F": "Women Techmakers Montréal",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Petite entreprise",
-        "Responsable PN": "Lamia",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Privé",
-        "Niveau partenariat": "Bronze- B&S",
-        "Niveau de partenariat": "Bronze- B&S",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -936,7 +793,7 @@
         "Niveau partenariat": "Majeur",
         "Niveau de partenariat": "Majeur",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -964,7 +821,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -992,7 +849,7 @@
         "Niveau partenariat": "Argent",
         "Niveau de partenariat": "Argent",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -1021,35 +878,7 @@
         "Niveau partenariat": "Argent",
         "Niveau de partenariat": "Argent",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recW9onKA84kSuijI",
-      "nom": "PME MTL",
-      "statut": "Partenaire confirmé",
-      "secteur": "Secteur public",
-      "type": "OBNL-OSBL / NPO",
-      "taille": "51-200",
-      "localisation": "Canada",
-      "description": "PME MTL est un réseau d'accompagnement et de financement dédié aux petites et moyennes entreprises (PME) de la région de Montréal. Créé en 2016, il regroupe six pôles territoriaux pour offrir des services adaptés aux besoins locaux des entrepreneurs .\n\nMission : Soutenir la création, la croissance et la pérennité des PME montréalaises.\nChiffres clés :\n12 000 entreprises accompagnées depuis sa création.\n1,5 milliard $ en retombées économiques générées.\n1 000+ emplois créés ou maintenus annuellement.",
-      "site_web": "https://pmemtl.com/",
-      "theme": "Intelligence artificielle",
-      "expertise": [
-        "Entrepreneuriat / Incubateur"
-      ],
-      "extra": {
-        "Nom délégation / F": "PME MTL",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande entreprise",
-        "Responsable PN": "Dominique",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Privé",
-        "Niveau partenariat": "Argent",
-        "Niveau de partenariat": "Argent",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -1078,65 +907,7 @@
         "Niveau partenariat": "Argent- B&S",
         "Niveau de partenariat": "Argent- B&S",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recpmDSkDidFE4xe3",
-      "nom": "AQIII (L’Association québécoise des informaticiennes et informaticiens indépendants)",
-      "statut": "Partenaire confirmé",
-      "secteur": "Technologies de l'information / Information technology",
-      "type": "OBNL-OSBL / NPO",
-      "taille": "1-10",
-      "localisation": "Canada",
-      "description": "Cette association professionnelle a été fondée en 1993 en tant qu’organisme sans but lucratif.  L’AQIII représente la voix de plus de 20 900 travailleurs autonomes, pigistes et micro-entrepreneurs en technologie de l’information (TI) à travers le Québec et rassemble le plus grand bassin de talents TI au Canada, toutes expertises confondues (chargés de projets, programmeurs, développeurs, analystes…). À titre d’unique communauté d’affaires québécoise exclusivement dédiée aux consultants indépendants en TI et depuis déjà 30 ans, elle appuie le succès de ses 1 100 membres.",
-      "site_web": "https://aqiii.org/",
-      "theme": "Intelligence artificielle",
-      "expertise": [
-        "Consultants TI",
-        "Réseautage"
-      ],
-      "extra": {
-        "Nom délégation / F": "AQIII (L’Association québécoise des informaticiennes et informaticiens indépendants)",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Petite entreprise",
-        "Responsable PN": "Lamia",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Privé",
-        "Niveau partenariat": "Bronze- B&S",
-        "Niveau de partenariat": "Bronze- B&S",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recIIP2zSKhHVHfOU",
-      "nom": "Druide",
-      "statut": "Partenaire confirmé",
-      "secteur": "Technologies de l'information / Information technology",
-      "type": "OBNL-OSBL / NPO",
-      "taille": "Moyenne entreprise",
-      "localisation": "Canada",
-      "description": "",
-      "site_web": "druide.com",
-      "theme": "",
-      "expertise": [
-        "Technologies linguistiques",
-        "Logiciels"
-      ],
-      "extra": {
-        "Nom délégation / F": "Druide",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
-        "Responsable PN": "Lamia",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Privé",
-        "Niveau partenariat": "Argent- B&S",
-        "Niveau de partenariat": "Argent- B&S",
-        "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -1168,7 +939,36 @@
         "Niveau partenariat": "Bronze",
         "Niveau de partenariat": "Bronze",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recGz6rBRLkVgdSRg",
+      "nom": "Numana",
+      "statut": "Partenaire confirmé",
+      "secteur": "Intelligence artificielle / Artificial Inteligence",
+      "type": "Organisme de soutien",
+      "taille": "",
+      "localisation": "Canada",
+      "description": "Pôle d'excellence en IA",
+      "site_web": "https://www.numana.ca/",
+      "theme": "",
+      "expertise": [
+        "Santé / Healthcare",
+        "Gouvernance"
+      ],
+      "extra": {
+        "Nom délégation / F": "Numana",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Petite entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "Bronze- B&S",
+        "Niveau de partenariat": "Bronze- B&S",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -1194,90 +994,7 @@
         "Niveau partenariat": "Bronze- B&S",
         "Niveau de partenariat": "Bronze- B&S",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recVdxvBvZBIqRMCJ",
-      "nom": "Tour du Monde",
-      "statut": "Partenaire confirmé",
-      "secteur": "Technologies de l'information / Information technology",
-      "type": "",
-      "taille": "1-10",
-      "localisation": "République du Congo",
-      "description": "",
-      "site_web": "",
-      "theme": "",
-      "expertise": [],
-      "extra": {
-        "Nom délégation / F": "RDC - Tour du Monde",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
-        "Responsable PN": "Karim",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Délégation",
-        "Niveau partenariat": "Argent- B&S",
-        "Niveau de partenariat": "Argent- B&S",
-        "Conciergerie": "",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recM8ivXKX8At3AlL",
-      "nom": "RADN - Projet Collectif",
-      "statut": "Partenaire confirmé",
-      "secteur": "Conseil-Management",
-      "type": "PME / SME",
-      "taille": "1-10",
-      "localisation": "Canada",
-      "description": "Le RADN est le Réseau des agents et agentes de développement culturel numérique du Québec, coordonné par Projet collectif avec des partenaires. Il anime une communauté de pratique dédiée au développement culturel numérique et à la mobilisation des savoirs.",
-      "site_web": "https://projetcollectif.ca/nouvelles/coordination-radn",
-      "theme": "",
-      "expertise": [
-        "Développement culturel numérique",
-        "Mobilisation"
-      ],
-      "extra": {
-        "Nom délégation / F": "Québec - Réseau des agent·es de développement culturel numérique (RADN)",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "Non applicable",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande entreprise",
-        "Responsable PN": "Karim",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Délégation",
-        "Niveau partenariat": "Argent- B&S",
-        "Niveau de partenariat": "Argent- B&S",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recsnCx0xx4GkdVrD",
-      "nom": "Promot Africa",
-      "statut": "Partenaire confirmé",
-      "secteur": "Conseil-Management",
-      "type": "PME / SME",
-      "taille": "1-10",
-      "localisation": "Cameroun",
-      "description": "\"Promote Africa 2026 : Référent national, connecteur global.\npasserelle multisectorielle qui propulse l'économie camerounaise de l'agritech aux services sur les plus grandes plateformes mondiales.\"",
-      "site_web": "https://www.festicsn.com/fr",
-      "theme": "Développement d'affaire",
-      "expertise": [
-        "Développement d’affaires"
-      ],
-      "extra": {
-        "Nom délégation / F": "Cameroun - Promot Africa",
-        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=recsnCx0xx4GkdVrD&token=43b8808dd2fe4f86b816ffed045c8a57120b006449a14e4990dab61b42499317",
-        "Etat conciergerie": "En attente",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
-        "Responsable PN": "Karim",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Délégation",
-        "Niveau partenariat": "Platine-Mission Expansion",
-        "Niveau de partenariat": "Platine-Mission Expansion",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -1303,7 +1020,7 @@
         "Niveau partenariat": "Bronze Découverte",
         "Niveau de partenariat": "Bronze Découverte",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -1332,7 +1049,406 @@
         "Niveau partenariat": "Or-Mission Connexion",
         "Niveau de partenariat": "Or-Mission Connexion",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "rec2miixBgR9fWCs4",
+      "nom": "Nantes Digital Week",
+      "statut": "Partenaire confirmé",
+      "secteur": "Secteur public",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+      "taille": "+10 000",
+      "localisation": "France",
+      "description": "",
+      "site_web": "nantes-saintnazaire.fr",
+      "theme": "Territoire & Humanités",
+      "expertise": [
+        "Développement économique",
+        "Numérique"
+      ],
+      "extra": {
+        "Nom délégation / F": "France - Nantes",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
+        "Responsable PN": "Karim",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Délégation",
+        "Niveau partenariat": "Platine- B&S",
+        "Niveau de partenariat": "Platine- B&S",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recRNIxrsNubaEn2M",
+      "nom": "OFQJ - Office franco-québécois pour la jeunesse",
+      "statut": "Partenaire confirmé",
+      "secteur": "Secteur public",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+      "taille": "11-50",
+      "localisation": "Canada",
+      "description": "L'OFQJ est un organisme bi-gouvernemental créé en 1968 qui favorise la coopération bilatérale et la mobilité professionnelle des jeunes adultes âgés de 18 à 35 ans entre la France et le Québec",
+      "site_web": "lojiq.org",
+      "theme": "Territoire & Humanités",
+      "expertise": [
+        "Mobilité jeunesse",
+        "International"
+      ],
+      "extra": {
+        "Nom délégation / F": "France - Office Franco-Québécois pour la Jeunesse (OFQJ)",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
+        "Responsable PN": "Dominique",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Délégation",
+        "Niveau partenariat": "Platine-Mission Expansion",
+        "Niveau de partenariat": "Platine-Mission Expansion",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recLX7lhIRkLZ17VA",
+      "nom": "Fédération culturelle canadienne-française FCCF",
+      "statut": "Partenaire confirmé",
+      "secteur": "Culture et créativité / Culture and creativity",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "1-10",
+      "localisation": "Canada",
+      "description": "Depuis près de 50 ans, la Fédération culturelle canadienne-française (FCCF) est la voix politique du secteur artistique et culturel franco-canadien et acadien, qui emploie 36 100 personnes et génère plus de 6 milliards de dollars au PIB annuel du Canada. Basée à Ottawa, elle défend les intérêts de ses 22 membres, représentants de leur province, de leur territoire ou d’une discipline artistique. La FCCF est porteuse des grands projets PassepART, ImmersART, La ruchée, L'accélérateur TADA, La bande numérique et Culture d’entreprise.",
+      "site_web": "https://fccf.ca/",
+      "theme": "Développement d'affaire",
+      "expertise": [
+        "Arts & spectacles",
+        "Développement artistique",
+        "Francophonie canadienne",
+        "Médiation culturelle - Démocratisation culturelle - Participation citoyenne - Arts et culture - Développement de communautés"
+      ],
+      "extra": {
+        "Nom délégation / F": "Canada - Fédération culturelle canadienne-française (FCCF)",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande organisation",
+        "Responsable PN": "Karim",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Délégation",
+        "Niveau partenariat": "Bronze Découverte",
+        "Niveau de partenariat": "Bronze Découverte",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recFtAWRk28RiQMia",
+      "nom": "Société Économique de l'Ontario - SÉO",
+      "statut": "Partenaire confirmé",
+      "secteur": "Développement d’affaires",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "11-50",
+      "localisation": "Canada",
+      "description": "La SÉO a été fondée il y a plus d’une vingtaine d’années sous l’appellation RDÉE Ontario. Aujourd’hui, cet organisme est l’un des acteurs incontournables du développement économique de l’écosystème francophone et bilingue de l’Ontario. Il y contribue, entre autres, en favorisant l’émergence de nouvelles entreprises et en soutenant la croissance des entreprises existantes, en aidant les nouveaux arrivants et les nouvelles arrivantes francophones et bilingues à se trouver des emplois de qualité, en appuyant les employeurs dans leurs efforts de recrutement, et en contribuant au renforcement économique des collectivités par le biais d’une série d’initiatives et de programmes. La SÉO compte une quarantaine d’employés répartis partout dans la province.",
+      "site_web": "https://www.seo-ont.ca/",
+      "theme": "",
+      "expertise": [
+        "Développement d’affaires",
+        "Economie"
+      ],
+      "extra": {
+        "Nom délégation / F": "Canada - Société Économique de l'Ontario - SÉO",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
+        "Responsable PN": "Karim",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Délégation",
+        "Niveau partenariat": "Bronze Découverte",
+        "Niveau de partenariat": "Bronze Découverte",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recz3K03GYE2349PQ",
+      "nom": "La Piscine",
+      "statut": "Partenaire confirmé",
+      "secteur": "Culture et créativité / Culture and creativity",
+      "type": "Incubateur",
+      "taille": "1-10",
+      "localisation": "Canada",
+      "description": "La Piscine accompagne les entreprises créatives et culturelles au Québec avec des programmes, du coaching et des ressources",
+      "site_web": "",
+      "theme": "",
+      "expertise": [],
+      "extra": {
+        "Nom délégation / F": "Québec - La Piscine",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
+        "Responsable PN": "Karim",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Délégation",
+        "Niveau partenariat": "Bronze- B&S",
+        "Niveau de partenariat": "Bronze- B&S",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recYDJOonMBJBhefl",
+      "nom": "Pixsenses",
+      "statut": "Partenaire confirmé",
+      "secteur": "Culture et créativité / Culture and creativity",
+      "type": "PME / SME",
+      "taille": "11-50",
+      "localisation": "Canada",
+      "description": "Pixsenses conçoit des expériences numériques immersives et des solutions d’intelligence artificielle. L’entreprise développe notamment des agents IA, des interfaces immersives et des installations interactives intégrées à des environnements physiques ou numériques.",
+      "site_web": "www.pixsenses.com",
+      "theme": "",
+      "expertise": [
+        "IA immersive",
+        "XR"
+      ],
+      "extra": {
+        "Nom délégation / F": "Pixsenses",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Formulaire rempli",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "Majeur- B&S",
+        "Niveau de partenariat": "Majeur- B&S",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recIzzeITTBwUWFlI",
+      "nom": "Services Québec - Ministère de l’Emploi et de la Solidarité sociale",
+      "statut": "Partenaire confirmé",
+      "secteur": "Intelligence artificielle / Artificial Inteligence",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+      "taille": "1001 -5000",
+      "localisation": "Canada",
+      "description": "Le ministère de l’Emploi et de la Solidarité sociale du Québec offre des services aux citoyens, aux entreprises et aux organismes en matière d’emploi, de solidarité sociale et de services gouvernementaux de proximité, notamment par l’intermédiaire de Services Québec.",
+      "site_web": "https://www.quebec.ca/gouvernement/ministeres-organismes/emploi-solidarite-sociale",
+      "theme": "",
+      "expertise": [
+        "Conseil / Management"
+      ],
+      "extra": {
+        "Nom délégation / F": "Services Québec - Ministère de l’Emploi et de la Solidarité sociale",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande entreprise",
+        "Responsable PN": "Dominique",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Public",
+        "Niveau partenariat": "Majeur",
+        "Niveau de partenariat": "Majeur",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recpoMlfpG8W7s2CX",
+      "nom": "Concordia University",
+      "statut": "Partenaire confirmé",
+      "secteur": "Éducation et enseignement supérieur / Education and higher education",
+      "type": "Institution Académique / Academic institution",
+      "taille": "5000-10000",
+      "localisation": "Canada",
+      "description": "L’Université Concordia est une université publique de recherche située à Montréal. Elle offre plus de 250 programmes et mène des activités de recherche et d’innovation dans de nombreux domaines, notamment les technologies numériques, l’ingénierie, les villes intelligentes et durables, la santé, les affaires et les industries créatives. Elle se distingue également par ses collaborations avec l’industrie et son approche axée sur l’apprentissage expérientiel.",
+      "site_web": "https://www.concordia.ca/?utm_source=chatgpt.com",
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Enseignement supérieur",
+        "Recherche"
+      ],
+      "extra": {
+        "Nom délégation / F": "Concordia University",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "Majeur- B&S",
+        "Niveau de partenariat": "Majeur- B&S",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recHByYQJay8qdfrr",
+      "nom": "Women Techmakers Montréal",
+      "statut": "Partenaire confirmé",
+      "secteur": "Culture et créativité / Culture and creativity",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "11-50",
+      "localisation": "Canada",
+      "description": "Women Techmakers Montréal est une communauté qui soutient la visibilité, le développement professionnel et la participation des femmes dans les technologies par des événements, du réseautage et des initiatives communautaires.",
+      "site_web": "https://www.womentechmakers.com/",
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Contenu créatif"
+      ],
+      "extra": {
+        "Nom délégation / F": "Women Techmakers Montréal",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Petite entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "Bronze- B&S",
+        "Niveau de partenariat": "Bronze- B&S",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recW9onKA84kSuijI",
+      "nom": "PME MTL",
+      "statut": "Partenaire confirmé",
+      "secteur": "Secteur public",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "51-200",
+      "localisation": "Canada",
+      "description": "PME MTL est un réseau d'accompagnement et de financement dédié aux petites et moyennes entreprises (PME) de la région de Montréal. Créé en 2016, il regroupe six pôles territoriaux pour offrir des services adaptés aux besoins locaux des entrepreneurs .\n\nMission : Soutenir la création, la croissance et la pérennité des PME montréalaises.\nChiffres clés :\n12 000 entreprises accompagnées depuis sa création.\n1,5 milliard $ en retombées économiques générées.\n1 000+ emplois créés ou maintenus annuellement.",
+      "site_web": "https://pmemtl.com/",
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Entrepreneuriat / Incubateur"
+      ],
+      "extra": {
+        "Nom délégation / F": "PME MTL",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande entreprise",
+        "Responsable PN": "Dominique",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "Argent",
+        "Niveau de partenariat": "Argent",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recpmDSkDidFE4xe3",
+      "nom": "AQIII (L’Association québécoise des informaticiennes et informaticiens indépendants)",
+      "statut": "Partenaire confirmé",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "1-10",
+      "localisation": "Canada",
+      "description": "Cette association professionnelle a été fondée en 1993 en tant qu’organisme sans but lucratif.  L’AQIII représente la voix de plus de 20 900 travailleurs autonomes, pigistes et micro-entrepreneurs en technologie de l’information (TI) à travers le Québec et rassemble le plus grand bassin de talents TI au Canada, toutes expertises confondues (chargés de projets, programmeurs, développeurs, analystes…). À titre d’unique communauté d’affaires québécoise exclusivement dédiée aux consultants indépendants en TI et depuis déjà 30 ans, elle appuie le succès de ses 1 100 membres.",
+      "site_web": "https://aqiii.org/",
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Consultants TI",
+        "Réseautage"
+      ],
+      "extra": {
+        "Nom délégation / F": "AQIII (L’Association québécoise des informaticiennes et informaticiens indépendants)",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Petite entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "Bronze- B&S",
+        "Niveau de partenariat": "Bronze- B&S",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recIIP2zSKhHVHfOU",
+      "nom": "Druide",
+      "statut": "Partenaire confirmé",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "Moyenne entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "druide.com",
+      "theme": "",
+      "expertise": [
+        "Technologies linguistiques",
+        "Logiciels"
+      ],
+      "extra": {
+        "Nom délégation / F": "Druide",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "Argent- B&S",
+        "Niveau de partenariat": "Argent- B&S",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recVdxvBvZBIqRMCJ",
+      "nom": "Tour du Monde",
+      "statut": "Partenaire confirmé",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "",
+      "taille": "1-10",
+      "localisation": "République du Congo",
+      "description": "",
+      "site_web": "",
+      "theme": "",
+      "expertise": [],
+      "extra": {
+        "Nom délégation / F": "RDC - Tour du Monde",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
+        "Responsable PN": "Karim",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Délégation",
+        "Niveau partenariat": "Argent- B&S",
+        "Niveau de partenariat": "Argent- B&S",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recM8ivXKX8At3AlL",
+      "nom": "RADN - Projet Collectif",
+      "statut": "Partenaire confirmé",
+      "secteur": "Conseil-Management",
+      "type": "PME / SME",
+      "taille": "1-10",
+      "localisation": "Canada",
+      "description": "Le RADN est le Réseau des agents et agentes de développement culturel numérique du Québec, coordonné par Projet collectif avec des partenaires. Il anime une communauté de pratique dédiée au développement culturel numérique et à la mobilisation des savoirs.",
+      "site_web": "https://projetcollectif.ca/nouvelles/coordination-radn",
+      "theme": "",
+      "expertise": [
+        "Développement culturel numérique",
+        "Mobilisation"
+      ],
+      "extra": {
+        "Nom délégation / F": "Québec - Réseau des agent·es de développement culturel numérique (RADN)",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande entreprise",
+        "Responsable PN": "Karim",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Délégation",
+        "Niveau partenariat": "Argent- B&S",
+        "Niveau de partenariat": "Argent- B&S",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -1364,65 +1480,7 @@
         "Niveau partenariat": "Bronze Découverte",
         "Niveau de partenariat": "Bronze Découverte",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "rec2miixBgR9fWCs4",
-      "nom": "Nantes Digital Week",
-      "statut": "Partenaire confirmé",
-      "secteur": "Secteur public",
-      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
-      "taille": "+10 000",
-      "localisation": "France",
-      "description": "",
-      "site_web": "nantes-saintnazaire.fr",
-      "theme": "Territoire & Humanités",
-      "expertise": [
-        "Développement économique",
-        "Numérique"
-      ],
-      "extra": {
-        "Nom délégation / F": "France - Nantes",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
-        "Responsable PN": "Karim",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Délégation",
-        "Niveau partenariat": "Platine- B&S",
-        "Niveau de partenariat": "Platine- B&S",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recRNIxrsNubaEn2M",
-      "nom": "OFQJ - Office franco-québécois pour la jeunesse",
-      "statut": "Partenaire confirmé",
-      "secteur": "Secteur public",
-      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
-      "taille": "11-50",
-      "localisation": "Canada",
-      "description": "L'OFQJ est un organisme bi-gouvernemental créé en 1968 qui favorise la coopération bilatérale et la mobilité professionnelle des jeunes adultes âgés de 18 à 35 ans entre la France et le Québec",
-      "site_web": "lojiq.org",
-      "theme": "Territoire & Humanités",
-      "expertise": [
-        "Mobilité jeunesse",
-        "International"
-      ],
-      "extra": {
-        "Nom délégation / F": "France - Office Franco-Québécois pour la Jeunesse (OFQJ)",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
-        "Responsable PN": "Dominique",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Délégation",
-        "Niveau partenariat": "Platine-Mission Expansion",
-        "Niveau de partenariat": "Platine-Mission Expansion",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -1450,38 +1508,7 @@
         "Niveau partenariat": "Bronze Découverte",
         "Niveau de partenariat": "Bronze Découverte",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recLX7lhIRkLZ17VA",
-      "nom": "Fédération culturelle canadienne-française FCCF",
-      "statut": "Partenaire confirmé",
-      "secteur": "Culture et créativité / Culture and creativity",
-      "type": "OBNL-OSBL / NPO",
-      "taille": "1-10",
-      "localisation": "Canada",
-      "description": "Depuis près de 50 ans, la Fédération culturelle canadienne-française (FCCF) est la voix politique du secteur artistique et culturel franco-canadien et acadien, qui emploie 36 100 personnes et génère plus de 6 milliards de dollars au PIB annuel du Canada. Basée à Ottawa, elle défend les intérêts de ses 22 membres, représentants de leur province, de leur territoire ou d’une discipline artistique. La FCCF est porteuse des grands projets PassepART, ImmersART, La ruchée, L'accélérateur TADA, La bande numérique et Culture d’entreprise.",
-      "site_web": "https://fccf.ca/",
-      "theme": "Développement d'affaire",
-      "expertise": [
-        "Arts & spectacles",
-        "Développement artistique",
-        "Francophonie canadienne",
-        "Médiation culturelle - Démocratisation culturelle - Participation citoyenne - Arts et culture - Développement de communautés"
-      ],
-      "extra": {
-        "Nom délégation / F": "Canada - Fédération culturelle canadienne-française (FCCF)",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande organisation",
-        "Responsable PN": "Karim",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Délégation",
-        "Niveau partenariat": "Bronze Découverte",
-        "Niveau de partenariat": "Bronze Découverte",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -1509,7 +1536,7 @@
         "Niveau partenariat": "Bronze- B&S",
         "Niveau de partenariat": "Bronze- B&S",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -1538,7 +1565,7 @@
         "Niveau partenariat": "Argent- B&S",
         "Niveau de partenariat": "Argent- B&S",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -1567,62 +1594,7 @@
         "Niveau partenariat": "Or-Mission Connexion",
         "Niveau de partenariat": "Or-Mission Connexion",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recFtAWRk28RiQMia",
-      "nom": "Société Économique de l'Ontario - SÉO",
-      "statut": "Partenaire confirmé",
-      "secteur": "Développement d’affaires",
-      "type": "OBNL-OSBL / NPO",
-      "taille": "11-50",
-      "localisation": "Canada",
-      "description": "La SÉO a été fondée il y a plus d’une vingtaine d’années sous l’appellation RDÉE Ontario. Aujourd’hui, cet organisme est l’un des acteurs incontournables du développement économique de l’écosystème francophone et bilingue de l’Ontario. Il y contribue, entre autres, en favorisant l’émergence de nouvelles entreprises et en soutenant la croissance des entreprises existantes, en aidant les nouveaux arrivants et les nouvelles arrivantes francophones et bilingues à se trouver des emplois de qualité, en appuyant les employeurs dans leurs efforts de recrutement, et en contribuant au renforcement économique des collectivités par le biais d’une série d’initiatives et de programmes. La SÉO compte une quarantaine d’employés répartis partout dans la province.",
-      "site_web": "https://www.seo-ont.ca/",
-      "theme": "",
-      "expertise": [
-        "Développement d’affaires",
-        "Economie"
-      ],
-      "extra": {
-        "Nom délégation / F": "Canada - Société Économique de l'Ontario - SÉO",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
-        "Responsable PN": "Karim",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Délégation",
-        "Niveau partenariat": "Bronze Découverte",
-        "Niveau de partenariat": "Bronze Découverte",
-        "Conciergerie": "",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recz3K03GYE2349PQ",
-      "nom": "La Piscine",
-      "statut": "Partenaire confirmé",
-      "secteur": "Culture et créativité / Culture and creativity",
-      "type": "Incubateur",
-      "taille": "1-10",
-      "localisation": "Canada",
-      "description": "La Piscine accompagne les entreprises créatives et culturelles au Québec avec des programmes, du coaching et des ressources",
-      "site_web": "",
-      "theme": "",
-      "expertise": [],
-      "extra": {
-        "Nom délégation / F": "Québec - La Piscine",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
-        "Responsable PN": "Karim",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Délégation",
-        "Niveau partenariat": "Bronze- B&S",
-        "Niveau de partenariat": "Bronze- B&S",
-        "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -1648,7 +1620,7 @@
         "Niveau partenariat": "Bronze- B&S",
         "Niveau de partenariat": "Bronze- B&S",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -1674,65 +1646,64 @@
         "Niveau partenariat": "Bronze- B&S",
         "Niveau de partenariat": "Bronze- B&S",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
-      "id": "recrZFbmpGNNTR2dM",
-      "nom": "UQAC - Université du Québec à Chicoutimi",
-      "statut": "Partenaire Conciergerie",
-      "secteur": "Secteur public",
-      "type": "Institution Académique / Academic institution",
-      "taille": "501-1000",
+      "id": "recHcnLWeHGgXC5xi",
+      "nom": "ISACA",
+      "statut": "Partenaire confirmé",
+      "secteur": "Cybersécurité / Cybersecurity",
+      "type": "PME / SME",
+      "taille": "201-500",
       "localisation": "Canada",
-      "description": "L’Université du Québec à Chicoutimi est un établissement d’enseignement supérieur et de recherche du réseau de l’Université du Québec. Elle offre des programmes dans plusieurs domaines et mène des activités de recherche liées notamment aux réalités régionales et nordiques.",
-      "site_web": "https://www.uqac.ca/",
-      "theme": "Ouverture",
+      "description": "ISACA est une association professionnelle internationale sans but lucratif qui fait progresser la confiance numérique. Elle fournit des connaissances, des normes, des cadres de référence, des formations, des certifications professionnelles et l’accès à un réseau mondial dans les domaines de la cybersécurité, de l’audit des systèmes d’information, de la gouvernance, de l’assurance, de la gestion des risques, de la confidentialité et des technologies émergentes.",
+      "site_web": "isaca.org",
+      "theme": "Cybersécurité & Identité numérique",
       "expertise": [
-        "Administration municipale",
-        "Services publics"
+        "Gouvernance TI",
+        "Cybersécurité"
       ],
       "extra": {
-        "Nom délégation / F": "UQAC - Université du Québec à Chicoutimi",
-        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=recrZFbmpGNNTR2dM&token=a18c70a978184a239e06c3d96f39287525085c4b87ec4160bf7523146670f4c0",
-        "Etat conciergerie": "Formulaire transmis",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande organisation",
-        "Responsable PN": "Dominique",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Public",
-        "Niveau partenariat": "Majeur",
-        "Niveau de partenariat": "Majeur",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recMtq0R2up0qp2il",
-      "nom": "Représentation de l’OIF pour les Amériques (REPAM)",
-      "statut": "Partenaire Conciergerie",
-      "secteur": "Secteur public",
-      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
-      "taille": "51-200",
-      "localisation": "Canada",
-      "description": "L’Organisation internationale de la Francophonie (OIF) rassemble 90 États et gouvernements. Elle agit en faveur de la langue française, de la diversité culturelle et linguistique, de la coopération, de l’éducation, de la démocratie et du développement durable. Sa Représentation pour les Amériques (REPAM), basée à Québec, renforce les partenariats et la coopération entre les acteurs francophones de la région des Amériques.",
-      "site_web": "https://www.francophonie.org/loif-forme-des-jeunes-diplomates-des-ameriques-en-francais-8211",
-      "theme": "Ouverture",
-      "expertise": [
-        "Francophonie",
-        "Coopération internationale"
-      ],
-      "extra": {
-        "Nom délégation / F": "Représentation de l’OIF pour les Amériques (REPAM)",
-        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=recMtq0R2up0qp2il&token=b34946aaa4e248a6ae5cc4c0670a942190a9f9d96de44074abd9f104a7b457e2",
-        "Etat conciergerie": "Formulaire transmis",
+        "Nom délégation / F": "ISACA",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "En attente",
         "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "Majeur- B&S",
+        "Niveau de partenariat": "Majeur- B&S",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": "ISACA"
+      }
+    },
+    {
+      "id": "recsnCx0xx4GkdVrD",
+      "nom": "Promot Africa",
+      "statut": "Partenaire confirmé",
+      "secteur": "Conseil-Management",
+      "type": "PME / SME",
+      "taille": "1-10",
+      "localisation": "Cameroun",
+      "description": "\"Promote Africa 2026 : Référent national, connecteur global.\npasserelle multisectorielle qui propulse l'économie camerounaise de l'agritech aux services sur les plus grandes plateformes mondiales.\"",
+      "site_web": "https://www.festicsn.com/fr",
+      "theme": "Développement d'affaire",
+      "expertise": [
+        "Développement d’affaires"
+      ],
+      "extra": {
+        "Nom délégation / F": "Cameroun - Promot Africa",
+        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=recsnCx0xx4GkdVrD&token=43b8808dd2fe4f86b816ffed045c8a57120b006449a14e4990dab61b42499317",
+        "Etat conciergerie": "En attente",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
         "Responsable PN": "Karim",
         "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Public",
-        "Niveau partenariat": "Majeur",
-        "Niveau de partenariat": "Majeur",
+        "Type de partenaire": "Délégation",
+        "Niveau partenariat": "Platine-Mission Expansion",
+        "Niveau de partenariat": "Platine-Mission Expansion",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -1763,7 +1734,7 @@
         "Niveau partenariat": "Argent- B&S",
         "Niveau de partenariat": "Argent- B&S",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -1791,64 +1762,94 @@
         "Niveau partenariat": "Bronze",
         "Niveau de partenariat": "Bronze",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": "Sterling North Partners"
       }
     },
     {
-      "id": "recP5cx1LG5BbtXdu",
-      "nom": "Aleia",
+      "id": "recwAsQ3y9hIavsQu",
+      "nom": "BAnQ",
       "statut": "Partenaire Conciergerie",
-      "secteur": "Technologies de l'information / Information technology",
-      "type": "PME / SME",
-      "taille": "11-50",
+      "secteur": "Culture et créativité / Culture and creativity",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+      "taille": "501-1000",
       "localisation": "Canada",
-      "description": "ALEIA est une agence numérique montréalaise spécialisée dans la conception et le développement de produits et d’expériences numériques. Elle accompagne les organisations en stratégie numérique, UX/UI, développement web et mobile, intelligence artificielle et infrastructure technologique. Fondée à Montréal en 2019, l’agence travaille avec des clients de différents secteurs et dispose également d’une présence internationale.",
-      "site_web": "https://www.aleia.io/",
-      "theme": "Intelligence artificielle",
+      "description": "\"Bibliothèque et Archives nationales du Québec (BAnQ) offre à toute la population du Québec des milieux stimulants pour découvrir et apprendre toute la vie, et ce, gratuitement.\nEn ligne comme dans ses 12 édifices répartis sur le territoire, elle rassemble et partage l’histoire et la culture du Québec tout en ouvrant des horizons sur le savoir du monde entier. Des millions de trésors (livres, revues et journaux, films, musique, images, archives, etc.) y sont accessibles à tous et conservés précieusement pour les générations futures.\"",
+      "site_web": "banq.qc.ca",
+      "theme": "Territoire & Humanités",
       "expertise": [
-        "Services"
+        "Patrimoine documentaire",
+        "Services culturels"
       ],
       "extra": {
-        "Nom délégation / F": "Aleia",
-        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=recP5cx1LG5BbtXdu&token=9ac63e9aadf34311e532cc8fbe6f0f456e4e6dfeebeb463793608fb710b935d3",
-        "Etat conciergerie": "Formulaire transmis",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Petite entreprise",
+        "Nom délégation / F": "BAnQ",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
         "Responsable PN": "Lamia",
         "Statut partenaires": "Confirmé",
         "Type de partenaire": "Privé",
-        "Niveau partenariat": "Majeur- B&S",
-        "Niveau de partenariat": "Majeur- B&S",
+        "Niveau partenariat": "Or",
+        "Niveau de partenariat": "Or",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": "BAnQ"
       }
     },
     {
-      "id": "recpFvx21dv0c3iqB",
-      "nom": "PairConnex",
+      "id": "recWJkjbunA7OzbDY",
+      "nom": "FAADEV - Femmes Africaines Actives pour le Développement",
       "statut": "Partenaire Conciergerie",
-      "secteur": "Technologies de l'information / Information technology",
-      "type": "PME / SME",
+      "secteur": "Conseil-Management",
+      "type": "OBNL-OSBL / NPO",
       "taille": "1-10",
-      "localisation": "Canada",
-      "description": "PairConnex développe une plateforme événementielle tout-en-un destinée aux congrès, salons et événements d’affaires. Elle centralise notamment les inscriptions, la billetterie, la programmation, les communications et le jumelage d’affaires.",
-      "site_web": "https://www.pairconnex.com/fr/en-savoir-plus/mobile",
+      "localisation": "Sénégal",
+      "description": "FAADEV œuvre à l’autonomisation économique et sociale des femmes, notamment par l’entrepreneuriat, la formation et le développement de compétences.",
+      "site_web": "https://faadev.org/",
       "theme": "",
       "expertise": [
-        "Technologie événementielle",
-        "Matchmaking"
+        "Économie sociale / Communautaire"
       ],
       "extra": {
-        "Nom délégation / F": "PairConnex",
-        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=recpFvx21dv0c3iqB&token=acf0124f731bd6b60a21d43f3dd0533da0940f2e4b52bc5060268678927ff4f9",
-        "Etat conciergerie": "En attente",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Petite entreprise",
-        "Responsable PN": "Lamia",
+        "Nom délégation / F": "Sénégal - Femmes Africaines Actives pour le Développement (FAADEV)",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande organisation",
+        "Responsable PN": "Karim",
         "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Privé",
-        "Niveau partenariat": "Or- B&S",
-        "Niveau de partenariat": "Or- B&S",
+        "Type de partenaire": "Délégation",
+        "Niveau partenariat": "Argent-Mission Exploration",
+        "Niveau de partenariat": "Argent-Mission Exploration",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "reciIX5Ta28EDeNh1",
+      "nom": "AWEX - Agence Wallonne à l’Exportation et aux Investissements étrangers,Université de Mons - UMons",
+      "statut": "Partenaire Conciergerie",
+      "secteur": "Conseil-Management",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+      "taille": "201-500",
+      "localisation": "Belgique",
+      "description": "\"Sous le label DIGITAL WALLONIA, l’Agence wallonne à l’Exportation et aux Investissements étrangers (AWEX) apporte \nson soutien aux champions numériques wallons dans leur recherche de clients et de partenaires internationaux. \nC’est donc avec énormément d’enthousiasme que le Hub Digital Wallonia de Montréal est heureux de vous présenter une délégation \nfaite d’entrepreneurs ayant à cœur de contribuer au développement d’un numérique humain.\"",
+      "site_web": "https://www.walloniaexportinvestment.be/",
+      "theme": "Développement d'affaire",
+      "expertise": [
+        "Exportation",
+        "Attraction d’investissements",
+        "Développement d’affaires"
+      ],
+      "extra": {
+        "Nom délégation / F": "Wallonie - Agence Wallonne à l’Exportation et aux Investissements étrangers (AWEX)",
+        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=reciIX5Ta28EDeNh1&token=bd5ce9a53a844ce887a989fbadd736d16ea54d342fe94daea973406e83680a80",
+        "Etat conciergerie": "Formulaire transmis",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande entreprise,Grande organisation",
+        "Responsable PN": "Karim",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Délégation",
+        "Niveau partenariat": "Platine-Mission Expansion",
+        "Niveau de partenariat": "Platine-Mission Expansion",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -1879,124 +1880,7 @@
         "Niveau partenariat": "Majeur",
         "Niveau de partenariat": "Majeur",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recsjWZG9REX5unKV",
-      "nom": "UM6P",
-      "statut": "Partenaire Conciergerie",
-      "secteur": "Éducation et enseignement supérieur / Education and higher education",
-      "type": "Institution Académique / Academic institution",
-      "taille": "11-50",
-      "localisation": "Canada",
-      "description": "L’UM6P est une université privée à but non lucratif marocaine axée sur la recherche appliquée, l’innovation et le développement durable, avec une forte orientation vers l’Afrique. Fondée par la Fondation OCP, elle propose une approche pluridisciplinaire et expérimentale dans de nombreux domaines scientifiques et techniques .",
-      "site_web": "https://um6p.ma/fr",
-      "theme": "Intelligence artificielle",
-      "expertise": [
-        "Recherche"
-      ],
-      "extra": {
-        "Nom délégation / F": "UM6P",
-        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=recsjWZG9REX5unKV&token=7a760a28121542fca1b3363dc93e524c61ce3471e2fd400396472b200f044445",
-        "Etat conciergerie": "Formulaire transmis",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
-        "Responsable PN": "Lamia",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Privé",
-        "Niveau partenariat": "Majeur",
-        "Niveau de partenariat": "Majeur",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recwAsQ3y9hIavsQu",
-      "nom": "BAnQ",
-      "statut": "Partenaire Conciergerie",
-      "secteur": "Culture et créativité / Culture and creativity",
-      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
-      "taille": "501-1000",
-      "localisation": "Canada",
-      "description": "\"Bibliothèque et Archives nationales du Québec (BAnQ) offre à toute la population du Québec des milieux stimulants pour découvrir et apprendre toute la vie, et ce, gratuitement.\nEn ligne comme dans ses 12 édifices répartis sur le territoire, elle rassemble et partage l’histoire et la culture du Québec tout en ouvrant des horizons sur le savoir du monde entier. Des millions de trésors (livres, revues et journaux, films, musique, images, archives, etc.) y sont accessibles à tous et conservés précieusement pour les générations futures.\"",
-      "site_web": "banq.qc.ca",
-      "theme": "Territoire & Humanités",
-      "expertise": [
-        "Patrimoine documentaire",
-        "Services culturels"
-      ],
-      "extra": {
-        "Nom délégation / F": "BAnQ",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
-        "Responsable PN": "Lamia",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Privé",
-        "Niveau partenariat": "Or",
-        "Niveau de partenariat": "Or",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recvQz81k0WoIDxZB",
-      "nom": "Printemps numérique",
-      "statut": "Partenaire Conciergerie",
-      "secteur": "Evénementiel / Events",
-      "type": "OBNL-OSBL / NPO",
-      "taille": "11-50",
-      "localisation": "Canada",
-      "description": "Le Printemps numérique (PN) est un organisme à but non lucratif montréalais dont la mission est de stimuler et soutenir l’intelligence numérique, en favorisant l’appropriation des technologies, le développement des compétences numériques et les rencontres entre les différents acteurs de l’écosystème.\n\nIl agit à la croisée de la technologie, de l’innovation, de la culture et de la société, notamment à travers des événements, des programmes de littératie numérique et des initiatives de maillage.\n\nLe Printemps numérique est notamment l’organisateur de MTL connecte – la Semaine numérique de Montréal, son événement international phare consacré aux grands enjeux de la transformation numérique.",
-      "site_web": "https://www.printempsnumerique.ca/?utm_source=chatgpt.com",
-      "theme": "Développement d'affaire",
-      "expertise": [
-        "Événementiel numérique",
-        "Littératie numérique"
-      ],
-      "extra": {
-        "Nom délégation / F": "Printemps numérique",
-        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=recvQz81k0WoIDxZB&token=049c5b4df7b24526acacbbe7860830b70805c74554a74998b345528fdcc81fce",
-        "Etat conciergerie": "En attente",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
-        "Responsable PN": "Lamia",
-        "Statut partenaires": "",
-        "Type de partenaire": "Privé",
-        "Niveau partenariat": "",
-        "Niveau de partenariat": "",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "rec3IzJJjOBKpcG83",
-      "nom": "Données SOUVERAINES QUÉBEC",
-      "statut": "Partenaire Conciergerie",
-      "secteur": "Innovation/Recherche",
-      "type": "OBNL-OSBL / NPO",
-      "taille": "1-10",
-      "localisation": "Canada",
-      "description": "Données Souveraines Québec (DSQ) est un regroupement d'organisations québécoises créé pour promouvoir la souveraineté des données et une gouvernance responsable des actifs numériques au Québec.\n\nSa mission est de rassembler des organisations qui considèrent les données comme un actif stratégique et qui souhaitent favoriser un modèle où les données sont gouvernées conformément aux lois, aux valeurs et aux intérêts du Québec et du Canada. DSQ agit également comme voix collective auprès des gouvernements et des décideurs afin d'influencer les politiques publiques liées à la souveraineté numérique, à l'hébergement des données et à leur gouvernance.\nIl ne s'agit pas d'une entreprise technologique, mais d'un organisme de représentation et de mobilisation autour des enjeux de souveraineté numérique.",
-      "site_web": "https://donneessouveraines.quebec",
-      "theme": "Intelligence artificielle",
-      "expertise": [
-        "Gouvernance des données",
-        "Souveraineté des données",
-        "Souveraineté numérique",
-        "Mobilisation de l’écosystème"
-      ],
-      "extra": {
-        "Nom délégation / F": "Données SOUVERAINES QUÉBEC",
-        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=rec3IzJJjOBKpcG83&token=dca73146d92ac330aaafc6aeffb8f967e52d29143dc8c1cd5ccd68e35b33c8b0",
-        "Etat conciergerie": "Formulaire transmis",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
-        "Responsable PN": "Lamia",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Privé",
-        "Niveau partenariat": "Or",
-        "Niveau de partenariat": "Or",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": "Desjardins Caisse des Technologies"
       }
     },
     {
@@ -2025,124 +1909,65 @@
         "Niveau partenariat": "Or-Mission Connexion",
         "Niveau de partenariat": "Or-Mission Connexion",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
-      "id": "reciIX5Ta28EDeNh1",
-      "nom": "AWEX - Agence Wallonne à l’Exportation et aux Investissements étrangers,Université de Mons - UMons",
-      "statut": "Partenaire Conciergerie",
-      "secteur": "Conseil-Management",
-      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
-      "taille": "201-500",
-      "localisation": "Belgique",
-      "description": "\"Sous le label DIGITAL WALLONIA, l’Agence wallonne à l’Exportation et aux Investissements étrangers (AWEX) apporte \nson soutien aux champions numériques wallons dans leur recherche de clients et de partenaires internationaux. \nC’est donc avec énormément d’enthousiasme que le Hub Digital Wallonia de Montréal est heureux de vous présenter une délégation \nfaite d’entrepreneurs ayant à cœur de contribuer au développement d’un numérique humain.\"",
-      "site_web": "https://www.walloniaexportinvestment.be/",
-      "theme": "Développement d'affaire",
-      "expertise": [
-        "Exportation",
-        "Attraction d’investissements",
-        "Développement d’affaires"
-      ],
-      "extra": {
-        "Nom délégation / F": "Wallonie - Agence Wallonne à l’Exportation et aux Investissements étrangers (AWEX)",
-        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=reciIX5Ta28EDeNh1&token=bd5ce9a53a844ce887a989fbadd736d16ea54d342fe94daea973406e83680a80",
-        "Etat conciergerie": "Formulaire transmis",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande entreprise,Grande organisation",
-        "Responsable PN": "Karim",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Délégation",
-        "Niveau partenariat": "Platine-Mission Expansion",
-        "Niveau de partenariat": "Platine-Mission Expansion",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "rec423rFD3HWS1UDY",
-      "nom": "Montpellier Méditérranée Métropole",
+      "id": "recMtq0R2up0qp2il",
+      "nom": "Représentation de l’OIF pour les Amériques (REPAM)",
       "statut": "Partenaire Conciergerie",
       "secteur": "Secteur public",
       "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
-      "taille": "+10 000",
-      "localisation": "France",
-      "description": "Le Pôle Attractivité Développement Économique et Emploi (PADEE) de Montpellier Méditerranée Métropole propose des services adaptés aux besoins de chaque entreprise, couvrant chaque étape de leur vie, depuis leur création jusqu’à leur internationalisation, en passant par leur implantation sur le territoire, l’aide au recrutement, l’accès aux financements. Cette année, accompagnée par l'agence d'Attractivité et de Développement d'Occitanie créée par la Région Occitanie (AD'OCC), la ville de Montpellier et la Région Occitanie mèneront une délégation d'une vingtaine d'entreprises, d'élus et d'agents territoriaux.",
-      "site_web": "https://www.montpellier.fr/",
-      "theme": "Développement d'affaire",
-      "expertise": [
-        "Développement territorial",
-        "Services publics",
-        "Développement d’affaires"
-      ],
-      "extra": {
-        "Nom délégation / F": "France - Montpellier et Région Occitanie",
-        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=rec423rFD3HWS1UDY&token=5f7185735b7144e5b94ed95cf1082f89519f233882774182ac039e43f952edc7",
-        "Etat conciergerie": "Formulaire transmis",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
-        "Responsable PN": "Karim",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Délégation",
-        "Niveau partenariat": "Platine-Mission Expansion",
-        "Niveau de partenariat": "Platine-Mission Expansion",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recWJkjbunA7OzbDY",
-      "nom": "FAADEV - Femmes Africaines Actives pour le Développement",
-      "statut": "Partenaire Conciergerie",
-      "secteur": "Conseil-Management",
-      "type": "OBNL-OSBL / NPO",
-      "taille": "1-10",
-      "localisation": "Sénégal",
-      "description": "FAADEV œuvre à l’autonomisation économique et sociale des femmes, notamment par l’entrepreneuriat, la formation et le développement de compétences.",
-      "site_web": "https://faadev.org/",
-      "theme": "",
-      "expertise": [
-        "Économie sociale / Communautaire"
-      ],
-      "extra": {
-        "Nom délégation / F": "Sénégal - Femmes Africaines Actives pour le Développement (FAADEV)",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande organisation",
-        "Responsable PN": "Karim",
-        "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Délégation",
-        "Niveau partenariat": "Argent-Mission Exploration",
-        "Niveau de partenariat": "Argent-Mission Exploration",
-        "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
-      }
-    },
-    {
-      "id": "recYcnW19oZk6Jyih",
-      "nom": "RTCA - Réseau Tuniso-Canadien des Affaires",
-      "statut": "Partenaire Conciergerie",
-      "secteur": "Technologies de l'information / Information technology",
-      "type": "OBNL-OSBL / NPO",
       "taille": "51-200",
-      "localisation": "Tunisie",
-      "description": "",
-      "site_web": "",
-      "theme": "",
+      "localisation": "Canada",
+      "description": "L’Organisation internationale de la Francophonie (OIF) rassemble 90 États et gouvernements. Elle agit en faveur de la langue française, de la diversité culturelle et linguistique, de la coopération, de l’éducation, de la démocratie et du développement durable. Sa Représentation pour les Amériques (REPAM), basée à Québec, renforce les partenariats et la coopération entre les acteurs francophones de la région des Amériques.",
+      "site_web": "https://www.francophonie.org/loif-forme-des-jeunes-diplomates-des-ameriques-en-francais-8211",
+      "theme": "Ouverture",
       "expertise": [
-        "Femmes en tech",
-        "Transformation numérique"
+        "Francophonie",
+        "Coopération internationale"
       ],
       "extra": {
-        "Nom délégation / F": "Tunisie - Réseau Tuniso-Canadien des Affaires (RTCA)",
-        "Lien vers formulaire conciergerie": "",
-        "Etat conciergerie": "",
-        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
+        "Nom délégation / F": "Représentation de l’OIF pour les Amériques (REPAM)",
+        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=recMtq0R2up0qp2il&token=b34946aaa4e248a6ae5cc4c0670a942190a9f9d96de44074abd9f104a7b457e2",
+        "Etat conciergerie": "Formulaire transmis",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
         "Responsable PN": "Karim",
         "Statut partenaires": "Confirmé",
-        "Type de partenaire": "Délégation",
-        "Niveau partenariat": "Or- B&S",
-        "Niveau de partenariat": "Or- B&S",
-        "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Type de partenaire": "Public",
+        "Niveau partenariat": "Majeur",
+        "Niveau de partenariat": "Majeur",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recrZFbmpGNNTR2dM",
+      "nom": "UQAC - Université du Québec à Chicoutimi",
+      "statut": "Partenaire Conciergerie",
+      "secteur": "Secteur public",
+      "type": "Institution Académique / Academic institution",
+      "taille": "501-1000",
+      "localisation": "Canada",
+      "description": "L’Université du Québec à Chicoutimi est un établissement d’enseignement supérieur et de recherche du réseau de l’Université du Québec. Elle offre des programmes dans plusieurs domaines et mène des activités de recherche liées notamment aux réalités régionales et nordiques.",
+      "site_web": "https://www.uqac.ca/",
+      "theme": "Ouverture",
+      "expertise": [
+        "Administration municipale",
+        "Services publics"
+      ],
+      "extra": {
+        "Nom délégation / F": "UQAC - Université du Québec à Chicoutimi",
+        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=recrZFbmpGNNTR2dM&token=a18c70a978184a239e06c3d96f39287525085c4b87ec4160bf7523146670f4c0",
+        "Etat conciergerie": "Formulaire transmis",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande organisation",
+        "Responsable PN": "Dominique",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Public",
+        "Niveau partenariat": "Majeur",
+        "Niveau de partenariat": "Majeur",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2168,7 +1993,211 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recpFvx21dv0c3iqB",
+      "nom": "PairConnex",
+      "statut": "Partenaire Conciergerie",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "PME / SME",
+      "taille": "1-10",
+      "localisation": "Canada",
+      "description": "PairConnex développe une plateforme événementielle tout-en-un destinée aux congrès, salons et événements d’affaires. Elle centralise notamment les inscriptions, la billetterie, la programmation, les communications et le jumelage d’affaires.",
+      "site_web": "https://www.pairconnex.com/fr/en-savoir-plus/mobile",
+      "theme": "",
+      "expertise": [
+        "Technologie événementielle",
+        "Matchmaking"
+      ],
+      "extra": {
+        "Nom délégation / F": "PairConnex",
+        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=recpFvx21dv0c3iqB&token=acf0124f731bd6b60a21d43f3dd0533da0940f2e4b52bc5060268678927ff4f9",
+        "Etat conciergerie": "En attente",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Petite entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "Or- B&S",
+        "Niveau de partenariat": "Or- B&S",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": "PairConnex"
+      }
+    },
+    {
+      "id": "recvQz81k0WoIDxZB",
+      "nom": "Printemps numérique",
+      "statut": "Partenaire Conciergerie",
+      "secteur": "Evénementiel / Events",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "11-50",
+      "localisation": "Canada",
+      "description": "Le Printemps numérique (PN) est un organisme à but non lucratif montréalais dont la mission est de stimuler et soutenir l’intelligence numérique, en favorisant l’appropriation des technologies, le développement des compétences numériques et les rencontres entre les différents acteurs de l’écosystème.\n\nIl agit à la croisée de la technologie, de l’innovation, de la culture et de la société, notamment à travers des événements, des programmes de littératie numérique et des initiatives de maillage.\n\nLe Printemps numérique est notamment l’organisateur de MTL connecte – la Semaine numérique de Montréal, son événement international phare consacré aux grands enjeux de la transformation numérique.",
+      "site_web": "https://www.printempsnumerique.ca/?utm_source=chatgpt.com",
+      "theme": "Développement d'affaire",
+      "expertise": [
+        "Événementiel numérique",
+        "Littératie numérique"
+      ],
+      "extra": {
+        "Nom délégation / F": "Printemps numérique",
+        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=recvQz81k0WoIDxZB&token=049c5b4df7b24526acacbbe7860830b70805c74554a74998b345528fdcc81fce",
+        "Etat conciergerie": "En attente",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "",
+        "Niveau de partenariat": "",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "rec3IzJJjOBKpcG83",
+      "nom": "Données SOUVERAINES QUÉBEC",
+      "statut": "Partenaire Conciergerie",
+      "secteur": "Innovation/Recherche",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "1-10",
+      "localisation": "Canada",
+      "description": "Données Souveraines Québec (DSQ) est un regroupement d'organisations québécoises créé pour promouvoir la souveraineté des données et une gouvernance responsable des actifs numériques au Québec.\n\nSa mission est de rassembler des organisations qui considèrent les données comme un actif stratégique et qui souhaitent favoriser un modèle où les données sont gouvernées conformément aux lois, aux valeurs et aux intérêts du Québec et du Canada. DSQ agit également comme voix collective auprès des gouvernements et des décideurs afin d'influencer les politiques publiques liées à la souveraineté numérique, à l'hébergement des données et à leur gouvernance.\nIl ne s'agit pas d'une entreprise technologique, mais d'un organisme de représentation et de mobilisation autour des enjeux de souveraineté numérique.",
+      "site_web": "https://donneessouveraines.quebec",
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Gouvernance des données",
+        "Souveraineté des données",
+        "Souveraineté numérique",
+        "Mobilisation de l’écosystème"
+      ],
+      "extra": {
+        "Nom délégation / F": "Données SOUVERAINES QUÉBEC",
+        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=rec3IzJJjOBKpcG83&token=dca73146d92ac330aaafc6aeffb8f967e52d29143dc8c1cd5ccd68e35b33c8b0",
+        "Etat conciergerie": "Relance",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "Or",
+        "Niveau de partenariat": "Or",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recYcnW19oZk6Jyih",
+      "nom": "RTCA - Réseau Tuniso-Canadien des Affaires",
+      "statut": "Partenaire Conciergerie",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "51-200",
+      "localisation": "Tunisie",
+      "description": "",
+      "site_web": "",
+      "theme": "",
+      "expertise": [
+        "Femmes en tech",
+        "Transformation numérique"
+      ],
+      "extra": {
+        "Nom délégation / F": "Tunisie - Réseau Tuniso-Canadien des Affaires (RTCA)",
+        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=recYcnW19oZk6Jyih&token=6d7f2c9b1e2a4f7a8c3d5e6f90123456789abcdef0123456789abcdef01234567",
+        "Etat conciergerie": "Relance",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
+        "Responsable PN": "Karim",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Délégation",
+        "Niveau partenariat": "Or- B&S",
+        "Niveau de partenariat": "Or- B&S",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "rec423rFD3HWS1UDY",
+      "nom": "Montpellier Méditérranée Métropole",
+      "statut": "Partenaire Conciergerie",
+      "secteur": "Secteur public",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+      "taille": "+10 000",
+      "localisation": "France",
+      "description": "Le Pôle Attractivité Développement Économique et Emploi (PADEE) de Montpellier Méditerranée Métropole propose des services adaptés aux besoins de chaque entreprise, couvrant chaque étape de leur vie, depuis leur création jusqu’à leur internationalisation, en passant par leur implantation sur le territoire, l’aide au recrutement, l’accès aux financements. Cette année, accompagnée par l'agence d'Attractivité et de Développement d'Occitanie créée par la Région Occitanie (AD'OCC), la ville de Montpellier et la Région Occitanie mèneront une délégation d'une vingtaine d'entreprises, d'élus et d'agents territoriaux.",
+      "site_web": "https://www.montpellier.fr/",
+      "theme": "Développement d'affaire",
+      "expertise": [
+        "Développement territorial",
+        "Services publics",
+        "Développement d’affaires"
+      ],
+      "extra": {
+        "Nom délégation / F": "France - Montpellier et Région Occitanie",
+        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=rec423rFD3HWS1UDY&token=5f7185735b7144e5b94ed95cf1082f89519f233882774182ac039e43f952edc7",
+        "Etat conciergerie": "Propositions transmises",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
+        "Responsable PN": "Karim",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Délégation",
+        "Niveau partenariat": "Platine-Mission Expansion",
+        "Niveau de partenariat": "Platine-Mission Expansion",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recP5cx1LG5BbtXdu",
+      "nom": "Aleia",
+      "statut": "Partenaire Conciergerie",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "PME / SME",
+      "taille": "11-50",
+      "localisation": "Canada",
+      "description": "ALEIA est une agence numérique montréalaise spécialisée dans la conception et le développement de produits et d’expériences numériques. Elle accompagne les organisations en stratégie numérique, UX/UI, développement web et mobile, intelligence artificielle et infrastructure technologique. Fondée à Montréal en 2019, l’agence travaille avec des clients de différents secteurs et dispose également d’une présence internationale.",
+      "site_web": "https://www.aleia.io/",
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Services"
+      ],
+      "extra": {
+        "Nom délégation / F": "Aleia",
+        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=recP5cx1LG5BbtXdu&token=9ac63e9aadf34311e532cc8fbe6f0f456e4e6dfeebeb463793608fb710b935d3",
+        "Etat conciergerie": "Propositions transmises",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Petite entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "Majeur- B&S",
+        "Niveau de partenariat": "Majeur- B&S",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": "Aleia"
+      }
+    },
+    {
+      "id": "recsjWZG9REX5unKV",
+      "nom": "UM6P",
+      "statut": "Partenaire Conciergerie",
+      "secteur": "Éducation et enseignement supérieur / Education and higher education",
+      "type": "Institution Académique / Academic institution",
+      "taille": "11-50",
+      "localisation": "Canada",
+      "description": "L’UM6P est une université privée à but non lucratif marocaine axée sur la recherche appliquée, l’innovation et le développement durable, avec une forte orientation vers l’Afrique. Fondée par la Fondation OCP, elle propose une approche pluridisciplinaire et expérimentale dans de nombreux domaines scientifiques et techniques .",
+      "site_web": "https://um6p.ma/fr",
+      "theme": "Intelligence artificielle",
+      "expertise": [
+        "Recherche"
+      ],
+      "extra": {
+        "Nom délégation / F": "UM6P",
+        "Lien vers formulaire conciergerie": "https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=recsjWZG9REX5unKV&token=7a760a28121542fca1b3363dc93e524c61ce3471e2fd400396472b200f044445",
+        "Etat conciergerie": "Propositions transmises",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Confirmé",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "Majeur",
+        "Niveau de partenariat": "Majeur",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": "UM6P"
       }
     },
     {
@@ -2197,7 +2226,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2226,7 +2255,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2254,7 +2283,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2284,7 +2313,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2314,7 +2343,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2343,7 +2372,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2371,7 +2400,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2399,7 +2428,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2431,7 +2460,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2460,7 +2489,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2491,7 +2520,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2520,7 +2549,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2548,7 +2577,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2576,7 +2605,170 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recYmu9TiUdRRiI5z",
+      "nom": "AQC Capital",
+      "statut": "Contact",
+      "secteur": "",
+      "type": "",
+      "taille": "",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "",
+      "theme": "",
+      "expertise": [],
+      "extra": {
+        "Nom délégation / F": "AQC Capital",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Prospect",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "",
+        "Niveau de partenariat": "",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": "AQC Capital"
+      }
+    },
+    {
+      "id": "recm5APVzjGJoioW8",
+      "nom": "Data Next Step",
+      "statut": "Contact",
+      "secteur": "Cybersécurité / Cybersecurity",
+      "type": "",
+      "taille": "",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "",
+      "theme": "Cybersécurité & Identité numérique",
+      "expertise": [
+        "Cybersécurité & conformité",
+        "Gouvernance TI"
+      ],
+      "extra": {
+        "Nom délégation / F": "Data Next Step",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Petite entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Prospect",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "",
+        "Niveau de partenariat": "",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recl725H6Tr931bbt",
+      "nom": "QSnxt",
+      "statut": "Contact",
+      "secteur": "Intelligence artificielle / Artificial Inteligence",
+      "type": "Start-up / Startup",
+      "taille": "",
+      "localisation": "Canada",
+      "description": "QSnxt est un cabinet de recherche appliquée en IA souveraine, basé à Montréal, fondé par Thierry Warin, PhD.\nNous construisons des logiciels sur mesure et accompagnons les organisations dans leur transformation numérique, principalement dans le secteur manufacturier. Notre philosophie : Souveraineté - Confidentialité - Efficacité. Toutes les données de nos clients sont hébergées au Québec, sans transfert étranger, conformes à la Loi 25 et au RGPD.\nCe qui nous distingue : nous n'installons pas un logiciel générique, nous agissons comme architecte de transformation, en co-construisant des solutions calibrées sur les données réelles du client.\nNos deux plateformes : XCelateet ScholarRef sont au cœur de notre offre.",
+      "site_web": "https://qsnxt.ca",
+      "theme": "",
+      "expertise": [],
+      "extra": {
+        "Nom délégation / F": "QSnxt",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Petite entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Prospect",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "",
+        "Niveau de partenariat": "",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "reciquGxolOOYxbht",
+      "nom": "AKBKO",
+      "statut": "Contact",
+      "secteur": "Cybersécurité / Cybersecurity",
+      "type": "PME / SME",
+      "taille": "",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "",
+      "theme": "",
+      "expertise": [
+        "Gouvernance",
+        "risques & conformité",
+        "Threat Intelligence par IA"
+      ],
+      "extra": {
+        "Nom délégation / F": "AKBKO",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Petite entreprise",
+        "Responsable PN": "",
+        "Statut partenaires": "Prospect",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "",
+        "Niveau de partenariat": "",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recWQJy9wnCTJJzno",
+      "nom": "Bradley & Rollins Inc",
+      "statut": "Contact",
+      "secteur": "Cybersécurité / Cybersecurity",
+      "type": "PME / SME",
+      "taille": "Moyenne entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "bradleyrollins.com",
+      "theme": "",
+      "expertise": [],
+      "extra": {
+        "Nom délégation / F": "Bradley & Rollins Inc",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Petite entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Prospect",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "",
+        "Niveau de partenariat": "",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recGAQCsNv9WqjqLZ",
+      "nom": "GoSecure",
+      "statut": "Contact",
+      "secteur": "Cybersécurité / Cybersecurity",
+      "type": "PME / SME",
+      "taille": "Petite entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "gosecure.net",
+      "theme": "Culture & Créativité",
+      "expertise": [],
+      "extra": {
+        "Nom délégation / F": "GoSecure",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Prospect",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "",
+        "Niveau de partenariat": "",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2606,7 +2798,111 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recRNENdUBL9YiAKe",
+      "nom": "Videns Analytics",
+      "statut": "Contact",
+      "secteur": "Intelligence artificielle / Artificial Inteligence",
+      "type": "PME / SME",
+      "taille": "Petite entreprise",
+      "localisation": "Canada",
+      "description": "Nous rendons accessible aux entrepreneurs l'expertise en analytique avancée et en intelligence artificielle pour les aider à faire progresser leurs affaires.",
+      "site_web": "https://www.videns.ai/",
+      "theme": "Intelligence artificielle",
+      "expertise": [],
+      "extra": {
+        "Nom délégation / F": "Videns Analytics",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Prospect",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "",
+        "Niveau de partenariat": "",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recyo9nshJr5dVTFe",
+      "nom": "Cofomo",
+      "statut": "Contact",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "PME / SME",
+      "taille": "Grande entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "cofomo.com",
+      "theme": "Intelligence artificielle",
+      "expertise": [],
+      "extra": {
+        "Nom délégation / F": "Cofomo",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Prospect",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "",
+        "Niveau de partenariat": "",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recdO8rJJGTMRr0i0",
+      "nom": "Talsom",
+      "statut": "Contact",
+      "secteur": "",
+      "type": "Grande entreprise / Large company",
+      "taille": "Grande entreprise",
+      "localisation": "Canada",
+      "description": "alsom est un cabinet de conseil spécialisé en transformation numérique, axé sur une approche humaine, technologique et durable. L'entreprise aide les organisations à se transformer en tirant parti de la technologie comme levier de croissance, tout en intégrant des principes ESG (environnement, social, gouvernance) afin de créer un impact positif",
+      "site_web": "https://www.talsom.com/",
+      "theme": "Intelligence artificielle",
+      "expertise": [],
+      "extra": {
+        "Nom délégation / F": "Talsom",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Petite entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Prospect",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "",
+        "Niveau de partenariat": "",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": "Talsom"
+      }
+    },
+    {
+      "id": "recgddHiVjNmwNhC7",
+      "nom": "Deloitte",
+      "statut": "Contact",
+      "secteur": "Juridique",
+      "type": "Grande entreprise / Large company",
+      "taille": "Très Grande entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "deloitte.com",
+      "theme": "",
+      "expertise": [],
+      "extra": {
+        "Nom délégation / F": "Deloitte",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Prospect",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "",
+        "Niveau de partenariat": "",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": "Deloitte"
       }
     },
     {
@@ -2636,7 +2932,7 @@
         "Niveau partenariat": "Bronze",
         "Niveau de partenariat": "Bronze",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2664,7 +2960,33 @@
         "Niveau partenariat": "Bronze",
         "Niveau de partenariat": "Bronze",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "rec7JrMqS5bstr1Zf",
+      "nom": "Ubisoft",
+      "statut": "Contact",
+      "secteur": "Divertissements, multimédias, jeux vidéos / Entertainment, multimedia, video games",
+      "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+      "taille": "Grande entreprise",
+      "localisation": "Canada",
+      "description": "Géant du jeu vidéo (ex. : Assassin's Creed, Rainbow Six Siege).",
+      "site_web": "Ubisoft",
+      "theme": "Culture & Créativité",
+      "expertise": [],
+      "extra": {
+        "Nom délégation / F": "Ubisoft",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Prospect",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "",
+        "Niveau de partenariat": "",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2693,7 +3015,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2721,7 +3043,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2750,7 +3072,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2778,7 +3100,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2806,7 +3128,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2835,7 +3157,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2861,7 +3183,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2890,7 +3212,7 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2918,7 +3240,59 @@
         "Niveau partenariat": "",
         "Niveau de partenariat": "",
         "Conciergerie": "",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "rec3gWbJ6Tn6koLMu",
+      "nom": "Centech",
+      "statut": "Contact",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "Petite entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "centech.co",
+      "theme": "",
+      "expertise": [],
+      "extra": {
+        "Nom délégation / F": "Centech",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Petite entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Prospect",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "",
+        "Niveau de partenariat": "",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recE7IwKTJAAsnnWa",
+      "nom": "Prompt Innov",
+      "statut": "Contact",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "OBNL-OSBL / NPO",
+      "taille": "Très Grande entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "https://promptinnov.com/",
+      "theme": "Intelligence artificielle",
+      "expertise": [],
+      "extra": {
+        "Nom délégation / F": "Prompt Innov",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Moyenne entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Prospect",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "",
+        "Niveau de partenariat": "",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2944,7 +3318,7 @@
         "Niveau partenariat": "Bronze Découverte",
         "Niveau de partenariat": "Bronze Découverte",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
       }
     },
     {
@@ -2973,14 +3347,172 @@
         "Niveau partenariat": "Argent-Mission Exploration",
         "Niveau de partenariat": "Argent-Mission Exploration",
         "Conciergerie": "checked",
-        "Éléments de visibilité 2": ""
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recCcX7jrITAa3v2U",
+      "nom": "Flexgroup",
+      "statut": "Contact",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "PME / SME",
+      "taille": "Grande entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "https://flexgroups.com/",
+      "theme": "Cybersécurité & Identité numérique",
+      "expertise": [],
+      "extra": {
+        "Nom délégation / F": "Flexgroup",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Formulaire rempli",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Prospect",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "Platine",
+        "Niveau de partenariat": "Platine",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "reci3VOkJXnDYRy2y",
+      "nom": "Appoxai",
+      "statut": "Contact",
+      "secteur": "Cybersécurité / Cybersecurity",
+      "type": "PME / SME",
+      "taille": "Petite entreprise",
+      "localisation": "Canada",
+      "description": "Apox est une compagnie de haute-technologie fondée en 2017 dans la ville deQuébec, rassemblant une équipe de professionels de divers secteurs et développant de l'IA.",
+      "site_web": "https://appox.ai/",
+      "theme": "",
+      "expertise": [],
+      "extra": {
+        "Nom délégation / F": "Appoxai",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Petite entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Prospect",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "",
+        "Niveau de partenariat": "",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recpyCfiCYUehoXu1",
+      "nom": "TECHNOCompétences",
+      "statut": "Contact",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "PME / SME",
+      "taille": "Petite entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "https://www.technocompetences.qc.ca/",
+      "theme": "Territoire & Humanités",
+      "expertise": [],
+      "extra": {
+        "Nom délégation / F": "TechnoCompétences",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Petite entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Prospect",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "",
+        "Niveau de partenariat": "",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recTr2IBZw3ktwsMZ",
+      "nom": "Coopérathon",
+      "statut": "Contact",
+      "secteur": "",
+      "type": "Grande entreprise / Large company",
+      "taille": "",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "",
+      "theme": "",
+      "expertise": [],
+      "extra": {
+        "Nom délégation / F": "Coopérathon",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Petite entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Prospect",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "",
+        "Niveau de partenariat": "",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "rec7rvXKfNbkOZj3B",
+      "nom": "GLM Conseil",
+      "statut": "Contact",
+      "secteur": "Intelligence artificielle",
+      "type": "Privé",
+      "taille": "Moyenne entreprise",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "https://glmconseil.com/",
+      "theme": "",
+      "expertise": [
+        "Conseil / Management"
+      ],
+      "extra": {
+        "Nom délégation / F": "GLM Conseil",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "Non applicable",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Annulé",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "Argent- B&S",
+        "Niveau de partenariat": "Argent- B&S",
+        "Conciergerie": "checked",
+        "Conciergerie Contacts": ""
+      }
+    },
+    {
+      "id": "recPunNIRnqGIAM9j",
+      "nom": "Alithya",
+      "statut": "Contact",
+      "secteur": "Technologies de l'information / Information technology",
+      "type": "PME / SME",
+      "taille": "Grande entreprise",
+      "localisation": "Canada",
+      "description": "Alithya est une entreprise de conseil en stratégie numérique et en transformation digitale. Elle accompagne ses clients dans la réalisation de projets technologiques complexes, en proposant des services de conseil, d'intégration de systèmes, de développement d'applications et de gestion de données. Alithya se distingue par son approche centrée sur l'humain et son expertise sectorielle.",
+      "site_web": "alithya.com",
+      "theme": "Intelligence artificielle",
+      "expertise": [],
+      "extra": {
+        "Nom délégation / F": "Alithya",
+        "Lien vers formulaire conciergerie": "",
+        "Etat conciergerie": "En attente",
+        "Taille d'organisation (from Nom de l'organisation/ Délégation)": "Grande entreprise",
+        "Responsable PN": "Lamia",
+        "Statut partenaires": "Prospect 2026",
+        "Type de partenaire": "Privé",
+        "Niveau partenariat": "",
+        "Niveau de partenariat": "",
+        "Conciergerie": "",
+        "Conciergerie Contacts": ""
       }
     }
   ],
   "propositions": [],
   "_formulaire": {
-    "version": "168a22e1",
-    "generated_at": "2026-10-01T12:49:11.455Z",
+    "version": "e01b94ba",
+    "generated_at": "2026-10-01T18:15:35.686Z",
     "referentiels": {
       "secteurs": [
         "Banque & services financiers",
@@ -2997,7 +3529,9 @@
         "Formation",
         "Incubateur,Accelerateur",
         "Innovation/Recherche",
+        "Intelligence artificielle",
         "Intelligence artificielle / Artificial Inteligence",
+        "Juridique",
         "Manufacture / Manufacturing",
         "Médias, publicité, marketing / Media, advertising, marketing",
         "MedTech",
@@ -3018,7 +3552,10 @@
         "Institution Académique / Academic institution",
         "OBNL / Grappe",
         "OBNL-OSBL / NPO",
-        "PME / SME"
+        "Organisme de soutien",
+        "PME / SME",
+        "Privé",
+        "Start-up / Startup"
       ],
       "tailles": [
         "+10 000",
@@ -3029,30 +3566,13 @@
         "5000-10000",
         "501-1000",
         "51-200",
+        "Grande entreprise",
         "Moyenne entreprise",
         "Petite entreprise",
         "Très Grande entreprise"
       ]
     },
     "partenaires": {
-      "recrZFbmpGNNTR2dM": {
-        "nom": "UQAC - Université du Québec à Chicoutimi",
-        "secteur": "Secteur public",
-        "type": "Institution Académique / Academic institution",
-        "taille": "501-1000",
-        "localisation": "Canada",
-        "description": "L’Université du Québec à Chicoutimi est un établissement d’enseignement supérieur et de recherche du réseau de l’Université du Québec. Elle offre des programmes dans plusieurs domaines et mène des activités de recherche liées notamment aux réalités régionales et nordiques.",
-        "site_web": "https://www.uqac.ca/"
-      },
-      "recMtq0R2up0qp2il": {
-        "nom": "Représentation de l’OIF pour les Amériques (REPAM)",
-        "secteur": "Secteur public",
-        "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
-        "taille": "51-200",
-        "localisation": "Canada",
-        "description": "L’Organisation internationale de la Francophonie (OIF) rassemble 90 États et gouvernements. Elle agit en faveur de la langue française, de la diversité culturelle et linguistique, de la coopération, de l’éducation, de la démocratie et du développement durable. Sa Représentation pour les Amériques (REPAM), basée à Québec, renforce les partenariats et la coopération entre les acteurs francophones de la région des Amériques.",
-        "site_web": "https://www.francophonie.org/loif-forme-des-jeunes-diplomates-des-ameriques-en-francais-8211"
-      },
       "rec6AoALtw3Uko4Qr": {
         "nom": "CLIC Network(interpretÔ)",
         "secteur": "Éducation et enseignement supérieur / Education and higher education",
@@ -3071,23 +3591,32 @@
         "description": "\"Sterling North Partners est une firme montréalaise de conseil en intelligence artificielle et en automatisation. Sa spécialité : faire passer les organisations de la réflexion à la production. Son équipe conçoit, déploie et opère des agents IA qui travaillent chaque jour dans des entreprises québécoises : traitement de documents, validation de données, exécution de processus complets, y compris sur des systèmes légataires.\n\nFondée par un ancien de McKinsey & Company, la firme applique la discipline de transformation des grandes firmes de conseil à la réalité des organisations de 20 M$ à 2 G$ de chiffre d'affaires.\"",
         "site_web": "https://sterlingnorth.partners"
       },
-      "recP5cx1LG5BbtXdu": {
-        "nom": "Aleia",
-        "secteur": "Technologies de l'information / Information technology",
-        "type": "PME / SME",
-        "taille": "11-50",
+      "recwAsQ3y9hIavsQu": {
+        "nom": "BAnQ",
+        "secteur": "Culture et créativité / Culture and creativity",
+        "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+        "taille": "501-1000",
         "localisation": "Canada",
-        "description": "ALEIA est une agence numérique montréalaise spécialisée dans la conception et le développement de produits et d’expériences numériques. Elle accompagne les organisations en stratégie numérique, UX/UI, développement web et mobile, intelligence artificielle et infrastructure technologique. Fondée à Montréal en 2019, l’agence travaille avec des clients de différents secteurs et dispose également d’une présence internationale.",
-        "site_web": "https://www.aleia.io/"
+        "description": "\"Bibliothèque et Archives nationales du Québec (BAnQ) offre à toute la population du Québec des milieux stimulants pour découvrir et apprendre toute la vie, et ce, gratuitement.\nEn ligne comme dans ses 12 édifices répartis sur le territoire, elle rassemble et partage l’histoire et la culture du Québec tout en ouvrant des horizons sur le savoir du monde entier. Des millions de trésors (livres, revues et journaux, films, musique, images, archives, etc.) y sont accessibles à tous et conservés précieusement pour les générations futures.\"",
+        "site_web": "banq.qc.ca"
       },
-      "recpFvx21dv0c3iqB": {
-        "nom": "PairConnex",
-        "secteur": "Technologies de l'information / Information technology",
-        "type": "PME / SME",
+      "recWJkjbunA7OzbDY": {
+        "nom": "FAADEV - Femmes Africaines Actives pour le Développement",
+        "secteur": "Conseil-Management",
+        "type": "OBNL-OSBL / NPO",
         "taille": "1-10",
-        "localisation": "Canada",
-        "description": "PairConnex développe une plateforme événementielle tout-en-un destinée aux congrès, salons et événements d’affaires. Elle centralise notamment les inscriptions, la billetterie, la programmation, les communications et le jumelage d’affaires.",
-        "site_web": "https://www.pairconnex.com/fr/en-savoir-plus/mobile"
+        "localisation": "Sénégal",
+        "description": "FAADEV œuvre à l’autonomisation économique et sociale des femmes, notamment par l’entrepreneuriat, la formation et le développement de compétences.",
+        "site_web": "https://faadev.org/"
+      },
+      "reciIX5Ta28EDeNh1": {
+        "nom": "AWEX - Agence Wallonne à l’Exportation et aux Investissements étrangers,Université de Mons - UMons",
+        "secteur": "Conseil-Management",
+        "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+        "taille": "201-500",
+        "localisation": "Belgique",
+        "description": "\"Sous le label DIGITAL WALLONIA, l’Agence wallonne à l’Exportation et aux Investissements étrangers (AWEX) apporte \nson soutien aux champions numériques wallons dans leur recherche de clients et de partenaires internationaux. \nC’est donc avec énormément d’enthousiasme que le Hub Digital Wallonia de Montréal est heureux de vous présenter une délégation \nfaite d’entrepreneurs ayant à cœur de contribuer au développement d’un numérique humain.\"",
+        "site_web": "https://www.walloniaexportinvestment.be/"
       },
       "recjuRolApPFbdYAR": {
         "nom": "Desjardins Caisse des Technologies",
@@ -3098,23 +3627,50 @@
         "description": "La Caisse Desjardins des Technologies est une coopérative financière du Mouvement Desjardins dédiée à l’écosystème technologique. Elle offre des services financiers et un accompagnement adapté aux étudiant·e·s, consultant·e·s, entrepreneur·e·s, entreprises, startups, associations professionnelles et syndicats du secteur des technologies. La Caisse propose notamment des produits bancaires, d’épargne, de placement et de financement, ainsi que l’accès à certains programmes de financement du Mouvement Desjardins.",
         "site_web": "desjardins.com"
       },
-      "recsjWZG9REX5unKV": {
-        "nom": "UM6P",
-        "secteur": "Éducation et enseignement supérieur / Education and higher education",
-        "type": "Institution Académique / Academic institution",
-        "taille": "11-50",
-        "localisation": "Canada",
-        "description": "L’UM6P est une université privée à but non lucratif marocaine axée sur la recherche appliquée, l’innovation et le développement durable, avec une forte orientation vers l’Afrique. Fondée par la Fondation OCP, elle propose une approche pluridisciplinaire et expérimentale dans de nombreux domaines scientifiques et techniques .",
-        "site_web": "https://um6p.ma/fr"
+      "recmi5WqB79fMzG9O": {
+        "nom": "Akassaa - Sénégal,FESTIC - Association des Femmes Sénégalaises du TIC",
+        "secteur": "Conseil-Management",
+        "type": "PME / SME",
+        "taille": "1-10",
+        "localisation": "Sénégal",
+        "description": "AKASSAA est un cabinet hybride panafricain basé à Dakar, à la croisée du numérique, du conseil et de l'innovation. Nous accompagnons entreprises, institutions et territoires dans leur transformation digitale, l'intégration de l'intelligence artificielle et leur développement à l'international. Nous concevons et pilotons également des missions d'immersion et des délégations économiques, ainsi que les AKA Talks, cycle de conférences consacré aux mutations numériques en Afrique. À Montréal, AKASSAA coordonne avec FESTIC la délégation officielle du Sénégal et travaille à créer des passerelles durables entre les écosystèmes d'innovation africains et québécois.",
+        "site_web": "https://akassaa.com/ ; https://www.festicsn.com/fr"
       },
-      "recwAsQ3y9hIavsQu": {
-        "nom": "BAnQ",
-        "secteur": "Culture et créativité / Culture and creativity",
+      "recMtq0R2up0qp2il": {
+        "nom": "Représentation de l’OIF pour les Amériques (REPAM)",
+        "secteur": "Secteur public",
         "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
+        "taille": "51-200",
+        "localisation": "Canada",
+        "description": "L’Organisation internationale de la Francophonie (OIF) rassemble 90 États et gouvernements. Elle agit en faveur de la langue française, de la diversité culturelle et linguistique, de la coopération, de l’éducation, de la démocratie et du développement durable. Sa Représentation pour les Amériques (REPAM), basée à Québec, renforce les partenariats et la coopération entre les acteurs francophones de la région des Amériques.",
+        "site_web": "https://www.francophonie.org/loif-forme-des-jeunes-diplomates-des-ameriques-en-francais-8211"
+      },
+      "recrZFbmpGNNTR2dM": {
+        "nom": "UQAC - Université du Québec à Chicoutimi",
+        "secteur": "Secteur public",
+        "type": "Institution Académique / Academic institution",
         "taille": "501-1000",
         "localisation": "Canada",
-        "description": "\"Bibliothèque et Archives nationales du Québec (BAnQ) offre à toute la population du Québec des milieux stimulants pour découvrir et apprendre toute la vie, et ce, gratuitement.\nEn ligne comme dans ses 12 édifices répartis sur le territoire, elle rassemble et partage l’histoire et la culture du Québec tout en ouvrant des horizons sur le savoir du monde entier. Des millions de trésors (livres, revues et journaux, films, musique, images, archives, etc.) y sont accessibles à tous et conservés précieusement pour les générations futures.\"",
-        "site_web": "banq.qc.ca"
+        "description": "L’Université du Québec à Chicoutimi est un établissement d’enseignement supérieur et de recherche du réseau de l’Université du Québec. Elle offre des programmes dans plusieurs domaines et mène des activités de recherche liées notamment aux réalités régionales et nordiques.",
+        "site_web": "https://www.uqac.ca/"
+      },
+      "rec9iP1k7nlMWPaC2": {
+        "nom": "Institute for Inclusive Digital Africa (IIDIA)",
+        "secteur": "Technologies de l'information / Information technology",
+        "type": "",
+        "taille": "Petite entreprise",
+        "localisation": "Ghana",
+        "description": "",
+        "site_web": "https://www.iidia.org/fr/home/"
+      },
+      "recpFvx21dv0c3iqB": {
+        "nom": "PairConnex",
+        "secteur": "Technologies de l'information / Information technology",
+        "type": "PME / SME",
+        "taille": "1-10",
+        "localisation": "Canada",
+        "description": "PairConnex développe une plateforme événementielle tout-en-un destinée aux congrès, salons et événements d’affaires. Elle centralise notamment les inscriptions, la billetterie, la programmation, les communications et le jumelage d’affaires.",
+        "site_web": "https://www.pairconnex.com/fr/en-savoir-plus/mobile"
       },
       "recvQz81k0WoIDxZB": {
         "nom": "Printemps numérique",
@@ -3134,23 +3690,14 @@
         "description": "Données Souveraines Québec (DSQ) est un regroupement d'organisations québécoises créé pour promouvoir la souveraineté des données et une gouvernance responsable des actifs numériques au Québec.\n\nSa mission est de rassembler des organisations qui considèrent les données comme un actif stratégique et qui souhaitent favoriser un modèle où les données sont gouvernées conformément aux lois, aux valeurs et aux intérêts du Québec et du Canada. DSQ agit également comme voix collective auprès des gouvernements et des décideurs afin d'influencer les politiques publiques liées à la souveraineté numérique, à l'hébergement des données et à leur gouvernance.\nIl ne s'agit pas d'une entreprise technologique, mais d'un organisme de représentation et de mobilisation autour des enjeux de souveraineté numérique.",
         "site_web": "https://donneessouveraines.quebec"
       },
-      "recmi5WqB79fMzG9O": {
-        "nom": "Akassaa - Sénégal,FESTIC - Association des Femmes Sénégalaises du TIC",
-        "secteur": "Conseil-Management",
-        "type": "PME / SME",
-        "taille": "1-10",
-        "localisation": "Sénégal",
-        "description": "AKASSAA est un cabinet hybride panafricain basé à Dakar, à la croisée du numérique, du conseil et de l'innovation. Nous accompagnons entreprises, institutions et territoires dans leur transformation digitale, l'intégration de l'intelligence artificielle et leur développement à l'international. Nous concevons et pilotons également des missions d'immersion et des délégations économiques, ainsi que les AKA Talks, cycle de conférences consacré aux mutations numériques en Afrique. À Montréal, AKASSAA coordonne avec FESTIC la délégation officielle du Sénégal et travaille à créer des passerelles durables entre les écosystèmes d'innovation africains et québécois.",
-        "site_web": "https://akassaa.com/ ; https://www.festicsn.com/fr"
-      },
-      "reciIX5Ta28EDeNh1": {
-        "nom": "AWEX - Agence Wallonne à l’Exportation et aux Investissements étrangers,Université de Mons - UMons",
-        "secteur": "Conseil-Management",
-        "type": "Gouvernement, secteur public, parapublique / Government, public sector, parapublic",
-        "taille": "201-500",
-        "localisation": "Belgique",
-        "description": "\"Sous le label DIGITAL WALLONIA, l’Agence wallonne à l’Exportation et aux Investissements étrangers (AWEX) apporte \nson soutien aux champions numériques wallons dans leur recherche de clients et de partenaires internationaux. \nC’est donc avec énormément d’enthousiasme que le Hub Digital Wallonia de Montréal est heureux de vous présenter une délégation \nfaite d’entrepreneurs ayant à cœur de contribuer au développement d’un numérique humain.\"",
-        "site_web": "https://www.walloniaexportinvestment.be/"
+      "recYcnW19oZk6Jyih": {
+        "nom": "RTCA - Réseau Tuniso-Canadien des Affaires",
+        "secteur": "Technologies de l'information / Information technology",
+        "type": "OBNL-OSBL / NPO",
+        "taille": "51-200",
+        "localisation": "Tunisie",
+        "description": "",
+        "site_web": ""
       },
       "rec423rFD3HWS1UDY": {
         "nom": "Montpellier Méditérranée Métropole",
@@ -3161,32 +3708,23 @@
         "description": "Le Pôle Attractivité Développement Économique et Emploi (PADEE) de Montpellier Méditerranée Métropole propose des services adaptés aux besoins de chaque entreprise, couvrant chaque étape de leur vie, depuis leur création jusqu’à leur internationalisation, en passant par leur implantation sur le territoire, l’aide au recrutement, l’accès aux financements. Cette année, accompagnée par l'agence d'Attractivité et de Développement d'Occitanie créée par la Région Occitanie (AD'OCC), la ville de Montpellier et la Région Occitanie mèneront une délégation d'une vingtaine d'entreprises, d'élus et d'agents territoriaux.",
         "site_web": "https://www.montpellier.fr/"
       },
-      "recWJkjbunA7OzbDY": {
-        "nom": "FAADEV - Femmes Africaines Actives pour le Développement",
-        "secteur": "Conseil-Management",
-        "type": "OBNL-OSBL / NPO",
-        "taille": "1-10",
-        "localisation": "Sénégal",
-        "description": "FAADEV œuvre à l’autonomisation économique et sociale des femmes, notamment par l’entrepreneuriat, la formation et le développement de compétences.",
-        "site_web": "https://faadev.org/"
-      },
-      "recYcnW19oZk6Jyih": {
-        "nom": "RTCA - Réseau Tuniso-Canadien des Affaires",
+      "recP5cx1LG5BbtXdu": {
+        "nom": "Aleia",
         "secteur": "Technologies de l'information / Information technology",
-        "type": "OBNL-OSBL / NPO",
-        "taille": "51-200",
-        "localisation": "Tunisie",
-        "description": "",
-        "site_web": ""
+        "type": "PME / SME",
+        "taille": "11-50",
+        "localisation": "Canada",
+        "description": "ALEIA est une agence numérique montréalaise spécialisée dans la conception et le développement de produits et d’expériences numériques. Elle accompagne les organisations en stratégie numérique, UX/UI, développement web et mobile, intelligence artificielle et infrastructure technologique. Fondée à Montréal en 2019, l’agence travaille avec des clients de différents secteurs et dispose également d’une présence internationale.",
+        "site_web": "https://www.aleia.io/"
       },
-      "rec9iP1k7nlMWPaC2": {
-        "nom": "Institute for Inclusive Digital Africa (IIDIA)",
-        "secteur": "Technologies de l'information / Information technology",
-        "type": "",
-        "taille": "Petite entreprise",
-        "localisation": "Ghana",
-        "description": "",
-        "site_web": "https://www.iidia.org/fr/home/"
+      "recsjWZG9REX5unKV": {
+        "nom": "UM6P",
+        "secteur": "Éducation et enseignement supérieur / Education and higher education",
+        "type": "Institution Académique / Academic institution",
+        "taille": "11-50",
+        "localisation": "Canada",
+        "description": "L’UM6P est une université privée à but non lucratif marocaine axée sur la recherche appliquée, l’innovation et le développement durable, avec une forte orientation vers l’Afrique. Fondée par la Fondation OCP, elle propose une approche pluridisciplinaire et expérimentale dans de nombreux domaines scientifiques et techniques .",
+        "site_web": "https://um6p.ma/fr"
       }
     }
   }
