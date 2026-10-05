@@ -62,6 +62,11 @@ function doGet(e) {
       return json_({ rencontres: readRencontresForPartner_(p) });
     }
 
+    if (action === "admin_check") {
+      requireAdminToken_(token);
+      return json_({ ok: true });
+    }
+
     if (action === "admin_get") {
       requireAdminToken_(token);
       return json_({ selections: readSelections_(p) });
@@ -111,6 +116,7 @@ function doGet(e) {
         get_formulaire: true,
         admin_get_formulaire: true,
         admin_get_form_history: true,
+        admin_check: true,
         admin_get_form_notifications: true,
         mark_form_notifications_read: true,
         disponibilites_conciergerie: true,
