@@ -1375,18 +1375,27 @@ function countReferentielUsageInVivierModifs_(categorie, valeur) {
 function genererTokens() {
   const sh = ss_().getSheetByName(SHEET_PARTENAIRES);
   if (!sh) throw new Error("Feuille Partenaires introuvable.");
+
   const lastRow = sh.getLastRow();
   if (lastRow < 2) throw new Error("Aucun partenaire à traiter.");
-  const data = sh.getRange(2, 1, lastRow - 1, 3).getValues();
-  const tokens = data.map(row => {
-    const partenaireId = String(row[0]).trim();
-    const tokenExistant = String(row[1]).trim();
-    if (!partenaireId) return [""];
-    if (partenaireId === "Token admin") return [tokenExistant];
-    if (tokenExistant) return [tokenExistant];
-    return [generateSecureToken_()];
+
+  const data = sh.getRange(2, 1, lastRow - 1, 5).getValues();
+  const updates = data.map(row => {
+    const partenaireId = String(row[0] || "").trim();
+    const tokenExistant = String(row[1] || "").trim();
+    const lienExistant = String(row[3] || "").trim();
+
+    if (!partenaireId) return [tokenExistant, lienExistant];
+    if (partenaireId === "Token admin") return [tokenExistant, lienExistant];
+
+    const token = tokenExistant || generateSecureToken_();
+    const lien = lienExistant || `https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=${encodeURIComponent(partenaireId)}&token=${encodeURIComponent(token)}`;
+
+    return [token, lien];
   });
-  sh.getRange(2, 2, tokens.length, 1).setValues(tokens);
+
+  sh.getRange(2, 2, updates.length, 1).setValues(updates.map(row => [row[0]]));
+  sh.getRange(2, 4, updates.length, 1).setValues(updates.map(row => [row[1]]));
 }
 
 function rotateAdminBetaToken_() {
