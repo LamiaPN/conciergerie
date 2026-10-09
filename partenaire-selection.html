@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="css/style.css?v=20260826-lock17">
+<link rel="stylesheet" href="css/style.css?v=20261009-v20">
 </head>
 <body class="partner-selection-page" data-partner-page="choix">
 <div class="screen-inner">
@@ -35,7 +35,13 @@
           <i class="fas fa-chevron-down partner-filter-chevron" aria-hidden="true"></i>
         </div>
       </summary>
-      <div class="partner-filter-body"><div id="filterPanel"></div></div>
+      <div class="partner-filter-body">
+        <div class="partner-search-wrap">
+          <label for="orgSearch">Recherche rapide</label>
+          <input type="search" id="orgSearch" placeholder="Rechercher une organisation…" autocomplete="off">
+        </div>
+        <div id="filterPanel"></div>
+      </div>
     </details>
 
     <div class="privacy-note" id="listLoadingNote">
@@ -69,7 +75,7 @@
 <script src="js/api.js?v=20261009-v78"></script>
 <script src="js/partenaire-vivier.js?v=20260826-lock17"></script>
 <script src="js/partenaire-espace.js?v=20260826-lock17"></script>
-<script src="js/partenaire-selection.js?v=20260826-lock17"></script>
+<script src="js/partenaire-selection.js?v=20261009-v20"></script>
 <script src="js/selection-lock.js?v=20260826-lock17"></script>
 </body>
 </html>
