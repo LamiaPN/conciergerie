@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-conciergerie.js
-   VERSION : v72 — notification visuelle après RDV rapide
+   VERSION : v73 — calendrier synchronisé avec les modifications RDV en cours
    RÔLE    : Planning Conciergerie — sélections uniquement.
 
    RÈGLES :
@@ -863,7 +863,7 @@
     const occupancy = new Map();
 
     (relations || []).forEach(relation => {
-      const rdv = relation?.rdv || {};
+      const rdv = relationDraft(relation);
 
       if (!isCompleteMeeting(rdv)) return;
       if (exactId(rdv.date) !== exactId(selectedDate)) return;
@@ -893,7 +893,7 @@
 
   function completeCalendarRelations(relations = state.relations) {
     return (relations || []).filter(relation =>
-      isCompleteMeeting(relation?.rdv || {})
+      isCompleteMeeting(relationDraft(relation))
     );
   }
 
@@ -992,13 +992,13 @@
 
     const sections = EVENT_DATES.map(dateItem => {
       const byDate = complete.filter(relation =>
-        exactId(relation.rdv?.date) === dateItem.value
-        && exactId(relation.rdv?.salle) === selectedRoom
+        exactId(relationDraft(relation).date) === dateItem.value
+        && exactId(relationDraft(relation).salle) === selectedRoom
       );
 
       const byTime = new Map();
       byDate.forEach(relation => {
-        const time = exactId(relation.rdv?.heure);
+        const time = exactId(relationDraft(relation).heure);
         if (!byTime.has(time)) byTime.set(time, []);
         byTime.get(time).push(relation);
       });
@@ -1092,11 +1092,11 @@
     );
 
     const dayCount = new Set(
-      meetings.map(relation => exactId(relation.rdv?.date))
+      meetings.map(relation => exactId(relationDraft(relation).date))
     ).size;
 
     const roomCount = new Set(
-      meetings.map(relation => exactId(relation.rdv?.salle))
+      meetings.map(relation => exactId(relationDraft(relation).salle))
     ).size;
 
     return `
@@ -1143,14 +1143,14 @@
                   ${meetings.length
                     ? meetings.map(relation => {
                         const dateLabel = EVENT_DATES.find(
-                          item => item.value === exactId(relation.rdv?.date)
-                        )?.label || relation.rdv?.date || "—";
+                          item => item.value === exactId(relationDraft(relation).date)
+                        )?.label || relationDraft(relation).date || "—";
 
                         return `
                           <tr>
                             <td><strong>${escapeHtml(dateLabel)}</strong></td>
-                            <td>${escapeHtml(relation.rdv?.heure || "—")}</td>
-                            <td>${escapeHtml(relation.rdv?.salle || "—")}</td>
+                            <td>${escapeHtml(relationDraft(relation).heure || "—")}</td>
+                            <td>${escapeHtml(relationDraft(relation).salle || "—")}</td>
                             <td>${escapeHtml(
                               relation.organisation?.nom
                               || relation.organisation?.id
