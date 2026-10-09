@@ -11,9 +11,11 @@
    │  6 — Écriture des sélections                                        │
    │  7 — Formulaire, disponibilités et historique                       │
    │  8 — Planification des rendez-vous                                  │
+   │ 8B — Notifications des rendez-vous                                  │
    │  9 — Vivier modifiable (lecture / écriture)                         │
    │ 10 — Synchronisation Airtable / conflits                             │
    │ 11 — Contacts privés                                                │
+   │ 11B — Synchronisation Participants_import → Contacts                 │
    │ 12 — Référentiels administrables                                    │
    │ 13 — Génération / rotation des jetons                               │
    │ 14 — Utilitaires                                                    │
@@ -29,6 +31,7 @@ const SHEET_FORMULAIRES_HISTORIQUE = "Formulaires_historique";
 const SHEET_PROPOSITIONS = "Propositions";
 const SHEET_VIVIER = "Vivier_modifs";
 const SHEET_CONTACTS = "Contacts";
+const SHEET_PARTICIPANTS_IMPORT = "Participants_import";
 const SHEET_VIVIER_CONFLICTS = "Vivier_conflits";
 const SHEET_REFERENTIELS = "Referentiels";
 const SHEET_RENCONTRES = "Rencontres";
@@ -111,7 +114,7 @@ function doGet(e) {
     }
     if (action === "build_info") {
       return json_({
-        build: "2026-09-08-airtable-sync-v37",
+        build: "2026-10-08-contact-default-rdv-test-v5",
         delete_referentiel: true,
         get_formulaire: true,
         admin_get_formulaire: true,
@@ -123,9 +126,14 @@ function doGet(e) {
         admin_get_rencontres: true,
         save_rencontres: true,
         get_rencontres: true,
+        send_notification: true,
+        send_notifications: true,
+        calendar_links: true,
+        notification_mode_test: notificationModeTest_(),
         rdv_conflict_lock: true,
         selection_lock: true,
         admin_unlock_selections: true,
+        admin_save_selections: true,
         admin_token_rotation_helper: true,
         admin_contacts_private: true,
         admin_sync_contacts_from_forms: true,
@@ -164,6 +172,19 @@ function doPost(e) {
       requireAdminToken_(token);
       const status = unlockSelections_(p);
       return json_({ ok: true, locked: false, status });
+    }
+
+    if (action === "admin_save_selections") {
+      requireAdminToken_(token);
+      const selections = Array.isArray(body.selections) ? body.selections : [];
+      const lock = LockService.getScriptLock();
+      lock.waitLock(10000);
+      try {
+        writeSelectionsSansLock_(p, selections);
+      } finally {
+        lock.releaseLock();
+      }
+      return json_({ ok: true, count: selections.length });
     }
 
     if (action === "save_formulaire") {
@@ -313,6 +334,29 @@ function doPost(e) {
         lock.releaseLock();
       }
       return json_({ ok: true, count: rencontres.length });
+    }
+
+    if (action === "send_notification") {
+      requireAdminToken_(token);
+      const rencontre = body.rencontre && typeof body.rencontre === "object" ? body.rencontre : {};
+      const lock = LockService.getScriptLock();
+      lock.waitLock(30000);
+      try {
+        return json_({ ok: true, ...sendSingleNotificationSansLock_(rencontre) });
+      } finally {
+        lock.releaseLock();
+      }
+    }
+
+    if (action === "send_notifications") {
+      requireAdminToken_(token);
+      const lock = LockService.getScriptLock();
+      lock.waitLock(30000);
+      try {
+        return json_({ ok: true, ...sendNotificationsSansLock_() });
+      } finally {
+        lock.releaseLock();
+      }
     }
 
     return json_({ error: "Action inconnue." });
@@ -704,7 +748,7 @@ function readRencontres_() {
   const rows = sh.getDataRange().getValues();
   if (rows.length < 2) return [];
   const header = rows.shift().map(v => String(v).trim());
-  const required = ["partenaire_id", "organisation_id", "date", "heure", "salle", "email_rdv", "date_modification"];
+  const required = ["partenaire_id", "organisation_id", "date", "heure", "salle", "email_rdv", "date_modification", "notifie", "participant_partenaire_contact_id", "participant_partenaire_nom", "participant_partenaire_email", "participant_organisation_contact_id", "participant_organisation_nom", "participant_organisation_email"];
   const indexes = Object.fromEntries(required.map(name => [name, header.indexOf(name)]));
   if (indexes.partenaire_id === -1 || indexes.organisation_id === -1) throw new Error("Colonnes partenaire_id ou organisation_id introuvables dans Rencontres.");
 
@@ -715,7 +759,14 @@ function readRencontres_() {
     heure: formatSheetTime_(row[indexes.heure]),
     salle: String(row[indexes.salle] ?? "").trim(),
     email_rdv: String(row[indexes.email_rdv] ?? "").trim(),
-    date_modification: formatSheetDate_(row[indexes.date_modification], "yyyy-MM-dd HH:mm")
+    date_modification: formatSheetDate_(row[indexes.date_modification], "yyyy-MM-dd HH:mm"),
+    notifie: indexes.notifie === -1 ? "" : formatSheetDate_(row[indexes.notifie], "yyyy-MM-dd HH:mm"),
+    participant_partenaire_contact_id: indexes.participant_partenaire_contact_id === -1 ? "" : String(row[indexes.participant_partenaire_contact_id] ?? "").trim(),
+    participant_partenaire_nom: indexes.participant_partenaire_nom === -1 ? "" : String(row[indexes.participant_partenaire_nom] ?? "").trim(),
+    participant_partenaire_email: indexes.participant_partenaire_email === -1 ? "" : String(row[indexes.participant_partenaire_email] ?? "").trim(),
+    participant_organisation_contact_id: indexes.participant_organisation_contact_id === -1 ? "" : String(row[indexes.participant_organisation_contact_id] ?? "").trim(),
+    participant_organisation_nom: indexes.participant_organisation_nom === -1 ? "" : String(row[indexes.participant_organisation_nom] ?? "").trim(),
+    participant_organisation_email: indexes.participant_organisation_email === -1 ? "" : String(row[indexes.participant_organisation_email] ?? "").trim()
   }));
 }
 
@@ -737,7 +788,14 @@ function writeRencontres_(rencontres) {
   const iSalle = header.indexOf("salle");
   const iEmail = header.indexOf("email_rdv");
   const iModif = header.indexOf("date_modification");
-  if ([iP, iO, iDate, iHeure, iSalle, iEmail, iModif].some(i => i === -1)) throw new Error("Colonnes requises introuvables dans Rencontres.");
+  const iNotifie = header.indexOf("notifie");
+  const iPContact = header.indexOf("participant_partenaire_contact_id");
+  const iPNom = header.indexOf("participant_partenaire_nom");
+  const iPEmail = header.indexOf("participant_partenaire_email");
+  const iOContact = header.indexOf("participant_organisation_contact_id");
+  const iONom = header.indexOf("participant_organisation_nom");
+  const iOEmail = header.indexOf("participant_organisation_email");
+  if ([iP, iO, iDate, iHeure, iSalle, iEmail, iModif, iNotifie, iPContact, iPNom, iPEmail, iOContact, iONom, iOEmail].some(i => i === -1)) throw new Error("Colonnes requises introuvables dans Rencontres.");
 
   const lastRow = sh.getLastRow();
   const existingRows = lastRow >= 2 ? sh.getRange(2, 1, lastRow - 1, lastColumn).getValues() : [];
@@ -760,8 +818,13 @@ function writeRencontres_(rencontres) {
     if (isEmptyRencontre_(record)) { if (existingRow) toDelete.push(existingRow); return; }
     const row = new Array(lastColumn).fill("");
     row[iP] = record.partenaire_id; row[iO] = record.organisation_id; row[iDate] = record.date; row[iHeure] = record.heure; row[iSalle] = record.salle; row[iEmail] = record.email_rdv; row[iModif] = stamp;
-    if (existingRow) sh.getRange(existingRow, 1, 1, lastColumn).setValues([row]);
-    else { sh.appendRow(row); rowByKey.set(record.key, sh.getLastRow()); }
+    row[iPContact] = record.participant_partenaire_contact_id; row[iPNom] = record.participant_partenaire_nom; row[iPEmail] = record.participant_partenaire_email;
+    row[iOContact] = record.participant_organisation_contact_id; row[iONom] = record.participant_organisation_nom; row[iOEmail] = record.participant_organisation_email;
+    if (existingRow) {
+      row[iNotifie] = sh.getRange(existingRow, iNotifie + 1).getValue();
+      sh.getRange(existingRow, 1, 1, lastColumn).setValues([row]);
+    }
+    else { row[iNotifie] = ""; sh.appendRow(row); rowByKey.set(record.key, sh.getLastRow()); }
   });
   [...new Set(toDelete)].sort((a, b) => b - a).forEach(rowNumber => sh.deleteRow(rowNumber));
 }
@@ -771,7 +834,13 @@ function normalizeRencontre_(item) {
   const organisationId = String(item?.organisation_id ?? "").trim();
   return {
     partenaire_id: partenaireId, organisation_id: organisationId, key: `${partenaireId}::${organisationId}`,
-    date: formatSheetDate_(item?.date, "yyyy-MM-dd"), heure: formatSheetTime_(item?.heure), salle: String(item?.salle ?? "").trim(), email_rdv: String(item?.email_rdv ?? "").trim()
+    date: formatSheetDate_(item?.date, "yyyy-MM-dd"), heure: formatSheetTime_(item?.heure), salle: String(item?.salle ?? "").trim(), email_rdv: String(item?.email_rdv ?? "").trim(),
+    participant_partenaire_contact_id: String(item?.participant_partenaire_contact_id ?? "").trim(),
+    participant_partenaire_nom: String(item?.participant_partenaire_nom ?? "").trim(),
+    participant_partenaire_email: String(item?.participant_partenaire_email ?? "").trim(),
+    participant_organisation_contact_id: String(item?.participant_organisation_contact_id ?? "").trim(),
+    participant_organisation_nom: String(item?.participant_organisation_nom ?? "").trim(),
+    participant_organisation_email: String(item?.participant_organisation_email ?? "").trim()
   };
 }
 
@@ -784,7 +853,7 @@ function validateIncomingRencontres_(records) {
   });
 }
 
-function isEmptyRencontre_(record) { return !record.date && !record.heure && !record.salle && !record.email_rdv; }
+function isEmptyRencontre_(record) { return !record.date && !record.heure && !record.salle && !record.email_rdv && !record.participant_partenaire_contact_id && !record.participant_organisation_contact_id; }
 function isPlannedRencontre_(record) { return Boolean(record?.date && record?.heure && record?.salle); }
 
 function buildFinalRencontresMap_(existingRecords, incomingRecords) {
@@ -827,20 +896,327 @@ function ensureRencontresSheet_() {
   let sh = ss.getSheetByName(SHEET_RENCONTRES);
   if (!sh) {
     sh = ss.insertSheet(SHEET_RENCONTRES);
-    sh.getRange(1, 1, 1, 7).setValues([["partenaire_id", "organisation_id", "date", "heure", "salle", "email_rdv", "date_modification"]]);
+    sh.getRange(1, 1, 1, 14).setValues([["partenaire_id", "organisation_id", "date", "heure", "salle", "email_rdv", "date_modification", "notifie", "participant_partenaire_contact_id", "participant_partenaire_nom", "participant_partenaire_email", "participant_organisation_contact_id", "participant_organisation_nom", "participant_organisation_email"]]);
     sh.setFrozenRows(1);
   }
   return sh;
 }
 
 function ensureRencontresHeaders_(sh) {
-  const required = ["partenaire_id", "organisation_id", "date", "heure", "salle", "email_rdv", "date_modification"];
+  const required = ["partenaire_id", "organisation_id", "date", "heure", "salle", "email_rdv", "date_modification", "notifie", "participant_partenaire_contact_id", "participant_partenaire_nom", "participant_partenaire_email", "participant_organisation_contact_id", "participant_organisation_nom", "participant_organisation_email"];
   const lastColumn = Math.max(sh.getLastColumn(), 1);
   const current = sh.getRange(1, 1, 1, lastColumn).getValues()[0].map(v => String(v).trim());
   required.forEach(name => {
     if (!current.includes(name)) { const col = sh.getLastColumn() + 1; sh.getRange(1, col).setValue(name); current.push(name); }
   });
   sh.setFrozenRows(1);
+}
+
+/* ═══ SECTION 8B — NOTIFICATIONS DES RENDEZ-VOUS ═══════════════════════ */
+function notificationModeTest_() {
+  const raw = PropertiesService.getScriptProperties().getProperty("MODE_TEST");
+  if (raw === null || raw === "") return true;
+  return String(raw).trim().toLowerCase() !== "false";
+}
+
+function notificationTestEmail_() {
+  const props = PropertiesService.getScriptProperties();
+  const raw = String(props.getProperty("TEST_EMAILS") || props.getProperty("TEST_EMAIL") || "").trim();
+  const emails = raw.split(/[;,\n]+/).map(value => value.trim()).filter(Boolean);
+  if (notificationModeTest_() && !emails.length) {
+    throw new Error("TEST_EMAILS ou TEST_EMAIL non configuré dans les propriétés du script.");
+  }
+  return emails.join(",");
+}
+
+function readNotificationPartnerEmails_() {
+  const sh = ensureFormulaireSchema_();
+  const rows = sh.getDataRange().getValues();
+  if (rows.length < 2) return new Map();
+
+  const header = rows[0].map(value => String(value).trim());
+  const iP = header.indexOf("partenaire_id");
+  const iEmail = header.indexOf("contact_email");
+  if (iP === -1 || iEmail === -1) throw new Error("Colonnes partenaire_id ou contact_email introuvables dans Formulaires.");
+
+  const result = new Map();
+  rows.slice(1).forEach(row => {
+    const id = String(row[iP] ?? "").trim();
+    const email = String(row[iEmail] ?? "").trim();
+    if (id && email) result.set(id, email);
+  });
+  return result;
+}
+
+function notificationCalendarLinks_(date, heure, salle, title, details) {
+  const dateText = String(date || "").trim();
+  const timeText = String(heure || "").trim();
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateText);
+  const timeMatch = /^(\d{1,2}):(\d{2})/.exec(timeText);
+  if (!match || !timeMatch) return { google: "", outlook: "" };
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const hour = Number(timeMatch[1]);
+  const minute = Number(timeMatch[2]);
+
+  const start = new Date(Date.UTC(year, month - 1, day, hour, minute, 0));
+  const end = new Date(start.getTime() + 30 * 60 * 1000);
+
+  const pad = value => String(value).padStart(2, "0");
+  const googleStamp = value =>
+    `${value.getUTCFullYear()}${pad(value.getUTCMonth() + 1)}${pad(value.getUTCDate())}T${pad(value.getUTCHours())}${pad(value.getUTCMinutes())}00`;
+  const isoLocal = value =>
+    `${value.getUTCFullYear()}-${pad(value.getUTCMonth() + 1)}-${pad(value.getUTCDate())}T${pad(value.getUTCHours())}:${pad(value.getUTCMinutes())}:00`;
+
+  const googleParams = [
+    "action=TEMPLATE",
+    "text=" + encodeURIComponent(title),
+    "dates=" + encodeURIComponent(googleStamp(start) + "/" + googleStamp(end)),
+    "details=" + encodeURIComponent(details),
+    "location=" + encodeURIComponent(salle),
+    "ctz=" + encodeURIComponent("America/Toronto")
+  ].join("&");
+
+  const outlookParams = [
+    "path=" + encodeURIComponent("/calendar/action/compose"),
+    "rru=addevent",
+    "subject=" + encodeURIComponent(title),
+    "startdt=" + encodeURIComponent(isoLocal(start)),
+    "enddt=" + encodeURIComponent(isoLocal(end)),
+    "body=" + encodeURIComponent(details),
+    "location=" + encodeURIComponent(salle)
+  ].join("&");
+
+  return {
+    google: "https://calendar.google.com/calendar/render?" + googleParams,
+    outlook: "https://outlook.office.com/calendar/0/deeplink/compose?" + outlookParams
+  };
+}
+
+function escapeNotificationHtml_(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function sendNotificationEmail_(intendedEmail, subject, body, roleLabel, testMode, testEmail, calendarInfo) {
+  const recipient = testMode ? testEmail : intendedEmail;
+  const prefix = testMode
+    ? `[MODE TEST — destinataire prévu : ${roleLabel} <${intendedEmail}>]\n\n`
+    : "";
+
+  const info = calendarInfo && typeof calendarInfo === "object" ? calendarInfo : {};
+  const title = String(info.title || "MTL connecte 2026 — Rendez-vous Conciergerie").trim();
+  const details = String(info.details || body || "").trim();
+  const links = notificationCalendarLinks_(info.date, info.heure, info.salle, title, details);
+
+  const plainLinks = links.google || links.outlook
+    ? [
+        "",
+        "Ajouter ce rendez-vous à votre calendrier :",
+        links.google ? "Google Calendar : " + links.google : "",
+        links.outlook ? "Outlook : " + links.outlook : ""
+      ].filter(Boolean).join("\n")
+    : "";
+
+  const htmlPrefix = testMode
+    ? `<p style="padding:10px 12px;background:#fff4d6;border:1px solid #f0c45c;border-radius:8px;"><strong>MODE TEST</strong> — destinataire prévu : ${escapeNotificationHtml_(roleLabel)} &lt;${escapeNotificationHtml_(intendedEmail)}&gt;</p>`
+    : "";
+
+  const htmlBody = [
+    htmlPrefix,
+    '<div style="font-family:Arial,sans-serif;color:#0B0D0C;line-height:1.55;">',
+    '<p>Bonjour,</p>',
+    '<p>Votre rendez-vous dans le cadre du service de conciergerie de <strong>MTL connecte 2026</strong> est confirmé :</p>',
+    '<div style="padding:14px 16px;background:#F4F5F4;border-left:4px solid #6FBF4A;border-radius:8px;">',
+    `<div><strong>${escapeNotificationHtml_(info.rendezvous || title)}</strong></div>`,
+    `<div style="margin-top:6px;">📅 ${escapeNotificationHtml_(info.date || "")} à ${escapeNotificationHtml_(info.heure || "")}</div>`,
+    `<div>📍 ${escapeNotificationHtml_(info.salle || "")}</div>`,
+    '</div>',
+    links.google || links.outlook ? '<p style="margin-top:18px;"><strong>Ajouter à votre calendrier :</strong></p>' : '',
+    '<p>',
+    links.google ? `<a href="${links.google}" style="display:inline-block;margin:0 8px 8px 0;padding:10px 14px;background:#6FBF4A;color:#fff;text-decoration:none;border-radius:7px;font-weight:700;">Google Calendar</a>` : '',
+    links.outlook ? `<a href="${links.outlook}" style="display:inline-block;margin:0 8px 8px 0;padding:10px 14px;background:#0B0D0C;color:#fff;text-decoration:none;border-radius:7px;font-weight:700;">Outlook</a>` : '',
+    '</p>',
+    '<p style="font-size:13px;color:#667066;">Le rendez-vous n’est pas ajouté automatiquement à votre agenda : cliquez sur le bouton correspondant, puis enregistrez-le dans votre calendrier.</p>',
+    '<p>Au plaisir de vous y retrouver.<br>L’équipe MTL connecte</p>',
+    '</div>'
+  ].join("");
+
+  MailApp.sendEmail({
+    to: recipient,
+    subject,
+    body: prefix + body + plainLinks,
+    htmlBody
+  });
+}
+
+function sendSingleNotificationSansLock_(meeting) {
+  const partenaireId = String(meeting.partenaire_id || "").trim();
+  const organisationId = String(meeting.organisation_id || "").trim();
+  const date = String(meeting.date || "").trim();
+  const heure = String(meeting.heure || "").trim();
+  const salle = String(meeting.salle || "").trim();
+  const partenaireEmail = String(meeting.participant_partenaire_email || "").trim();
+  const organisationEmail = String(meeting.participant_organisation_email || meeting.email_rdv || "").trim();
+  if (!partenaireId || !organisationId) throw new Error("Partenaire ou organisation manquant.");
+  if (!date || !heure || !salle || !partenaireEmail || !organisationEmail) throw new Error("Le RDV doit contenir date, heure, salle et les deux participants.");
+
+  const sh = ensureRencontresSheet_();
+  ensureRencontresHeaders_(sh);
+  const existing = readRencontres_().find(item =>
+    String(item.partenaire_id || "").trim() === partenaireId &&
+    String(item.organisation_id || "").trim() === organisationId
+  );
+  if (existing && existing.notifie && !notificationModeTest_()) throw new Error("Ce rendez-vous a déjà été notifié.");
+
+  writeRencontres_([{
+    partenaire_id: partenaireId,
+    organisation_id: organisationId,
+    date, heure, salle,
+    email_rdv: organisationEmail,
+    participant_partenaire_contact_id: String(meeting.participant_partenaire_contact_id || "").trim(),
+    participant_partenaire_nom: String(meeting.participant_partenaire_nom || "").trim(),
+    participant_partenaire_email: partenaireEmail,
+    participant_organisation_contact_id: String(meeting.participant_organisation_contact_id || "").trim(),
+    participant_organisation_nom: String(meeting.participant_organisation_nom || "").trim(),
+    participant_organisation_email: organisationEmail
+  }]);
+
+  const testMode = notificationModeTest_();
+  const testEmail = testMode ? notificationTestEmail_() : "";
+  const partenaireNom = String(meeting.partenaire_nom || partenaireId).trim();
+  const organisationNom = String(meeting.organisation_nom || organisationId).trim();
+  const subject = "MTL connecte 2026 — Votre rendez-vous conciergerie du " + date;
+  const body = [
+    "Bonjour,",
+    "",
+    "Votre rendez-vous dans le cadre du service de conciergerie de MTL connecte 2026 est confirmé :",
+    "",
+    "• Rendez-vous : " + partenaireNom + " ↔ " + organisationNom,
+    "• Date : " + date + " à " + heure,
+    "• Lieu : " + salle,
+    "",
+    "Au plaisir de vous y retrouver.",
+    "Equipe MTL connecte"
+  ].join("\n");
+
+  const calendarInfo = {
+    date,
+    heure,
+    salle,
+    title: "MTL connecte 2026 — Rendez-vous Conciergerie",
+    rendezvous: partenaireNom + " ↔ " + organisationNom,
+    details: "Rendez-vous Conciergerie MTL connecte 2026 : " + partenaireNom + " ↔ " + organisationNom + ". Lieu : " + salle + "."
+  };
+
+  sendNotificationEmail_(partenaireEmail, subject, body, "participant partenaire", testMode, testEmail, calendarInfo);
+  sendNotificationEmail_(organisationEmail, subject, body, "participant organisation", testMode, testEmail, calendarInfo);
+
+  if (!testMode) {
+    const lastColumn = sh.getLastColumn();
+    const header = sh.getRange(1, 1, 1, lastColumn).getValues()[0].map(v => String(v).trim());
+    const iP = header.indexOf("partenaire_id");
+    const iO = header.indexOf("organisation_id");
+    const iNotifie = header.indexOf("notifie");
+    const count = Math.max(0, sh.getLastRow() - 1);
+    if (count) {
+      const rows = sh.getRange(2, 1, count, lastColumn).getValues();
+      const match = rows.findIndex(row => String(row[iP] || "").trim() === partenaireId && String(row[iO] || "").trim() === organisationId);
+      if (match !== -1) {
+        const stamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm");
+        sh.getRange(match + 2, iNotifie + 1).setValue(stamp);
+      }
+    }
+  }
+
+  return { sent: true, mode_test: testMode, participant_partenaire_email: partenaireEmail, participant_organisation_email: organisationEmail };
+}
+function sendNotificationsSansLock_() {
+  const sh = ensureRencontresSheet_();
+  ensureRencontresHeaders_(sh);
+
+  const lastRow = sh.getLastRow();
+  if (lastRow < 2) return { envoyes: 0, incomplets: 0, deja: 0, sans_mail: 0, erreurs: 0, mode_test: notificationModeTest_() };
+
+  const lastColumn = sh.getLastColumn();
+  const header = sh.getRange(1, 1, 1, lastColumn).getValues()[0].map(value => String(value).trim());
+  const iP = header.indexOf("partenaire_id");
+  const iO = header.indexOf("organisation_id");
+  const iDate = header.indexOf("date");
+  const iHeure = header.indexOf("heure");
+  const iSalle = header.indexOf("salle");
+  const iEmailRdv = header.indexOf("email_rdv");
+  const iNotifie = header.indexOf("notifie");
+  if ([iP, iO, iDate, iHeure, iSalle, iEmailRdv, iNotifie].some(index => index === -1)) {
+    throw new Error("Colonnes requises introuvables dans Rencontres pour les notifications.");
+  }
+
+  const testMode = notificationModeTest_();
+  const testEmail = testMode ? notificationTestEmail_() : "";
+  const partnerEmails = readNotificationPartnerEmails_();
+  const rows = sh.getRange(2, 1, lastRow - 1, lastColumn).getValues();
+  const stamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm");
+
+  let envoyes = 0;
+  let incomplets = 0;
+  let deja = 0;
+  let sansMail = 0;
+  let erreurs = 0;
+
+  rows.forEach((row, index) => {
+    const partenaireId = String(row[iP] ?? "").trim();
+    const organisationId = String(row[iO] ?? "").trim();
+    const date = formatSheetDate_(row[iDate], "yyyy-MM-dd");
+    const heure = formatSheetTime_(row[iHeure]);
+    const salle = String(row[iSalle] ?? "").trim();
+    const participantEmail = String(row[iEmailRdv] ?? "").trim();
+    const notifie = String(row[iNotifie] ?? "").trim();
+
+    if (notifie) { deja += 1; return; }
+    if (!date || !heure || !salle || !participantEmail) { incomplets += 1; return; }
+
+    const partnerEmail = String(partnerEmails.get(partenaireId) || "").trim();
+    if (!partnerEmail) { sansMail += 1; return; }
+
+    const subject = `MTL connecte 2026 — Votre rendez-vous conciergerie du ${date}`;
+    const body = [
+      "Bonjour,",
+      "",
+      "Votre rendez-vous dans le cadre du service de conciergerie de MTL connecte 2026 est confirmé :",
+      "",
+      `• Référence : ${partenaireId} ↔ ${organisationId}`,
+      `• Date : ${date} à ${heure}`,
+      `• Lieu : ${salle}`,
+      "",
+      "Au plaisir de vous y retrouver.",
+      "L'équipe MTL connecte"
+    ].join("\n");
+
+    try {
+      const calendarInfo = {
+        date,
+        heure,
+        salle,
+        title: "MTL connecte 2026 — Rendez-vous Conciergerie",
+        rendezvous: partenaireId + " ↔ " + organisationId,
+        details: "Rendez-vous Conciergerie MTL connecte 2026. Référence : " + partenaireId + " ↔ " + organisationId + ". Lieu : " + salle + "."
+      };
+      sendNotificationEmail_(participantEmail, subject, body, "participant", testMode, testEmail, calendarInfo);
+      sendNotificationEmail_(partnerEmail, subject, body, "partenaire", testMode, testEmail, calendarInfo);
+      envoyes += 1;
+      if (!testMode) sh.getRange(index + 2, iNotifie + 1).setValue(stamp);
+    } catch (error) {
+      erreurs += 1;
+      console.error(`Notification RDV impossible pour ${partenaireId} / ${organisationId} :`, error);
+    }
+  });
+
+  return { envoyes, incomplets, deja, sans_mail: sansMail, erreurs, mode_test: testMode };
 }
 
 function formatSheetDate_(value, pattern) {
@@ -1095,7 +1471,7 @@ function removeVivierOverrideFieldSansLock_(organisationId, champ) {
 function ensureContactsSheet_() {
   const ss = ss_();
   let sh = ss.getSheetByName(SHEET_CONTACTS);
-  const headers = ["contact_id", "organisation_id", "nom", "fonction", "email", "telephone", "role", "principal", "source", "date_modification"];
+  const headers = ["contact_id", "organisation_id", "nom", "fonction", "email", "telephone", "role", "principal", "source", "date_modification", "secteur", "pays", "objectif", "type_organisation", "emploi"];
 
   if (!sh) {
     sh = ss.insertSheet(SHEET_CONTACTS);
@@ -1122,7 +1498,7 @@ function readContacts_(organisationId) {
   const rows = sh.getDataRange().getValues();
   if (rows.length < 2) return [];
   const header = rows[0].map(v => String(v).trim());
-  const fields = ["contact_id", "organisation_id", "nom", "fonction", "email", "telephone", "role", "principal", "source", "date_modification"];
+  const fields = ["contact_id", "organisation_id", "nom", "fonction", "email", "telephone", "role", "principal", "source", "date_modification", "secteur", "pays", "objectif", "type_organisation", "emploi"];
   const idx = Object.fromEntries(fields.map(name => [name, header.indexOf(name)]));
   if (idx.contact_id === -1 || idx.organisation_id === -1) throw new Error("Colonnes Contacts introuvables.");
   const wanted = String(organisationId || "").trim();
@@ -1189,7 +1565,7 @@ function writeContactSansLock_(contact) {
     if (name === "principal") return principal;
     if (name === "date_modification") return stamp;
     if (name === "source") return String(contact.source || "Admin").trim();
-    if (["fonction", "email", "telephone", "role"].includes(name)) return String(contact[name] || "").trim();
+    if (["fonction", "email", "telephone", "role", "secteur", "pays", "objectif", "type_organisation", "emploi"].includes(name)) return String(contact[name] || "").trim();
     return "";
   });
 
@@ -1269,6 +1645,223 @@ function syncContactsFromAllFormsSansLock_() {
   });
   return count;
 }
+
+
+/* ═══ SECTION 11B — SYNCHRONISATION PARTICIPANTS_IMPORT → CONTACTS ═════ */
+function normalizeParticipantText_(value) {
+  return String(value == null ? "" : value)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/&/g, " et ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function participantCountryOnly_(value) {
+  const text = String(value == null ? "" : value).trim();
+  if (!text) return "";
+  const parts = text.split(" - ").map(part => part.trim()).filter(Boolean);
+  return parts.length > 1 ? parts[parts.length - 1] : text;
+}
+
+function participantField_(row, headerMap, names) {
+  for (const name of names) {
+    const index = headerMap[normalizeParticipantText_(name)];
+    if (index !== undefined) return String(row[index] == null ? "" : row[index]).trim();
+  }
+  return "";
+}
+
+function participantIsExcluded_(participant) {
+  const role = normalizeParticipantText_(participant.role_evenement);
+  const groupe = normalizeParticipantText_(participant.groupe);
+  const fonction = normalizeParticipantText_(participant.fonction);
+  const emploi = normalizeParticipantText_(participant.emploi);
+
+  const online = /\b(en ligne|online|virtuel|virtuelle|virtual|a distance)\b/.test(role + " " + groupe);
+  const student = /\b(etudiant|etudiante|student|stagiaire|intern|doctorant|doctorante|phd)\b/.test(fonction + " " + emploi + " " + groupe);
+  const unemployed = /\b(sans emploi|en recherche d emploi|chercheur d emploi|chercheuse d emploi|job seeker|unemployed)\b/.test(emploi + " " + fonction);
+
+  return { excluded: online || student || unemployed, online, student, unemployed };
+}
+
+function participantPartnerIndex_() {
+  const sh = ss_().getSheetByName(SHEET_PARTENAIRES);
+  if (!sh) return [];
+  const rows = sh.getDataRange().getValues();
+  if (rows.length < 2) return [];
+  const header = rows.shift().map(v => String(v).trim());
+  const iId = header.indexOf("partenaire_id");
+  const iNom = header.indexOf("nom");
+  if (iId === -1 || iNom === -1) return [];
+
+  return rows.map(row => ({
+    id: String(row[iId] == null ? "" : row[iId]).trim(),
+    nom: String(row[iNom] == null ? "" : row[iNom]).trim()
+  })).filter(item => item.id && item.nom);
+}
+
+function matchParticipantPartner_(company, partners) {
+  const key = normalizeParticipantText_(company);
+  if (!key) return "";
+
+  const exact = partners.find(item => normalizeParticipantText_(item.nom) === key);
+  if (exact) return exact.id;
+
+  const fuzzy = partners.filter(item => {
+    const partnerKey = normalizeParticipantText_(item.nom);
+    if (!partnerKey || partnerKey.length < 5 || key.length < 5) return false;
+    return partnerKey.includes(key) || key.includes(partnerKey);
+  });
+  return fuzzy.length === 1 ? fuzzy[0].id : "";
+}
+
+
+function syncParticipantsImportToContacts() {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    return syncParticipantsImportToContactsSansLock_();
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function syncParticipantsImportToContactsSansLock_() {
+  const ss = ss_();
+  const source = ss.getSheetByName(SHEET_PARTICIPANTS_IMPORT);
+  if (!source) throw new Error("Feuille Participants_import introuvable.");
+
+  const sourceRows = source.getDataRange().getValues();
+  if (sourceRows.length < 2) throw new Error("Participants_import ne contient aucune donnée.");
+
+  const sourceHeader = sourceRows[0].map(v => String(v).trim());
+  const sourceMap = {};
+  sourceHeader.forEach((name, index) => {
+    sourceMap[normalizeParticipantText_(name)] = index;
+  });
+
+  const contactsSheet = ensureContactsSheet_();
+  const contactRows = contactsSheet.getDataRange().getValues();
+  const contactHeader = contactRows[0].map(v => String(v).trim());
+  const contactIdx = Object.fromEntries(contactHeader.map((name, index) => [name, index]));
+
+  const existingByEmail = new Map();
+  for (let i = 1; i < contactRows.length; i++) {
+    const email = String(contactRows[i][contactIdx.email] == null ? "" : contactRows[i][contactIdx.email]).trim().toLowerCase();
+    if (email && !existingByEmail.has(email)) existingByEmail.set(email, { rowIndex:i, row:contactRows[i] });
+  }
+
+  const partners = participantPartnerIndex_();
+  const seen = new Set();
+  let added = 0;
+  let updated = 0;
+  let excluded = 0;
+  let partnersMatched = 0;
+  let skippedNoEmail = 0;
+
+  for (let r = 1; r < sourceRows.length; r++) {
+    const row = sourceRows[r];
+    const email = participantField_(row, sourceMap, ["Courriel", "Email", "E-mail"]).toLowerCase();
+    if (!email) { skippedNoEmail += 1; continue; }
+    if (seen.has(email)) continue;
+    seen.add(email);
+
+    const nom = participantField_(row, sourceMap, ["Nom"]);
+    const prenom = participantField_(row, sourceMap, ["Prénom", "Prenom"]);
+    const compagnie = participantField_(row, sourceMap, ["Compagnie", "Organisation", "Entreprise"]);
+    const fonction = participantField_(row, sourceMap, ["Fonction", "Poste"]);
+    const roleEvenement = participantField_(row, sourceMap, ["Rôle", "Role"]);
+    const groupe = participantField_(row, sourceMap, ["Groupe"]);
+    const telephone = participantField_(row, sourceMap, ["Téléphone", "Telephone"]);
+    const secteur = participantField_(row, sourceMap, ["Quel est votre secteur d'activité?"]);
+    const pays = participantCountryOnly_(participantField_(row, sourceMap, ["Quel est votre pays de résidence?"]));
+    const objectif = participantField_(row, sourceMap, ["Quel est votre objectif principal de participation à MTL connecte?"]);
+    const typeOrganisation = participantField_(row, sourceMap, ["Quel est le type de votre organisation/entreprise?"]);
+    const emploi = participantField_(row, sourceMap, ["Quel type d'emploi occupez-vous dans votre organisation/entreprise?"]);
+
+    const exclusion = participantIsExcluded_({
+      fonction,
+      emploi,
+      role_evenement:roleEvenement,
+      groupe
+    });
+    if (exclusion.excluded) excluded += 1;
+
+    const existing = existingByEmail.get(email);
+    const existingRow = existing ? existing.row : null;
+    const existingRole = existingRow ? String(existingRow[contactIdx.role] == null ? "" : existingRow[contactIdx.role]).trim() : "";
+    const existingOrgId = existingRow ? String(existingRow[contactIdx.organisation_id] == null ? "" : existingRow[contactIdx.organisation_id]).trim() : "";
+
+    let organisationId = existingOrgId;
+    if (!organisationId || organisationId.indexOf("contact-only::") === 0) {
+      const partnerId = matchParticipantPartner_(compagnie, partners);
+      if (partnerId) {
+        organisationId = partnerId;
+        partnersMatched += 1;
+      } else {
+        organisationId = "contact-only::" + (compagnie || "Organisation inconnue");
+      }
+    }
+
+    let role = existingRole || "Participant MTL connecte 2026";
+    const hasActive = role.indexOf("||RDV_ACTIVE") !== -1;
+    const hasHidden = role.indexOf("||RDV_HIDDEN") !== -1;
+    if (!hasActive && !hasHidden && exclusion.excluded) role += " ||RDV_HIDDEN";
+
+    const contactId = existingRow
+      ? String(existingRow[contactIdx.contact_id] == null ? "" : existingRow[contactIdx.contact_id]).trim()
+      : "ctc-" + Utilities.getUuid().replace(/-/g, "");
+
+    const stamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm");
+    const values = contactHeader.map(name => {
+      if (name === "contact_id") return contactId;
+      if (name === "organisation_id") return organisationId;
+      if (name === "nom") return [prenom, nom].filter(Boolean).join(" ").trim() || email;
+      if (name === "fonction") return fonction;
+      if (name === "email") return email;
+      if (name === "telephone") return telephone;
+      if (name === "role") return role;
+      if (name === "principal") return existingRow ? existingRow[contactIdx.principal] : false;
+      if (name === "source") return existingRow ? existingRow[contactIdx.source] : "Participants MTL connecte 2026";
+      if (name === "date_modification") return stamp;
+      if (name === "secteur") return secteur;
+      if (name === "pays") return pays;
+      if (name === "objectif") return objectif;
+      if (name === "type_organisation") return typeOrganisation;
+      if (name === "emploi") return emploi;
+      return existingRow && contactIdx[name] !== undefined ? existingRow[contactIdx[name]] : "";
+    });
+
+    if (existing) {
+      contactRows[existing.rowIndex] = values;
+      existingByEmail.set(email, { rowIndex:existing.rowIndex, row:values });
+      updated += 1;
+    } else {
+      contactRows.push(values);
+      existingByEmail.set(email, { rowIndex:contactRows.length - 1, row:values });
+      added += 1;
+    }
+  }
+
+  contactsSheet.clearContents();
+  contactsSheet.getRange(1, 1, contactRows.length, contactHeader.length).setValues(contactRows);
+  contactsSheet.setFrozenRows(1);
+
+  return {
+    ok:true,
+    source_rows:sourceRows.length - 1,
+    added,
+    updated,
+    excluded,
+    partners_matched:partnersMatched,
+    skipped_no_email:skippedNoEmail,
+    contacts_total:contactRows.length - 1
+  };
+}
+
 
 /* ═══ SECTION 11 — RÉFÉRENTIELS ADMINISTRABLES ═════════════════════════ */
 function readReferentiels_() {
@@ -1375,27 +1968,18 @@ function countReferentielUsageInVivierModifs_(categorie, valeur) {
 function genererTokens() {
   const sh = ss_().getSheetByName(SHEET_PARTENAIRES);
   if (!sh) throw new Error("Feuille Partenaires introuvable.");
-
   const lastRow = sh.getLastRow();
   if (lastRow < 2) throw new Error("Aucun partenaire à traiter.");
-
-  const data = sh.getRange(2, 1, lastRow - 1, 5).getValues();
-  const updates = data.map(row => {
-    const partenaireId = String(row[0] || "").trim();
-    const tokenExistant = String(row[1] || "").trim();
-    const lienExistant = String(row[3] || "").trim();
-
-    if (!partenaireId) return [tokenExistant, lienExistant];
-    if (partenaireId === "Token admin") return [tokenExistant, lienExistant];
-
-    const token = tokenExistant || generateSecureToken_();
-    const lien = lienExistant || `https://lamiapn.github.io/conciergerie/partenaire-formulaire.html?p=${encodeURIComponent(partenaireId)}&token=${encodeURIComponent(token)}`;
-
-    return [token, lien];
+  const data = sh.getRange(2, 1, lastRow - 1, 3).getValues();
+  const tokens = data.map(row => {
+    const partenaireId = String(row[0]).trim();
+    const tokenExistant = String(row[1]).trim();
+    if (!partenaireId) return [""];
+    if (partenaireId === "Token admin") return [tokenExistant];
+    if (tokenExistant) return [tokenExistant];
+    return [generateSecureToken_()];
   });
-
-  sh.getRange(2, 2, updates.length, 1).setValues(updates.map(row => [row[0]]));
-  sh.getRange(2, 4, updates.length, 1).setValues(updates.map(row => [row[1]]));
+  sh.getRange(2, 2, tokens.length, 1).setValues(tokens);
 }
 
 function rotateAdminBetaToken_() {
