@@ -662,16 +662,6 @@ const API = (() => {
 })();
 
 
-(function loadAdminVivierSync_() {
-  if (typeof document === "undefined") return;
-  if (!document.querySelector("#admin-dashboard")) return;
-  if (document.querySelector('script[data-admin-vivier-sync-loader]')) return;
-  const current = document.currentScript;
-  const script = document.createElement("script");
-  script.src = current?.src
-    ? new URL("admin-vivier-sync.js?v=20260908-v37", current.src).toString()
-    : "js/admin-vivier-sync.js?v=20260908-v37";
-  script.defer = true;
-  script.dataset.adminVivierSyncLoader = "true";
-  document.head.appendChild(script);
-})();
+/* admin-vivier-sync.js désactivé : fichier non finalisé, erreur de syntaxe
+   qui cassait le JS de la page admin (intégration vivier). Ne pas recharger. */
+(function loadAdminVivierSync_() { /* désactivé volontairement */ })();
