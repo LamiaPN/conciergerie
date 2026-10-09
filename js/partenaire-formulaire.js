@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : partenaire-formulaire.js
-   VERSION : v18 — organisation verrouillée au partenaire du lien
+   VERSION : v19 — recherche d'organisations dans le vivier
    RÔLE    : Formulaire de besoins du partenaire (une page, 6 sections).
              Pré-remplit les champs depuis le vivier via ?p=<partenaire>,
              collecte les réponses, affiche un récap, gère l'envoi.
@@ -30,6 +30,7 @@
   const token = params.get("token") || "";
   const MULTI_SEPARATOR = " | ";
   let submitBusy = false;
+  let identifiedOrganisations = [];
 
   /* ═══ SECTION 2 — RACCOURCIS DOM ════════════════════════════════════════
      $ → un élément ; $$ → liste d'éléments (en tableau). */
@@ -61,6 +62,7 @@
       ]);
 
       buildVivierControls(snapshot.referentiels || {});
+      await loadIdentifiedOrganisationSearch();
 
       const profil = snapshot.partenaires?.[pid] || null;
       if (!profil) {
@@ -304,6 +306,78 @@
   /* ═══ SECTION 4 — CHIPS & SELECTS : SÉLECTION & ÉCOUTE ══════════════════
      Clic sur un chip = bascule sélectionné ; selects écoutés ;
      chaque changement rafraîchit le récap. */
+  /* ═══ SECTION 3B — RECHERCHE D'ORGANISATIONS IDENTIFIÉES ════════════ */
+  async function loadIdentifiedOrganisationSearch() {
+    const input = $("#f_contacts_search");
+    const results = $("#f_contacts_results");
+    if (!input || !results) return;
+
+    try {
+      const vivier = await API.loadVivier();
+      identifiedOrganisations = (vivier.organisations || [])
+        .filter(org => String(org?.id || "").trim() && String(org?.nom || "").trim())
+        .sort((a, b) => String(a.nom).localeCompare(String(b.nom), "fr", { sensitivity:"base" }));
+    } catch (error) {
+      console.warn("Recherche vivier indisponible :", error);
+      identifiedOrganisations = [];
+    }
+
+    const renderResults = () => {
+      const q = String(input.value || "").trim().toLowerCase();
+      if (q.length < 2) {
+        results.hidden = true;
+        results.innerHTML = "";
+        return;
+      }
+
+      const matches = identifiedOrganisations
+        .filter(org => [org.nom, org.secteur, org.type, org.localisation]
+          .some(value => String(value || "").toLowerCase().includes(q)))
+        .slice(0, 12);
+
+      results.innerHTML = matches.length
+        ? matches.map(org => `<button type="button" class="identified-org-result" data-org-name="${escapeHtml(org.nom)}">
+            <strong>${escapeHtml(org.nom)}</strong>
+            <span>${escapeHtml([org.secteur, org.localisation].filter(Boolean).join(" · "))}</span>
+          </button>`).join("")
+        : '<div class="identified-org-empty">Aucune organisation trouvée.</div>';
+      results.hidden = false;
+    };
+
+    input.addEventListener("input", renderResults);
+    input.addEventListener("focus", renderResults);
+
+    results.addEventListener("click", event => {
+      const button = event.target.closest("[data-org-name]");
+      if (!button) return;
+      addIdentifiedOrganisation(button.dataset.orgName || "");
+      input.value = "";
+      results.hidden = true;
+      results.innerHTML = "";
+    });
+
+    document.addEventListener("click", event => {
+      if (!event.target.closest(".identified-org-picker")) results.hidden = true;
+    });
+  }
+
+  function addIdentifiedOrganisation(name) {
+    const textarea = $("#f_contacts_ident");
+    const cleanName = String(name || "").trim();
+    if (!textarea || !cleanName) return;
+
+    const current = String(textarea.value || "").trim();
+    const names = current
+      ? current.split(/\n|;/).map(value => value.trim()).filter(Boolean)
+      : [];
+
+    if (!names.some(value => value.toLowerCase() === cleanName.toLowerCase())) {
+      names.push(cleanName);
+      textarea.value = names.join("\n");
+      textarea.dispatchEvent(new Event("input", { bubbles:true }));
+    }
+  }
+
   function bindChoices() {
     // Délégation : fonctionne aussi pour les chips générés après le chargement de data.json.
     $$('[data-multi]').forEach(container => {
