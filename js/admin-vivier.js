@@ -660,7 +660,7 @@
     if (pushHistory && location.hash !== "#vivier") {
       history.pushState({ view: "vivier" }, "", `${location.pathname}${location.search}#vivier`);
     }
-    loadData();
+    loadData(true);
   }
 
   function hideVivier() {
