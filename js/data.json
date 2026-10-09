@@ -3699,6 +3699,54 @@
         "Conciergerie": "",
         "Conciergerie Contacts": ""
       }
+    },
+    {
+      "id": "loc-002",
+      "nom": "Alto",
+      "statut": "Vivier local",
+      "secteur": "Industries et infrastructures - Mobilité et transports",
+      "type": "Gouvernement/secteur public/parapublic",
+      "taille": "",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "",
+      "theme": "",
+      "expertise": [],
+      "extra": {
+        "source": "Contacts / intégration admin"
+      }
+    },
+    {
+      "id": "loc-003",
+      "nom": "Provent HCE inc.",
+      "statut": "Vivier local",
+      "secteur": "Industries et infrastructures - Manufacture",
+      "type": "PME",
+      "taille": "",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "",
+      "theme": "",
+      "expertise": [],
+      "extra": {
+        "source": "Contacts / intégration admin"
+      }
+    },
+    {
+      "id": "loc-004",
+      "nom": "Rematek",
+      "statut": "Vivier local",
+      "secteur": "Affaires, services et gestion - Ressources humaines",
+      "type": "PME",
+      "taille": "",
+      "localisation": "Canada",
+      "description": "",
+      "site_web": "",
+      "theme": "",
+      "expertise": [],
+      "extra": {
+        "source": "Contacts / intégration admin"
+      }
     }
   ],
   "propositions": [],
