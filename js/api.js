@@ -200,6 +200,17 @@ const API = (() => {
     return data;
   }
 
+  async function saveSelectionsAdmin(partenaireId, adminToken, organisationIds) {
+    if (!CONFIG.SHEET_API_URL) return { ok: true, demo: true, count: organisationIds.length };
+    const data = await _fetchJSON(CONFIG.SHEET_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ action: "admin_save_selections", p: partenaireId, token: adminToken, selections: organisationIds })
+    });
+    if (data.error) throw new Error(data.error);
+    return data;
+  }
+
   async function getRencontres(partenaireId, token) {
     if (!CONFIG.SHEET_API_URL) return [];
     const url = `${CONFIG.SHEET_API_URL}?action=get_rencontres&p=${encodeURIComponent(partenaireId)}&token=${encodeURIComponent(token)}`;
@@ -385,6 +396,14 @@ const API = (() => {
   }
 
   /* ═══ SECTION 8 — PLANIFICATION DES RENDEZ-VOUS ═══════════════════════ */
+  async function getContactsAdmin(adminToken) {
+    if (!CONFIG.SHEET_API_URL) return [];
+    const url = `${CONFIG.SHEET_API_URL}?action=admin_get_contacts&token=${encodeURIComponent(adminToken)}&_=${Date.now()}`;
+    const data = await _fetchJSON(url);
+    if (data.error) throw new Error(data.error);
+    return Array.isArray(data.contacts) ? data.contacts : [];
+  }
+
   async function getRencontresAdmin(adminToken) {
     if (!CONFIG.SHEET_API_URL) return [];
     const url = `${CONFIG.SHEET_API_URL}?action=admin_get_rencontres&token=${encodeURIComponent(adminToken)}`;
@@ -408,6 +427,28 @@ const API = (() => {
       error.details = data.details || "";
       throw error;
     }
+    return data;
+  }
+
+  async function sendNotification(adminToken, rencontre) {
+    if (!CONFIG.SHEET_API_URL) return { ok: true, demo: true, sent: true, mode_test: true };
+    const data = await _fetchJSON(CONFIG.SHEET_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ action: "send_notification", token: adminToken, rencontre })
+    });
+    if (data.error) throw new Error(data.error);
+    return data;
+  }
+
+  async function sendNotifications(adminToken) {
+    if (!CONFIG.SHEET_API_URL) return { ok: true, demo: true, envoyes: 0, incomplets: 0, deja: 0, sans_mail: 0, erreurs: 0, mode_test: true };
+    const data = await _fetchJSON(CONFIG.SHEET_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ action: "send_notifications", token: adminToken })
+    });
+    if (data.error) throw new Error(data.error);
     return data;
   }
 
@@ -492,6 +533,7 @@ const API = (() => {
     getSelectionStatusAdmin,
     finalizeSelections,
     unlockSelectionsAdmin,
+    saveSelectionsAdmin,
     getFormulaire,
     saveFormulaire,
     getFormulaireAdmin,
@@ -507,8 +549,11 @@ const API = (() => {
     getReferentiels,
     addReferentiel,
     deleteReferentiel,
+    getContactsAdmin,
     getRencontresAdmin,
     saveRencontresAdmin,
+    sendNotification,
+    sendNotifications,
     resetCache
   };
 })();
