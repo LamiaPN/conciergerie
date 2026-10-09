@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-conciergerie.js
-   VERSION : v56 — calendrier PN avec vues par date, salle et partenaire
+   VERSION : v72 — notification visuelle après RDV rapide
    RÔLE    : Planning Conciergerie — sélections uniquement.
 
    RÈGLES :
@@ -63,6 +63,9 @@
     calendarView: "date",
     calendarRoom: DEFAULT_ROOMS[0],
     calendarPartnerId: "",
+    singleNotificationKey: "",
+    contactsByOrganisation: new Map(),
+    formsByPartner: new Map(),
     conflicts: new Map(),
     availabilityWarnings: new Map()
   };
@@ -80,6 +83,26 @@
       '"': "&quot;",
       "'": "&#39;"
     }[char]));
+
+  function showConciergerieToast(message, type = "success") {
+    let toast = document.querySelector("#conciergerieToast");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "conciergerieToast";
+      toast.className = "conciergerie-toast";
+      toast.setAttribute("role", "status");
+      toast.setAttribute("aria-live", "polite");
+      document.body.appendChild(toast);
+    }
+
+    toast.textContent = String(message || "").trim();
+    toast.className = `conciergerie-toast ${type === "error" ? "error" : "success"} show`;
+
+    window.clearTimeout(showConciergerieToast._timer);
+    showConciergerieToast._timer = window.setTimeout(() => {
+      toast.classList.remove("show");
+    }, 4000);
+  }
 
   function nomAffiche(partenaire) {
     if (!partenaire) return "";
@@ -118,12 +141,37 @@
     el.savebar = $("#conciergerieSavebar");
     el.saveStatus = $("#conciergerieSaveStatus");
     el.saveBtn = $("#conciergerieSaveBtn");
+    el.notifyBtn = $("#conciergerieNotifyBtn");
+    el.notificationModal = $("#conciergerieNotificationModal");
+    el.notificationClose = $("#conciergerieNotificationClose");
+    el.notificationCancel = $("#conciergerieNotificationCancel");
+    el.notificationConfirm = $("#conciergerieNotificationConfirm");
+    el.singleNotificationModal = $("#conciergerieSingleNotificationModal");
+    el.singleNotificationClose = $("#conciergerieSingleNotificationClose");
+    el.singleNotificationCancel = $("#conciergerieSingleNotificationCancel");
+    el.singleNotificationSend = $("#conciergerieSingleNotificationSend");
+    el.singleNotificationEmail = $("#conciergerieSingleNotificationEmail");
+    el.singleNotificationSummary = $("#conciergerieSingleNotificationSummary");
 
     el.addRoomBtn = $("#conciergerieAddRoomBtn");
     el.roomAddForm = $("#conciergerieRoomAddForm");
     el.newRoomInput = $("#conciergerieNewRoomInput");
     el.confirmRoomBtn = $("#conciergerieConfirmRoomBtn");
     el.cancelRoomBtn = $("#conciergerieCancelRoomBtn");
+
+    el.quickBtn = $("#conciergerieQuickBtn");
+    el.quickModal = $("#conciergerieQuickModal");
+    el.quickClose = $("#conciergerieQuickClose");
+    el.quickCancel = $("#conciergerieQuickCancel");
+    el.quickCreate = $("#conciergerieQuickCreate");
+    el.quickPartner = $("#conciergerieQuickPartner");
+    el.quickOrganisation = $("#conciergerieQuickOrganisation");
+    el.quickPartnerContact = $("#conciergerieQuickPartnerContact");
+    el.quickOrganisationContact = $("#conciergerieQuickOrganisationContact");
+    el.quickDate = $("#conciergerieQuickDate");
+    el.quickTime = $("#conciergerieQuickTime");
+    el.quickRoom = $("#conciergerieQuickRoom");
+    el.quickStatus = $("#conciergerieQuickStatus");
   }
 
   function init() {
@@ -180,11 +228,35 @@
     el.content?.addEventListener("change", onMeetingInput);
     el.content?.addEventListener("change", onCalendarPartnerChange);
     el.content?.addEventListener("click", onCalendarClick);
+    el.content?.addEventListener("click", onSingleNotificationClick);
 
     el.saveBtn?.addEventListener("click", saveDirtyMeetings);
+    el.notifyBtn?.addEventListener("click", openNotificationModal);
+    el.notificationClose?.addEventListener("click", closeNotificationModal);
+    el.notificationCancel?.addEventListener("click", closeNotificationModal);
+    el.notificationConfirm?.addEventListener("click", sendNotifications);
+    el.notificationModal?.addEventListener("click", event => {
+      if (event.target === el.notificationModal) closeNotificationModal();
+    });
+    el.singleNotificationClose?.addEventListener("click", closeSingleNotificationModal);
+    el.singleNotificationCancel?.addEventListener("click", closeSingleNotificationModal);
+    el.singleNotificationSend?.addEventListener("click", sendSingleNotification);
+    el.singleNotificationModal?.addEventListener("click", event => {
+      if (event.target === el.singleNotificationModal) closeSingleNotificationModal();
+    });
     el.addRoomBtn?.addEventListener("click", openRoomForm);
     el.confirmRoomBtn?.addEventListener("click", addRoom);
     el.cancelRoomBtn?.addEventListener("click", closeRoomForm);
+
+    el.quickBtn?.addEventListener("click", openQuickMeetingModal);
+    el.quickClose?.addEventListener("click", closeQuickMeetingModal);
+    el.quickCancel?.addEventListener("click", closeQuickMeetingModal);
+    el.quickCreate?.addEventListener("click", createQuickMeeting);
+    el.quickPartner?.addEventListener("change", refreshQuickContacts);
+    el.quickOrganisation?.addEventListener("change", refreshQuickContacts);
+    el.quickModal?.addEventListener("click", event => {
+      if (event.target === el.quickModal) closeQuickMeetingModal();
+    });
 
     el.newRoomInput?.addEventListener("keydown", event => {
       if (event.key === "Enter") {
@@ -279,9 +351,10 @@
         ? state.vivier.partenaires
         : [];
 
-      const [rencontres, referentiels, raw] = await Promise.all([
+      const [rencontres, referentiels, contacts, raw] = await Promise.all([
         API.getRencontresAdmin(state.adminToken),
         API.getReferentiels(),
+        API.getContactsAdmin(state.adminToken),
         Promise.all(
           partenaires.map(async partenaire => {
             const partenaireId = exactId(partenaire.id);
@@ -308,6 +381,13 @@
         )
       ]);
 
+      state.formsByPartner = new Map(
+        (raw || []).map(entry => [
+          exactId(entry.partenaire?.id),
+          entry.formulaire || null
+        ])
+      );
+
       // Le calendrier lit STRICTEMENT les salles du référentiel "salle".
       // Le planning éditable garde ses valeurs historiques pour non-régression.
       state.calendarRooms = uniqueSorted(
@@ -321,6 +401,14 @@
         ...state.calendarRooms,
         ...(rencontres || []).map(item => item.salle)
       ]);
+
+      state.contactsByOrganisation = new Map();
+      (Array.isArray(contacts) ? contacts : []).forEach(contact => {
+        const orgId = exactId(contact.organisation_id);
+        if (!orgId) return;
+        if (!state.contactsByOrganisation.has(orgId)) state.contactsByOrganisation.set(orgId, []);
+        state.contactsByOrganisation.get(orgId).push(contact);
+      });
 
       state.relations = buildRelations(
         state.vivier,
@@ -389,8 +477,21 @@
           date: exactId(item.date),
           heure: exactId(item.heure),
           salle: exactId(item.salle),
-          email_rdv: exactId(item.email_rdv)
+          email_rdv: exactId(item.email_rdv),
+          participant_partenaire_contact_id: exactId(item.participant_partenaire_contact_id),
+          participant_partenaire_nom: exactId(item.participant_partenaire_nom),
+          participant_partenaire_email: exactId(item.participant_partenaire_email),
+          participant_organisation_contact_id: exactId(item.participant_organisation_contact_id),
+          participant_organisation_nom: exactId(item.participant_organisation_nom),
+          participant_organisation_email: exactId(item.participant_organisation_email)
         }
+      ])
+    );
+
+    const formulaireByPartenaireId = new Map(
+      (rawPartenaires || []).map(entry => [
+        exactId(entry.partenaire?.id),
+        entry.formulaire || null
       ])
     );
 
@@ -419,11 +520,43 @@
         if (seen.has(key)) return;
         seen.add(key);
 
+        const contactsPartenaire = state.contactsByOrganisation.get(partenaireId) || [];
+        const contactsOrganisation = state.contactsByOrganisation.get(organisationId) || [];
+        const formulaireEmail = exactId(entry.formulaire?.contact_email).toLowerCase();
+        const formulaireNom = exactId(entry.formulaire?.contact_nom).toLowerCase();
+        const contactPartenaireFormulaire = contactsPartenaire.find(contact =>
+          formulaireEmail && exactId(contact.email).toLowerCase() === formulaireEmail
+        ) || contactsPartenaire.find(contact =>
+          formulaireNom && exactId(contact.nom).toLowerCase() === formulaireNom
+        ) || null;
+        const contactPartenairePrincipal = contactPartenaireFormulaire
+          || contactsPartenaire.find(contact => String(contact.source || "").trim() === "Formulaire partenaire")
+          || contactsPartenaire.find(contact => contact.principal === true)
+          || contactsPartenaire.find(contact => exactId(contact.email))
+          || null;
+        const formulaireOrganisation = formulaireByPartenaireId.get(organisationId) || null;
+        const formulaireOrganisationEmail = exactId(formulaireOrganisation?.contact_email).toLowerCase();
+        const formulaireOrganisationNom = exactId(formulaireOrganisation?.contact_nom).toLowerCase();
+        const contactOrganisationFormulaire = contactsOrganisation.find(contact =>
+          formulaireOrganisationEmail && exactId(contact.email).toLowerCase() === formulaireOrganisationEmail
+        ) || contactsOrganisation.find(contact =>
+          formulaireOrganisationNom && exactId(contact.nom).toLowerCase() === formulaireOrganisationNom
+        ) || null;
+        const contactOrganisationPrincipal = contactOrganisationFormulaire
+          || contactsOrganisation.find(contact => String(contact.source || "").trim() === "Formulaire partenaire")
+          || contactsOrganisation.find(contact => contact.principal === true)
+          || contactsOrganisation.find(contact => exactId(contact.email))
+          || null;
+
         relations.push({
           key,
           partenaire: entry.partenaire,
           organisation,
           formulaire: entry.formulaire || null,
+          contactsPartenaire,
+          contactsOrganisation,
+          contactPartenairePrincipal,
+          contactOrganisationPrincipal,
           rdv: meetingByKey.get(key) || {
             date: "",
             heure: "",
@@ -442,9 +575,13 @@
     state.dirty.clear();
 
     state.relations.forEach(relation => {
-      const formMail = exactId(
-        relation.formulaire?.contact_email
-      );
+      const rdv = relation.rdv || {};
+      const partenaireContact = relation.contactsPartenaire.find(contact =>
+        exactId(contact.contact_id) === exactId(rdv.participant_partenaire_contact_id)
+      ) || relation.contactPartenairePrincipal || null;
+      const organisationContact = relation.contactsOrganisation.find(contact =>
+        exactId(contact.contact_id) === exactId(rdv.participant_organisation_contact_id)
+      ) || relation.contactOrganisationPrincipal || null;
 
       state.drafts.set(relation.key, {
         partenaire_id: exactId(
@@ -456,9 +593,13 @@
         date: exactId(relation.rdv?.date),
         heure: exactId(relation.rdv?.heure),
         salle: exactId(relation.rdv?.salle),
-        email_rdv:
-          exactId(relation.rdv?.email_rdv)
-          || formMail
+        participant_partenaire_contact_id: exactId(rdv.participant_partenaire_contact_id) || exactId(partenaireContact?.contact_id),
+        participant_partenaire_nom: exactId(rdv.participant_partenaire_nom) || exactId(partenaireContact?.nom),
+        participant_partenaire_email: exactId(rdv.participant_partenaire_email) || exactId(partenaireContact?.email),
+        participant_organisation_contact_id: exactId(rdv.participant_organisation_contact_id) || exactId(organisationContact?.contact_id),
+        participant_organisation_nom: exactId(rdv.participant_organisation_nom) || exactId(organisationContact?.nom),
+        participant_organisation_email: exactId(rdv.participant_organisation_email) || exactId(organisationContact?.email),
+        email_rdv: exactId(rdv.email_rdv) || exactId(rdv.participant_organisation_email) || exactId(organisationContact?.email)
       });
     });
   }
@@ -495,6 +636,36 @@
     }
 
     return [...relations];
+  }
+
+  function relationDraft(relation) {
+    return state.drafts.get(relation.key) || relation.rdv || {};
+  }
+
+  function compareRelationsBySchedule(a, b, fallbackA = "", fallbackB = "") {
+    const draftA = relationDraft(a);
+    const draftB = relationDraft(b);
+    const completeA = isCompleteMeeting(draftA);
+    const completeB = isCompleteMeeting(draftB);
+
+    if (completeA !== completeB) return completeA ? -1 : 1;
+
+    if (completeA && completeB) {
+      const dateCompare = exactId(draftA.date).localeCompare(exactId(draftB.date), "fr", { numeric:true });
+      if (dateCompare) return dateCompare;
+
+      const timeCompare = exactId(draftA.heure).localeCompare(exactId(draftB.heure), "fr", { numeric:true });
+      if (timeCompare) return timeCompare;
+
+      const roomCompare = exactId(draftA.salle).localeCompare(exactId(draftB.salle), "fr", { numeric:true, sensitivity:"base" });
+      if (roomCompare) return roomCompare;
+    }
+
+    return String(fallbackA || "").localeCompare(
+      String(fallbackB || ""),
+      "fr",
+      { sensitivity:"base", numeric:true }
+    );
   }
 
   function uniqueOrganisationCount(relations) {
@@ -1120,13 +1291,12 @@
       .map(group => ({
         ...group,
         relations: group.relations.sort(
-          (a, b) =>
-            nomAffiche(a.partenaire)
-              .localeCompare(
-                nomAffiche(b.partenaire),
-                "fr",
-                { sensitivity: "base" }
-              )
+          (a, b) => compareRelationsBySchedule(
+            a,
+            b,
+            nomAffiche(a.partenaire),
+            nomAffiche(b.partenaire)
+          )
         )
       }))
       .sort((a, b) =>
@@ -1178,11 +1348,12 @@
                 <thead>
                   <tr>
                     <th>Partenaire</th>
-                    <th>Participant RDV</th>
-                    <th>Mail RDV</th>
+                    <th>Participant partenaire</th>
+                    <th>Participant organisation</th>
                     <th>Date</th>
                     <th>Heure</th>
                     <th>Salle</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>${rows}</tbody>
@@ -1221,16 +1392,12 @@
       .map(group => ({
         ...group,
         relations: group.relations.sort(
-          (a, b) =>
-            String(
-              a.organisation?.nom || ""
-            ).localeCompare(
-              String(
-                b.organisation?.nom || ""
-              ),
-              "fr",
-              { sensitivity: "base" }
-            )
+          (a, b) => compareRelationsBySchedule(
+            a,
+            b,
+            a.organisation?.nom || "",
+            b.organisation?.nom || ""
+          )
         )
       }))
       .sort((a, b) =>
@@ -1275,11 +1442,12 @@
                 <thead>
                   <tr>
                     <th>Organisation</th>
-                    <th>Participant RDV</th>
-                    <th>Mail RDV</th>
+                    <th>Participant partenaire</th>
+                    <th>Participant organisation</th>
                     <th>Date</th>
                     <th>Heure</th>
                     <th>Salle</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>${rows}</tbody>
@@ -1295,9 +1463,6 @@
   }
 
   function meetingRow(relation, firstColumn) {
-    const contact =
-      contactData(relation.formulaire);
-
     const draft =
       state.drafts.get(relation.key)
       || {
@@ -1313,20 +1478,16 @@
           ${escapeHtml(firstColumn)}
         </td>
 
-        <td class="${contact.participant ? "" : "conciergerie-empty-cell"}">
-          ${contact.participant
-            ? escapeHtml(contact.participant)
-            : "—"}
+        <td>
+          <select class="conciergerie-rdv-input conciergerie-contact-select" data-field="participant_partenaire_contact_id" aria-label="Participant partenaire">
+            ${contactOptions(relation.contactsPartenaire, draft.participant_partenaire_contact_id)}
+          </select>
         </td>
 
         <td>
-          <input
-            class="conciergerie-rdv-input conciergerie-email"
-            type="email"
-            data-field="email_rdv"
-            value="${escapeHtml(draft.email_rdv)}"
-            placeholder="Ajouter un email"
-            aria-label="Email du rendez-vous">
+          <select class="conciergerie-rdv-input conciergerie-contact-select" data-field="participant_organisation_contact_id" aria-label="Participant organisation">
+            ${contactOptions(relation.contactsOrganisation, draft.participant_organisation_contact_id)}
+          </select>
         </td>
 
         <td>
@@ -1357,7 +1518,43 @@
           <div class="conciergerie-conflict-message"></div>
           <div class="conciergerie-availability-message"></div>
         </td>
+
+        <td>
+          <button class="btn btn-outline btn-sm conciergerie-send-one" type="button" data-send-rdv="${escapeHtml(relation.key)}">
+            <i class="fas fa-paper-plane"></i> Envoyer le RDV
+          </button>
+        </td>
       </tr>`;
+  }
+
+  function contactRdvStatus(contact) {
+    const source = exactId(contact?.source);
+    const role = exactId(contact?.role);
+
+    if (source === "Participants MTL connecte 2026") {
+      if (/\|\|RDV_ACTIVE\b/.test(role)) return "active";
+      if (/\|\|RDV_HIDDEN\b/.test(role)) return "hidden";
+      return "pending";
+    }
+
+    return "active";
+  }
+
+  function contactOptions(contacts, currentId) {
+    const list = Array.isArray(contacts)
+      ? contacts.filter(contact => exactId(contact.email) && contactRdvStatus(contact) !== "hidden")
+      : [];
+
+    return [
+      `<option value="">— Choisir —</option>`,
+      ...list.map(contact => {
+        const id = exactId(contact.contact_id);
+        const principal = contact?.principal === true || String(contact?.principal || "").toUpperCase() === "TRUE";
+        const label = [principal ? "★" : "", exactId(contact.nom), exactId(contact.email)].filter(Boolean).join(principal ? " " : " — ");
+        const style = principal ? ' style="font-weight:700;"' : "";
+        return `<option value="${escapeHtml(id)}"${style}${id === exactId(currentId) ? " selected" : ""}>${escapeHtml(label)}</option>`;
+      })
+    ].join("");
   }
 
   function dateOptions(current) {
@@ -1469,20 +1666,23 @@
 
     return [
       `<option value="">—</option>`,
-      ...values.map(value =>
-        `<option value="${escapeHtml(value)}"${value === current ? " selected" : ""}>${escapeHtml(value)}</option>`
-      )
+      ...values.map(value => {
+        const label = /^Salle Conciergerie\s+/i.test(value)
+          ? value.replace(/^Salle Conciergerie\s+/i, "Salle ")
+          : value;
+        return `<option value="${escapeHtml(value)}"${value === current ? " selected" : ""}>${escapeHtml(label)}</option>`;
+      })
     ].join("");
   }
 
-  function contactData(formulaire) {
-    const data = formulaire || {};
+  function contactData(contact) {
+    const data = contact || {};
 
     return {
       participant:
-        exactId(data.contact_nom),
+        exactId(data.nom),
       mail:
-        exactId(data.contact_email)
+        exactId(data.email)
     };
   }
 
@@ -1511,13 +1711,29 @@
         "date",
         "heure",
         "salle",
-        "email_rdv"
+        "email_rdv",
+        "participant_partenaire_contact_id",
+        "participant_organisation_contact_id"
       ].includes(field)
     ) {
       return;
     }
 
     draft[field] = input.value.trim();
+
+    const relation = state.relations.find(item => item.key === key);
+    if (field === "participant_partenaire_contact_id" && relation) {
+      const contact = relation.contactsPartenaire.find(item => exactId(item.contact_id) === exactId(input.value));
+      draft.participant_partenaire_nom = exactId(contact?.nom);
+      draft.participant_partenaire_email = exactId(contact?.email);
+    }
+    if (field === "participant_organisation_contact_id" && relation) {
+      const contact = relation.contactsOrganisation.find(item => exactId(item.contact_id) === exactId(input.value));
+      draft.participant_organisation_nom = exactId(contact?.nom);
+      draft.participant_organisation_email = exactId(contact?.email);
+      draft.email_rdv = exactId(contact?.email);
+    }
+
     state.dirty.add(key);
     row.classList.add(
       "conciergerie-row-dirty"
@@ -1535,6 +1751,10 @@
     updateAllCounts();
     updateSavebar();
     applyConflictStyles();
+
+    if (event.type === "change" && ["date", "heure", "salle"].includes(field)) {
+      renderCurrentView();
+    }
   }
 
   function validateConflicts() {
@@ -1833,6 +2053,278 @@
       el.saveBtn.disabled =
         state.dirty.size === 0
         || state.conflicts.size > 0;
+    }
+  }
+
+  function onSingleNotificationClick(event) {
+    const button = event.target.closest("[data-send-rdv]");
+    if (!button) return;
+    const key = exactId(button.dataset.sendRdv);
+    const relation = state.relations.find(item => item.key === key);
+    const draft = state.drafts.get(key);
+    if (!relation || !draft) return;
+    state.singleNotificationKey = key;
+    if (el.singleNotificationEmail) {
+      el.singleNotificationEmail.value = exactId(draft.participant_organisation_email || draft.email_rdv);
+      setTimeout(() => el.singleNotificationEmail && el.singleNotificationEmail.focus(), 0);
+    }
+    if (el.singleNotificationSummary) {
+      const partenaire = nomAffiche(relation.partenaire);
+      const organisation = relation.organisation?.nom || relation.organisation?.id || "";
+      el.singleNotificationSummary.textContent = partenaire + " ↔ " + organisation + " · " + (draft.date || "date à définir") + " · " + (draft.heure || "heure à définir") + " · " + (draft.salle || "salle à définir");
+    }
+    if (el.singleNotificationModal) el.singleNotificationModal.hidden = false;
+  }
+
+  function closeSingleNotificationModal() {
+    state.singleNotificationKey = "";
+    if (el.singleNotificationModal) el.singleNotificationModal.hidden = true;
+  }
+
+  async function sendSingleNotification() {
+    const key = state.singleNotificationKey;
+    const relation = state.relations.find(item => item.key === key);
+    const draft = state.drafts.get(key);
+    if (!relation || !draft || !el.singleNotificationSend) return;
+    const email = exactId(el.singleNotificationEmail?.value);
+    if (!email) { toast("Ajoute le mail du participant avant envoi.", true); el.singleNotificationEmail?.focus(); return; }
+    const rencontre = {
+      partenaire_id: exactId(relation.partenaire?.id),
+      organisation_id: exactId(relation.organisation?.id),
+      partenaire_nom: nomAffiche(relation.partenaire),
+      organisation_nom: exactId(relation.organisation?.nom || relation.organisation?.id),
+      date: exactId(draft.date),
+      heure: exactId(draft.heure),
+      salle: exactId(draft.salle),
+      email_rdv: exactId(draft.participant_organisation_email || email),
+      participant_partenaire_contact_id: exactId(draft.participant_partenaire_contact_id),
+      participant_partenaire_nom: exactId(draft.participant_partenaire_nom),
+      participant_partenaire_email: exactId(draft.participant_partenaire_email),
+      participant_organisation_contact_id: exactId(draft.participant_organisation_contact_id),
+      participant_organisation_nom: exactId(draft.participant_organisation_nom),
+      participant_organisation_email: exactId(draft.participant_organisation_email || email)
+    };
+    if (!rencontre.date || !rencontre.heure || !rencontre.salle) { toast("Complète la date, heure et salle avant envoi.", true); return; }
+    if (!rencontre.participant_partenaire_email || !rencontre.participant_organisation_email) { toast("Choisis les deux participants du rendez-vous.", true); return; }
+    const original = el.singleNotificationSend.innerHTML;
+    el.singleNotificationSend.disabled = true;
+    el.singleNotificationSend.innerHTML = '<span class="spinner"></span> Envoi…';
+    try {
+      const result = await API.sendNotification(state.adminToken, rencontre);
+      draft.email_rdv = email;
+      relation.rdv = { ...relation.rdv, ...rencontre };
+      state.dirty.delete(key);
+      toast(result.mode_test ? "RDV envoyé en MODE TEST." : "RDV envoyé.");
+      closeSingleNotificationModal();
+      renderCurrentView();
+    } catch (error) {
+      toast(error.message || "Envoi du RDV impossible.", true);
+    } finally {
+      el.singleNotificationSend.disabled = false;
+      el.singleNotificationSend.innerHTML = original;
+    }
+  }
+
+  function toast(message, isError = false) {
+    const node = document.createElement("div");
+    node.className = "toast" + (isError ? " toast-error" : "");
+    node.textContent = message;
+    document.body.appendChild(node);
+    setTimeout(() => node.remove(), 4200);
+  }
+
+  function openNotificationModal() {
+    if (state.dirty.size) {
+      toast("Enregistre d'abord les rendez-vous modifiés avant d'envoyer les notifications.", true);
+      return;
+    }
+    if (el.notificationModal) el.notificationModal.hidden = false;
+  }
+
+  function closeNotificationModal() {
+    if (el.notificationModal) el.notificationModal.hidden = true;
+  }
+
+  async function sendNotifications() {
+    if (!el.notificationConfirm) return;
+
+    const original = el.notificationConfirm.innerHTML;
+    el.notificationConfirm.disabled = true;
+    el.notificationConfirm.innerHTML = '<span class="spinner"></span> Envoi…';
+
+    try {
+      const result = await API.sendNotifications(state.adminToken);
+      const suffix = result.mode_test ? " · MODE TEST" : "";
+      toast(
+        `${Number(result.envoyes || 0)} envoyés · ${Number(result.incomplets || 0)} incomplets · ${Number(result.deja || 0)} déjà avertis · ${Number(result.sans_mail || 0)} sans mail · ${Number(result.erreurs || 0)} erreurs${suffix}`,
+        Number(result.erreurs || 0) > 0
+      );
+      closeNotificationModal();
+    } catch (error) {
+      toast(error.message || "Envoi des notifications impossible.", true);
+    } finally {
+      el.notificationConfirm.disabled = false;
+      el.notificationConfirm.innerHTML = original;
+    }
+  }
+
+
+  /* ═══ RDV RAPIDE — CRÉATION ADMIN SANS FORMULAIRE ════════════════════ */
+  function quickOption(value, label, selected = false) {
+    return `<option value="${escapeHtml(value)}"${selected ? " selected" : ""}>${escapeHtml(label)}</option>`;
+  }
+
+  function quickOrganisationLabel(org) {
+    return exactId(org?.nom) || exactId(org?.id);
+  }
+
+  function quickContactList(organisationId) {
+    return (state.contactsByOrganisation.get(exactId(organisationId)) || [])
+      .filter(contact => exactId(contact.email) && contactRdvStatus(contact) !== "hidden");
+  }
+
+  function quickDefaultContact(organisationId, preferForm = false) {
+    const contacts = quickContactList(organisationId);
+    if (!contacts.length) return null;
+
+    const form = preferForm ? state.formsByPartner.get(exactId(organisationId)) : null;
+    const formEmail = exactId(form?.contact_email).toLowerCase();
+    const formName = exactId(form?.contact_nom).toLowerCase();
+
+    return contacts.find(contact => formEmail && exactId(contact.email).toLowerCase() === formEmail)
+      || contacts.find(contact => formName && exactId(contact.nom).toLowerCase() === formName)
+      || contacts.find(contact => String(contact.source || "").trim() === "Formulaire partenaire")
+      || contacts.find(contact => contact.principal === true || String(contact.principal || "").toUpperCase() === "TRUE")
+      || contacts[0];
+  }
+
+  function fillQuickContactSelect(select, organisationId, preferForm = false) {
+    if (!select) return;
+    const contacts = quickContactList(organisationId);
+    const preferred = quickDefaultContact(organisationId, preferForm);
+    select.innerHTML = quickOption("", contacts.length ? "— Choisir —" : "— Aucun contact —")
+      + contacts.map(contact =>
+          quickOption(
+            exactId(contact.contact_id),
+            [exactId(contact.nom), exactId(contact.email)].filter(Boolean).join(" — "),
+            preferred && exactId(preferred.contact_id) === exactId(contact.contact_id)
+          )
+        ).join("");
+  }
+
+  function refreshQuickContacts() {
+    fillQuickContactSelect(el.quickPartnerContact, el.quickPartner?.value, true);
+    fillQuickContactSelect(el.quickOrganisationContact, el.quickOrganisation?.value, true);
+  }
+
+  function openQuickMeetingModal() {
+    if (!el.quickModal || !state.vivier) return;
+
+    const partners = [...(state.vivier.partenaires || [])]
+      .filter(item => exactId(item?.id))
+      .sort((a,b) => nomAffiche(a).localeCompare(nomAffiche(b), "fr", { sensitivity:"base" }));
+
+    const organisations = [...(state.vivier.organisations || [])]
+      .filter(item => exactId(item?.id))
+      .sort((a,b) => quickOrganisationLabel(a).localeCompare(quickOrganisationLabel(b), "fr", { sensitivity:"base" }));
+
+    el.quickPartner.innerHTML = quickOption("", "— Choisir un partenaire —")
+      + partners.map(item => quickOption(exactId(item.id), nomAffiche(item))).join("");
+    el.quickOrganisation.innerHTML = quickOption("", "— Choisir une organisation —")
+      + organisations.map(item => quickOption(exactId(item.id), quickOrganisationLabel(item))).join("");
+    el.quickDate.innerHTML = quickOption("", "—")
+      + EVENT_DATES.map(item => quickOption(item.value, item.label)).join("");
+    el.quickTime.innerHTML = quickOption("", "—")
+      + TIME_SLOTS.map(value => quickOption(value, value)).join("");
+    el.quickRoom.innerHTML = quickOption("", "—")
+      + state.rooms.map(value => {
+        const label = /^Salle Conciergerie\s+/i.test(value)
+          ? value.replace(/^Salle Conciergerie\s+/i, "Salle ")
+          : value;
+        return quickOption(value, label);
+      }).join("");
+
+    el.quickPartnerContact.innerHTML = quickOption("", "— Choisir d’abord le partenaire —");
+    el.quickOrganisationContact.innerHTML = quickOption("", "— Choisir d’abord l’organisation —");
+    if (el.quickStatus) el.quickStatus.textContent = "";
+    el.quickModal.hidden = false;
+  }
+
+  function closeQuickMeetingModal() {
+    if (!el.quickModal) return;
+    el.quickModal.hidden = true;
+    if (el.quickStatus) el.quickStatus.textContent = "";
+  }
+
+  async function createQuickMeeting() {
+    const partenaireId = exactId(el.quickPartner?.value);
+    const organisationId = exactId(el.quickOrganisation?.value);
+    const date = exactId(el.quickDate?.value);
+    const heure = exactId(el.quickTime?.value);
+    const salle = exactId(el.quickRoom?.value);
+
+    if (!partenaireId || !organisationId || !date || !heure || !salle) {
+      if (el.quickStatus) el.quickStatus.textContent = "Choisis le partenaire, l’organisation, la date, l’heure et la salle.";
+      return;
+    }
+    if (partenaireId === organisationId) {
+      if (el.quickStatus) el.quickStatus.textContent = "Le partenaire et l’organisation rencontrée doivent être différents.";
+      return;
+    }
+
+    const partnerContact = quickContactList(partenaireId).find(item =>
+      exactId(item.contact_id) === exactId(el.quickPartnerContact?.value)
+    ) || null;
+    const organisationContact = quickContactList(organisationId).find(item =>
+      exactId(item.contact_id) === exactId(el.quickOrganisationContact?.value)
+    ) || null;
+
+    const original = el.quickCreate?.innerHTML || "";
+    if (el.quickCreate) {
+      el.quickCreate.disabled = true;
+      el.quickCreate.innerHTML = '<span class="spinner"></span> Création…';
+    }
+    if (el.quickStatus) el.quickStatus.textContent = "Création du rendez-vous…";
+
+    try {
+      const selections = await API.getSelectionsAdmin(partenaireId, state.adminToken);
+      const nextSelections = [...new Set([...(Array.isArray(selections) ? selections : []), organisationId])];
+      if (!selections.includes(organisationId)) {
+        await API.saveSelectionsAdmin(partenaireId, state.adminToken, nextSelections);
+      }
+
+      await API.saveRencontresAdmin(state.adminToken, [{
+        partenaire_id: partenaireId,
+        organisation_id: organisationId,
+        date,
+        heure,
+        salle,
+        email_rdv: exactId(organisationContact?.email),
+        participant_partenaire_contact_id: exactId(partnerContact?.contact_id),
+        participant_partenaire_nom: exactId(partnerContact?.nom),
+        participant_partenaire_email: exactId(partnerContact?.email),
+        participant_organisation_contact_id: exactId(organisationContact?.contact_id),
+        participant_organisation_nom: exactId(organisationContact?.nom),
+        participant_organisation_email: exactId(organisationContact?.email)
+      }]);
+
+      closeQuickMeetingModal();
+      await loadAndRender();
+      updateSavebar("RDV rapide créé et ajouté à la conciergerie.");
+      showConciergerieToast("✓ RDV créé avec succès.");
+    } catch (error) {
+      if (el.quickStatus) {
+        const message = String(error?.message || "Création impossible.").trim();
+        const details = String(error?.details || "").trim();
+        el.quickStatus.textContent = details && !message.includes(details)
+          ? `${message} — ${details}`
+          : message;
+      }
+    } finally {
+      if (el.quickCreate) {
+        el.quickCreate.disabled = false;
+        el.quickCreate.innerHTML = original;
+      }
     }
   }
 
