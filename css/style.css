@@ -1815,3 +1815,22 @@ body {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+
+/* ═══ FORMULAIRE — RECHERCHE ORGANISATIONS IDENTIFIÉES ═══════════════ */
+.identified-org-picker{position:relative;margin-bottom:8px}
+.identified-org-picker input[type="search"]{width:100%}
+.identified-org-results{
+  position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:30;
+  max-height:280px;overflow:auto;background:#fff;border:1px solid #DDE0DC;
+  border-radius:10px;box-shadow:0 10px 28px rgba(0,0,0,.12);padding:6px;
+}
+.identified-org-result{
+  width:100%;display:flex;flex-direction:column;gap:2px;text-align:left;
+  border:0;background:#fff;padding:9px 10px;border-radius:8px;cursor:pointer;
+  font:inherit;color:#0B0D0C;
+}
+.identified-org-result:hover,.identified-org-result:focus{background:#F4F5F4;outline:none}
+.identified-org-result strong{font-size:.88rem}
+.identified-org-result span{font-size:.75rem;color:#6f756f}
+.identified-org-empty{padding:10px;font-size:.82rem;color:#6f756f}
