@@ -2217,8 +2217,16 @@
     fillQuickContactSelect(el.quickOrganisationContact, el.quickOrganisation?.value, true);
   }
 
-  function openQuickMeetingModal() {
-    if (!el.quickModal || !state.vivier) return;
+  async function openQuickMeetingModal() {
+    if (!el.quickModal) return;
+
+    try {
+      API.resetCache?.();
+      state.vivier = await API.loadVivier();
+    } catch (error) {
+      showConciergerieToast(error.message || "Impossible de rafraîchir le vivier.", "error");
+      return;
+    }
 
     const partners = [...(state.vivier.partenaires || [])]
       .filter(item => exactId(item?.id))
