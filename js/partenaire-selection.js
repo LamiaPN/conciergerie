@@ -39,6 +39,7 @@
     orgs: [],
     proposedIds: new Set(),
     selected: new Set(),
+    search: "",
     filters: {
       expertise: new Set(),
       taille: new Set(),
@@ -60,6 +61,7 @@
       title: $("#partnerTitle"),
       tag: $("#partnerTag"),
       filterPanel: $("#filterPanel"),
+      search: $("#orgSearch"),
       filterCount: $("#filterCount"),
       quotaWarning: $("#quotaWarning"),
       quotaWarningText: $("#quotaWarningText")
@@ -230,6 +232,23 @@
     el.filterCount.classList.toggle("has-filters", count > 0);
   }
 
+  function matchesSearch(org) {
+    const q = String(state.search || "").trim().toLowerCase();
+    if (!q) return true;
+
+    const text = [
+      org.nom,
+      org.secteur,
+      org.type,
+      org.taille,
+      org.localisation,
+      ...(Array.isArray(org.expertise) ? org.expertise : [org.expertise]),
+      org.description
+    ].map(value => String(value || "").toLowerCase()).join(" ");
+
+    return text.includes(q);
+  }
+
   function matchesFilters(org, filters) {
     const tailleOk =
       filters.taille.size === 0 ||
@@ -263,7 +282,7 @@
       if (selectedIds.has(id)) {
         // Les choix actuels restent toujours visibles.
         selectedOrgs.push(org);
-      } else if (matchesFilters(org, filters)) {
+      } else if (matchesSearch(org) && matchesFilters(org, filters)) {
         // Les filtres s'appliquent uniquement aux autres propositions.
         otherOrgs.push(org);
       }
@@ -432,6 +451,10 @@
   /* ═══ SECTION 9 — SÉLECTION & QUOTA × 2 ════════════════════════════════ */
   function bindEvents() {
     el.filterPanel.addEventListener("click", onFilterClick);
+    el.search?.addEventListener("input", event => {
+      state.search = event.target.value || "";
+      render();
+    });
 
     el.grid.addEventListener("click", event => {
       const card = event.target.closest("[data-id]");
