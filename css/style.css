@@ -1834,3 +1834,13 @@ body {
 .identified-org-result strong{font-size:.88rem}
 .identified-org-result span{font-size:.75rem;color:#6f756f}
 .identified-org-empty{padding:10px;font-size:.82rem;color:#6f756f}
+
+
+/* ═══ MES CHOIX — RECHERCHE RAPIDE ═════════════════════════════════════ */
+.partner-search-wrap{margin:0 0 14px}
+.partner-search-wrap label{display:block;margin:0 0 6px;font-size:.78rem;font-weight:700;color:#6f756f}
+.partner-search-wrap input[type="search"]{
+  width:100%;padding:11px 13px;border:1px solid #DDE0DC;border-radius:10px;
+  background:#fff;font:inherit;color:#0B0D0C;
+}
+.partner-search-wrap input[type="search"]:focus{outline:2px solid #E9F7E3;border-color:#6FBF4A}
