@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <!-- Charte PN existante -->
-<link rel="stylesheet" href="css/admin.css?v=20260911-v45">
+<link rel="stylesheet" href="css/admin.css?v=20261009-v76">
 <style>
   /* Sécurité admin v58 : masque entièrement l’interface tant que le token
      n’a pas été validé par le backend privé. */
@@ -452,6 +452,7 @@
       <div style="display:flex; gap:10px; align-items:center;">
         <button class="btn btn-outline btn-sm" id="manageReferentiels"><i class="fas fa-tags"></i> Gérer les appellations</button>
         <button class="btn btn-outline btn-sm" id="addOrganisation"><i class="fas fa-plus"></i> Ajouter une organisation</button>
+        <button class="btn btn-outline btn-sm" id="btnImportParticipants"><i class="fas fa-users"></i> Importer les participants</button>
         <button class="btn btn-primary btn-sm" id="btnImporter"><i class="fas fa-file-import"></i> Importer le vivier</button>
       </div>
     </header>
@@ -597,6 +598,10 @@
       <div class="conciergerie-savebar" id="conciergerieSavebar">
         <span id="conciergerieSaveStatus">Aucune modification à enregistrer.</span>
 
+        <button class="btn btn-primary btn-sm" type="button" id="conciergerieQuickBtn">
+          <i class="fas fa-bolt"></i> RDV rapide
+        </button>
+
         <div class="conciergerie-room-add">
           <button class="btn btn-outline btn-sm" type="button" id="conciergerieAddRoomBtn">
             <i class="fas fa-plus"></i> Ajouter une salle
@@ -609,6 +614,10 @@
           </div>
         </div>
 
+        <button class="btn btn-outline btn-sm" type="button" id="conciergerieNotifyBtn">
+          <i class="fas fa-envelope"></i> Envoyer les notifications
+        </button>
+
         <button class="btn btn-primary btn-sm" type="button" id="conciergerieSaveBtn" disabled>
           <i class="fas fa-floppy-disk"></i> Enregistrer les rendez-vous
         </button>
@@ -618,6 +627,91 @@
       <div id="conciergerieError" class="conciergerie-state conciergerie-error" hidden></div>
       <div id="conciergerieContent" class="conciergerie-content" hidden></div>
     </section>
+  </div>
+</div>
+
+<!-- ═══ MODALE — RDV RAPIDE ADMIN ═══ -->
+<div id="conciergerieQuickModal" class="import-overlay" hidden>
+  <div class="import-box" role="dialog" aria-modal="true" aria-labelledby="conciergerieQuickTitle">
+    <div class="import-head">
+      <h2 id="conciergerieQuickTitle"><i class="fas fa-bolt"></i> Créer un RDV rapide</h2>
+      <button class="import-close" id="conciergerieQuickClose" type="button" aria-label="Fermer"><i class="fas fa-times"></i></button>
+    </div>
+    <p class="import-intro">Création directe d'un rendez-vous admin, sans formulaire ni validation partenaire. L'organisation est ajoutée automatiquement aux sélections du partenaire.</p>
+
+    <div class="edit-org-grid">
+      <label class="edit-org-field">
+        <span>Partenaire demandeur</span>
+        <select id="conciergerieQuickPartner"></select>
+      </label>
+      <label class="edit-org-field">
+        <span>Organisation à rencontrer</span>
+        <select id="conciergerieQuickOrganisation"></select>
+      </label>
+      <label class="edit-org-field">
+        <span>Participant partenaire</span>
+        <select id="conciergerieQuickPartnerContact"></select>
+      </label>
+      <label class="edit-org-field">
+        <span>Participant organisation</span>
+        <select id="conciergerieQuickOrganisationContact"></select>
+      </label>
+      <label class="edit-org-field">
+        <span>Date</span>
+        <select id="conciergerieQuickDate"></select>
+      </label>
+      <label class="edit-org-field">
+        <span>Heure</span>
+        <select id="conciergerieQuickTime"></select>
+      </label>
+      <label class="edit-org-field full">
+        <span>Salle</span>
+        <select id="conciergerieQuickRoom"></select>
+      </label>
+    </div>
+
+    <p class="import-intro" id="conciergerieQuickStatus" style="min-height:18px"></p>
+
+    <div class="import-actions">
+      <button class="btn btn-outline btn-sm" id="conciergerieQuickCancel" type="button">Annuler</button>
+      <button class="btn btn-primary btn-sm" id="conciergerieQuickCreate" type="button"><i class="fas fa-bolt"></i> Créer le RDV</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODALE — ENVOYER UN RDV ═══ -->
+<div id="conciergerieSingleNotificationModal" class="import-overlay" hidden>
+  <div class="import-box" role="dialog" aria-modal="true" aria-labelledby="conciergerieSingleNotificationTitle">
+    <div class="import-head">
+      <h2 id="conciergerieSingleNotificationTitle"><i class="fas fa-paper-plane"></i> Envoyer le RDV</h2>
+      <button class="import-close" id="conciergerieSingleNotificationClose" type="button" aria-label="Fermer"><i class="fas fa-times"></i></button>
+    </div>
+    <p class="import-intro" id="conciergerieSingleNotificationSummary"></p>
+    <label class="edit-org-field full">
+      <span>Mail du participant RDV</span>
+      <input type="email" id="conciergerieSingleNotificationEmail" placeholder="nom@organisation.ca">
+    </label>
+    <p class="import-intro"><strong>MODE TEST :</strong> les messages seront redirigés vers l'adresse de test. Les boutons calendrier utilisent les informations du rendez-vous affiché.</p>
+    <div class="import-actions">
+      <button class="btn btn-outline btn-sm" id="conciergerieSingleNotificationCancel" type="button">Annuler</button>
+      <button class="btn btn-primary btn-sm" id="conciergerieSingleNotificationSend" type="button"><i class="fas fa-paper-plane"></i> Envoyer le RDV</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODALE — CONFIRMER LES NOTIFICATIONS RDV ═══ -->
+<div id="conciergerieNotificationModal" class="import-overlay" hidden>
+  <div class="import-box" role="dialog" aria-modal="true" aria-labelledby="conciergerieNotificationTitle">
+    <div class="import-head">
+      <h2 id="conciergerieNotificationTitle"><i class="fas fa-envelope"></i> Envoyer les notifications</h2>
+      <button class="import-close" id="conciergerieNotificationClose" type="button" aria-label="Fermer"><i class="fas fa-times"></i></button>
+    </div>
+    <p class="import-intro">Envoyer les notifications aux rendez-vous complets qui n'ont pas encore été avertis ? Chaque courriel contient la date, l'heure, la salle et des boutons « Ajouter à Google Calendar » / « Ajouter à Outlook ».</p>
+    <p class="import-intro"><strong>En environnement TEST, tous les messages sont redirigés vers l'adresse de test et aucun rendez-vous n'est marqué comme notifié.</strong></p>
+    <div class="import-actions">
+      <button class="btn btn-outline btn-sm" id="conciergerieNotificationCancel" type="button">Annuler</button>
+      <button class="btn btn-primary btn-sm" id="conciergerieNotificationConfirm" type="button"><i class="fas fa-paper-plane"></i> Envoyer</button>
+    </div>
   </div>
 </div>
 
@@ -756,6 +850,36 @@
   </div>
 </div>
 
+
+<!-- ═══ MODALE — IMPORTER LES PARTICIPANTS (Excel/CSV → Contacts privés) ═══ -->
+<div id="participantsImportModal" class="import-overlay" hidden>
+  <div class="import-box" role="dialog" aria-modal="true" aria-labelledby="participantsImportTitle">
+    <div class="import-head">
+      <h2 id="participantsImportTitle"><i class="fas fa-users"></i> Importer les participants</h2>
+      <button class="import-close" id="participantsImportClose" type="button" aria-label="Fermer"><i class="fas fa-times"></i></button>
+    </div>
+    <p class="import-intro">
+      L'import ajoute uniquement des personnes dans <code>Contacts</code>. Il ne modifie jamais le vivier ni les organisations.
+      Les partenaires sont prioritaires lors du rapprochement. Le contact du formulaire partenaire reste le contact principal par défaut.
+    </p>
+
+    <label class="import-drop" id="participantsImportDrop">
+      <input type="file" id="participantsImportFile" accept=".xlsx,.xlsm,.xls,.csv" hidden>
+      <i class="fas fa-cloud-arrow-up"></i>
+      <span id="participantsImportDropText">Cliquez ou glissez votre fichier participants ici</span>
+    </label>
+
+    <div id="participantsImportReport" class="import-report" hidden></div>
+
+    <div class="import-actions">
+      <button class="btn btn-ghost-sm" id="participantsImportCancel" type="button">Annuler</button>
+      <button class="btn btn-primary btn-sm" id="participantsImportConfirm" type="button" disabled>
+        <i class="fas fa-address-book"></i> Importer les participants
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ MODALE — IMPORTER LE VIVIER (CSV → data.json) ═══ -->
 <div id="importModal" class="import-overlay" hidden>
   <div class="import-box">
@@ -775,21 +899,24 @@
 
     <div class="import-actions">
       <button class="btn btn-ghost-sm" id="importCancel">Annuler</button>
-      <button class="btn btn-outline btn-sm" id="importSyncContacts" disabled><i class="fas fa-address-book"></i> Synchroniser les contacts privés</button>
+      <button class="btn btn-outline btn-sm" id="importSyncContacts" disabled><i class="fas fa-address-book"></i> Importer les contacts</button>
       <button class="btn btn-primary btn-sm" id="importDownload" disabled><i class="fas fa-download"></i> Télécharger data.json</button>
     </div>
   </div>
 </div>
 
 <!-- Scripts de production — v45 : cache busting -->
-<script src="js/config.js?v=20260917-v60"></script>
-<script src="js/api.js?v=20260917-v60"></script>
-<script src="js/noms-courts.js?v=20260917-v60"></script>
-<script src="js/admin-partenaire.js?v=20260917-v60"></script>
-<script src="js/admin-conciergerie.js?v=20260917-v60"></script>
-<script src="js/admin-import.js?v=20260917-v60"></script>
-<script src="js/admin-form-status.js?v=20260917-v60"></script>
-<script src="js/admin-default-conciergerie.js?v=20260917-v60"></script>
-<script src="js/admin-vivier.js?v=20260917-v60"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="js/config.js?v=20261008-v71"></script>
+<script src="js/api.js?v=20261008-v71"></script>
+<script src="js/noms-courts.js?v=20261008-v71"></script>
+<script src="js/admin-partenaire.js?v=20261008-v71"></script>
+<script src="js/admin-conciergerie.js?v=20261009-v76"></script>
+<script src="js/admin-import.js?v=20261008-v71"></script>
+<script src="js/admin-participants-import.js?v=20261008-v71"></script>
+<script src="js/admin-form-status.js?v=20261008-v71"></script>
+<script src="js/admin-default-conciergerie.js?v=20261008-v71"></script>
+<script src="js/admin-vivier.js?v=20261008-v71"></script>
+<script src="js/admin-contacts.js?v=20261008-v71"></script>
 </body>
 </html>

@@ -1459,12 +1459,12 @@ body {
   box-shadow: 0 0 0 2px rgba(111,191,74,.13);
 }
 .conciergerie-time { min-width: 92px; }
-.conciergerie-room { min-width: 100px; }
+.conciergerie-room { min-width: 150px; }
 .conciergerie-row-dirty { background: #fffdf4; }
 .conciergerie-table th:nth-last-child(3),
 .conciergerie-table td:nth-last-child(3) { min-width: 145px; }
 .conciergerie-table th:nth-last-child(2),
-.conciergerie-table td:nth-last-child(2) { min-width: 105px; }
+.conciergerie-table td:nth-last-child(2) { min-width: 165px; }
 .conciergerie-table th:last-child,
 .conciergerie-table td:last-child { min-width: 120px; }
 
@@ -1522,6 +1522,11 @@ body {
 
 .conciergerie-email {
   cursor: text;
+  pointer-events: auto;
+  user-select: text;
+  caret-color: auto;
+  position: relative;
+  z-index: 2;
 }
 
 .conciergerie-row-conflict {
@@ -2246,3 +2251,28 @@ body {
 .conciergerie-availability-message:empty {
   display: none;
 }
+
+
+/* ═══ CONCIERGERIE — TOAST RDV RAPIDE ═══════════════════════════════ */
+.conciergerie-toast{
+  position:fixed;
+  top:18px;
+  right:18px;
+  z-index:9999;
+  min-width:260px;
+  max-width:420px;
+  padding:11px 14px;
+  border-radius:10px;
+  border:1px solid var(--gris-border);
+  background:#fff;
+  box-shadow:0 10px 30px rgba(0,0,0,.14);
+  font-size:.82rem;
+  font-weight:700;
+  opacity:0;
+  transform:translateY(-8px);
+  pointer-events:none;
+  transition:opacity .18s ease,transform .18s ease;
+}
+.conciergerie-toast.show{opacity:1;transform:translateY(0)}
+.conciergerie-toast.success{border-color:#9bd482;background:#f3fbef;color:#347022}
+.conciergerie-toast.error{border-color:#e8b4b4;background:#fff7f7;color:#9e2929}

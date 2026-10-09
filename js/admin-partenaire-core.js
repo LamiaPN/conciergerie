@@ -902,6 +902,30 @@
       updateProposedCount();
     });
 
+    el.tbody.addEventListener("click", async e => {
+      const button = e.target.closest("[data-admin-accept]");
+      if (!button) return;
+      const id = String(button.dataset.adminAccept || "").trim();
+      if (!id || state.selected.has(id)) return;
+
+      const original = button.innerHTML;
+      button.disabled = true;
+      button.innerHTML = '<span class="spinner"></span>';
+
+      try {
+        const next = new Set(state.selected);
+        next.add(id);
+        await API.saveSelectionsAdmin(state.partenaireId, state.adminToken, [...next]);
+        state.selected = next;
+        render();
+        toast("Organisation acceptée pour la conciergerie.");
+      } catch (error) {
+        button.disabled = false;
+        button.innerHTML = original;
+        toast(error.message || "Impossible d accepter cette organisation.", true);
+      }
+    });
+
     if (el.saveBtn) el.saveBtn.addEventListener("click", saveProposals);
     if (el.addOrganisation) el.addOrganisation.addEventListener("click", () => openOrganisationModal());
     if (el.manageReferentiels) el.manageReferentiels.addEventListener("click", openReferentielModal);
@@ -1033,8 +1057,8 @@
         <td>${escapeHtml(o.type || "—")}</td>
         <td>${escapeHtml(o.localisation || "—")}</td>
         <td>${chosen
-          ? `<span class="sel-dot"><i class="fas fa-circle-check"></i> Sélectionnée</span>`
-          : `<span class="sel-dot no"><i class="far fa-circle"></i> —</span>`}</td>
+          ? `<span class="sel-dot"><i class="fas fa-circle-check"></i> Acceptée</span>`
+          : `<button class="btn btn-outline btn-sm" type="button" data-admin-accept="${escapeAttr(o.id)}"><i class="fas fa-check"></i> Accepter</button>`}</td>
         <td><button class="btn btn-outline btn-sm edit-org-btn" type="button" data-edit-org="${escapeAttr(o.id)}"><i class="fas fa-pen"></i> Modifier</button></td>
       </tr>`;
     }).join("") : `<tr><td colspan="9" class="empty-state">Aucune organisation ne correspond à ces filtres.</td></tr>`;
