@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-planning-export.js
-   VERSION : v63 — PDF partenaire matin/après-midi lisible
+   VERSION : v64 — fiches partenaires compactes, pagination dynamique
    RÔLE    : Export imprimable/PDF du planning Conciergerie complet.
    FORMAT  : 3 pages A4 paysage — 1 jour par page × toutes les salles.
    ════════════════════════════════════════════════════════════════════════ */
@@ -758,17 +758,15 @@
 
     const pageW = doc.internal.pageSize.getWidth();
     const pageH = doc.internal.pageSize.getHeight();
-    const margin = 7;
-    const titleY = 11;
-    const footerY = pageH - 6;
-    const dateW = 32;
-    const headH = 8;
-    const sectionTitleH = 7;
-    const rowH = 21;
-    const sectionGap = 8;
-
-    const morningSlots = buildTimeSlots().filter(time => time < "13:00");
-    const afternoonSlots = buildTimeSlots().filter(time => time >= "13:00");
+    const margin = 8;
+    const colGap = 10;
+    const colW = (pageW - margin * 2 - colGap) / 2;
+    const contentTop = 31;
+    const contentBottom = pageH - 12;
+    const cardGap = 6;
+    const partnerHeaderH = 15;
+    const tableHeadH = 6.5;
+    const rowH = 6.2;
 
     const partners = Array.isArray(vivier?.partenaires) ? vivier.partenaires : [];
     const organisations = Array.isArray(vivier?.organisations) ? vivier.organisations : [];
@@ -804,6 +802,12 @@
       timeStyle: "short"
     }).format(new Date());
 
+    const dayShort = {
+      "2026-10-13": "Mar 13",
+      "2026-10-14": "Mer 14",
+      "2026-10-15": "Jeu 15"
+    };
+
     function partnerMeetings(partnerId) {
       const items = [];
 
@@ -816,7 +820,9 @@
           items.push({
             meeting,
             direction: "outgoing",
-            counterpart: pdfShortName(exact(target.nom) || targetId || "Organisation")
+            counterpart: pdfShortName(exact(target.nom) || targetId || "Organisation"),
+            contactName: exact(meeting.participant_partenaire_nom),
+            contactEmail: exact(meeting.participant_partenaire_email)
           });
         }
 
@@ -825,170 +831,185 @@
           items.push({
             meeting,
             direction: "incoming",
-            counterpart: pdfShortName(partnerDisplayName(requester) || requesterId || "Partenaire")
+            counterpart: pdfShortName(partnerDisplayName(requester) || requesterId || "Partenaire"),
+            contactName: exact(meeting.participant_organisation_nom),
+            contactEmail: exact(meeting.participant_organisation_email)
           });
         }
+      });
+
+      items.sort((a, b) => {
+        const dateCompare = exact(a.meeting.date).localeCompare(exact(b.meeting.date));
+        if (dateCompare) return dateCompare;
+        return exact(a.meeting.heure).localeCompare(exact(b.meeting.heure));
       });
 
       return items;
     }
 
-    function drawSection(items, slots, top, label) {
-      const slotW = (pageW - margin * 2 - dateW) / Math.max(1, slots.length);
+    const cards = partnerIds.map(partnerId => {
+      const partner = partnerById.get(partnerId) || {};
+      const items = partnerMeetings(partnerId);
+      const contactSource = items.find(item => item.contactName || item.contactEmail) || {};
+      return {
+        partnerId,
+        partnerName: pdfShortName(partnerDisplayName(partner) || partnerId),
+        contactName: exact(contactSource.contactName) || exact(partner.contact_nom),
+        contactEmail: exact(contactSource.contactEmail) || exact(partner.contact_email),
+        items,
+        height: partnerHeaderH + tableHeadH + Math.max(1, items.length) * rowH + 2.5
+      };
+    });
+
+    function drawPageHeader() {
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(6.5);
+      doc.setTextColor(120, 128, 120);
+      doc.text("MTL CONNECTE 2026 · CONCIERGERIE", margin, 9);
+
+      doc.setFontSize(15);
+      doc.setTextColor(20, 25, 20);
+      doc.text("Planning par partenaire", margin, 17);
+
+      doc.setDrawColor(47, 125, 80);
+      doc.setLineWidth(0.6);
+      doc.line(margin, 21, pageW - margin, 21);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(6.8);
+      doc.setTextColor(105, 112, 105);
+      doc.text("13–15 octobre 2026", pageW - margin, 9, { align: "right" });
+      doc.text(`Généré le ${generated}`, pageW - margin, 14.5, { align: "right" });
+    }
+
+    function drawCard(card, x, y) {
+      const h = card.height;
+
+      doc.setDrawColor(210, 216, 220);
+      doc.setLineWidth(0.2);
+      doc.setFillColor(255, 255, 255);
+      doc.roundedRect(x, y, colW, h, 1.5, 1.5, "FD");
+
+      doc.setFillColor(238, 247, 241);
+      doc.roundedRect(x, y, colW, partnerHeaderH, 1.5, 1.5, "F");
+      doc.setFillColor(47, 125, 80);
+      doc.rect(x, y, 1.2, partnerHeaderH, "F");
 
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(8.2);
-      doc.setTextColor(47, 125, 80);
-      doc.text(label, margin, top + 5);
+      doc.setFontSize(8.8);
+      doc.setTextColor(20, 25, 20);
+      doc.text(card.partnerName, x + 4, y + 5.5, { maxWidth: colW - 8 });
 
-      const tableTop = top + sectionTitleH;
+      const contactParts = [card.contactName, card.contactEmail].filter(Boolean);
+      const contactText = contactParts.join(" · ");
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(5.7);
+      doc.setTextColor(100, 108, 100);
+      const summary = [contactText, `${card.items.length} RDV`].filter(Boolean).join(" · ");
+      doc.text(summary, x + 4, y + 10.5, { maxWidth: colW - 8 });
 
-      doc.setFillColor(245, 247, 245);
-      doc.setDrawColor(198, 204, 210);
-      doc.setLineWidth(0.18);
-      doc.rect(margin, tableTop, dateW, headH, "FD");
+      const headY = y + partnerHeaderH;
+      const widths = [
+        colW * 0.15,
+        colW * 0.14,
+        colW * 0.28,
+        colW * 0.43
+      ];
+      const labels = ["JOUR", "HEURE", "SALLE", "RENDEZ-VOUS AVEC"];
 
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(6.6);
-      doc.setTextColor(90, 96, 90);
-      doc.text("DATE", margin + 2, tableTop + 5.3);
-
-      slots.forEach((time, index) => {
-        const x = margin + dateW + index * slotW;
-        doc.setFillColor(250, 251, 250);
-        doc.rect(x, tableTop, slotW, headH, "FD");
+      let cx = x;
+      labels.forEach((label, index) => {
+        doc.setFillColor(246, 248, 249);
+        doc.setDrawColor(220, 224, 227);
+        doc.rect(cx, headY, widths[index], tableHeadH, "FD");
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(6.4);
-        doc.setTextColor(90, 96, 90);
-        doc.text(time, x + slotW / 2, tableTop + 5.3, { align: "center" });
+        doc.setFontSize(5.3);
+        doc.setTextColor(95, 103, 108);
+        doc.text(label, cx + 2, headY + 4.3);
+        cx += widths[index];
       });
 
-      EVENT_DATES.forEach((dateItem, dateIndex) => {
-        const y = tableTop + headH + dateIndex * rowH;
+      const rows = card.items.length ? card.items : [{
+        meeting: { date: "", heure: "", salle: "" },
+        counterpart: "Aucun rendez-vous"
+      }];
 
-        doc.setFillColor(250, 251, 250);
-        doc.rect(margin, y, dateW, rowH, "FD");
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(7);
-        doc.setTextColor(25, 25, 25);
-        const dateLines = doc.splitTextToSize(dateItem.label, dateW - 4).slice(0, 2);
-        doc.text(dateLines, margin + 2, y + 6);
+      rows.forEach((item, rowIndex) => {
+        const ry = headY + tableHeadH + rowIndex * rowH;
+        const values = [
+          dayShort[exact(item.meeting.date)] || exact(item.meeting.date),
+          exact(item.meeting.heure),
+          exact(item.meeting.salle).replace(/^Salle\s+/i, ""),
+          item.counterpart
+        ];
 
-        slots.forEach((time, slotIndex) => {
-          const x = margin + dateW + slotIndex * slotW;
+        let cellX = x;
+        values.forEach((value, index) => {
           doc.setFillColor(255, 255, 255);
-          doc.rect(x, y, slotW, rowH, "FD");
+          doc.setDrawColor(226, 229, 232);
+          doc.rect(cellX, ry, widths[index], rowH, "FD");
 
-          const slotItems = items.filter(item =>
-            exact(item.meeting.date) === dateItem.value &&
-            exact(item.meeting.heure) === time
-          );
+          doc.setFont("helvetica", index === 1 || index === 3 ? "bold" : "normal");
+          doc.setFontSize(index === 3 ? 6 : 5.7);
+          doc.setTextColor(index === 3 ? 35 : 85, index === 3 ? 35 : 92, index === 3 ? 35 : 95);
 
-          if (!slotItems.length) return;
-
-          const itemH = rowH / slotItems.length;
-
-          slotItems.forEach((item, itemIndex) => {
-            const cy = y + itemIndex * itemH;
-            const room = exact(item.meeting.salle)
-              .replace(/^Salle Conciergerie\s+/i, "Salle ");
-
-            if (item.direction === "incoming") {
-              doc.setFillColor(232, 241, 255);
-              doc.setDrawColor(91, 149, 226);
-            } else {
-              doc.setFillColor(235, 247, 231);
-              doc.setDrawColor(103, 190, 74);
-            }
-
-            doc.rect(x + 0.5, cy + 0.6, slotW - 1, itemH - 1.2, "F");
-            doc.setLineWidth(0.6);
-            doc.line(x + 0.8, cy + 1.0, x + 0.8, cy + itemH - 1.0);
-
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(6.2);
-            doc.setTextColor(20, 20, 20);
-            const counterpart = doc.splitTextToSize(item.counterpart, slotW - 3).slice(0, 2);
-            doc.text(counterpart, x + 1.6, cy + 5.1);
-
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(5.1);
-            doc.setTextColor(90, 90, 90);
-            doc.text(room || "Salle non renseignée", x + 1.6, cy + itemH - 2.7);
-          });
+          const text = doc.splitTextToSize(String(value || ""), widths[index] - 4).slice(0, 1);
+          doc.text(text, cellX + 2, ry + 4.2);
+          cellX += widths[index];
         });
       });
 
-      return tableTop + headH + EVENT_DATES.length * rowH;
+      return h;
     }
 
-    function drawPartnerPage(partnerId, pageIndex) {
-      if (pageIndex > 0) doc.addPage("a4", "landscape");
+    drawPageHeader();
 
-      const partner = partnerById.get(partnerId) || {};
-      const partnerName = pdfShortName(partnerDisplayName(partner) || partnerId);
-      const items = partnerMeetings(partnerId);
+    let column = 0;
+    let y = contentTop;
 
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(15);
-      doc.setTextColor(17, 17, 17);
-      doc.text("MTL connecte 2026 - Conciergerie", margin, titleY);
+    cards.forEach(card => {
+      // Si la fiche ne tient plus dans la colonne courante, on passe
+      // d'abord à la seconde colonne, puis à une nouvelle page.
+      if (y + card.height > contentBottom) {
+        if (column === 0) {
+          column = 1;
+          y = contentTop;
+        } else {
+          doc.addPage("a4", "landscape");
+          drawPageHeader();
+          column = 0;
+          y = contentTop;
+        }
+      }
 
-      doc.setFontSize(13);
-      doc.setTextColor(47, 125, 80);
-      doc.text(partnerName, margin, titleY + 8);
+      // Cas extrême : une fiche très haute. On l'affiche quand même
+      // dans une colonne dédiée plutôt que de créer une page vide.
+      const x = margin + column * (colW + colGap);
+      drawCard(card, x, y);
+      y += card.height + cardGap;
+    });
 
+    const totalPages = doc.getNumberOfPages();
+    for (let page = 1; page <= totalPages; page += 1) {
+      doc.setPage(page);
       doc.setFont("helvetica", "normal");
-      doc.setFontSize(8);
-      doc.setTextColor(85, 85, 85);
+      doc.setFontSize(6.1);
+      doc.setTextColor(110, 116, 110);
       doc.text(
-        `${items.length} rendez-vous · Planning par partenaire`,
-        pageW - margin,
-        titleY,
-        { align: "right" }
-      );
-      doc.text(
-        `Page ${pageIndex + 1}/${partnerIds.length} · Généré le ${generated}`,
-        pageW - margin,
-        titleY + 7,
-        { align: "right" }
-      );
-
-      const morningBottom = drawSection(
-        items,
-        morningSlots,
-        27,
-        "Matin · 09:00 à 12:30"
-      );
-
-      drawSection(
-        items,
-        afternoonSlots,
-        morningBottom + sectionGap,
-        "Après-midi · 13:00 à 16:30"
-      );
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(6.2);
-      doc.setTextColor(100, 100, 100);
-      doc.text(
-        "Vert : demandé par le partenaire · Bleu : demandé par un autre partenaire",
+        "Rendez-vous regroupés par partenaire · ordre chronologique",
         margin,
-        footerY
+        pageH - 5
       );
       doc.text(
-        "Planning interne - Conciergerie MTL connecte 2026",
+        `Planning interne · Conciergerie MTL connecte 2026 · page ${page}/${totalPages}`,
         pageW - margin,
-        footerY,
+        pageH - 5,
         { align: "right" }
       );
     }
-
-    partnerIds.forEach((partnerId, index) => drawPartnerPage(partnerId, index));
 
     if (partnerIds.length === 1) {
-      const onlyPartner = partnerById.get(partnerIds[0]) || {};
-      context.partenaireNom = pdfShortName(partnerDisplayName(onlyPartner) || partnerIds[0]);
+      context.partenaireNom = cards[0].partnerName;
     }
 
     doc.save(buildPdfName(context));
