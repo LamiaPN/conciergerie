@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-planning-export.js
-   VERSION : v59 — PDF A4 paysage, 1 jour par page, couleurs 3 salles
+   VERSION : v60 — nom PDF simplifié
    RÔLE    : Export imprimable/PDF du planning Conciergerie complet.
    FORMAT  : 3 pages A4 paysage — 1 jour par page × toutes les salles.
    ════════════════════════════════════════════════════════════════════════ */
@@ -920,7 +920,7 @@
 
     EVENT_DATES.forEach((date, index) => drawDayPage(date, index));
 
-    doc.save("MTL_connecte_2026_Planning_Conciergerie_A4_3_jours.pdf");
+    doc.save("Planning_Conciergerie_MTL_connecte_2026.pdf");
   }
 
   async function exportPlanningPdf() {
