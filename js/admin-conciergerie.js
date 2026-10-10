@@ -1163,96 +1163,127 @@
 
   function renderCalendarPartnerView() {
     const complete = completeCalendarRelations();
-    const partners = calendarPartnerOptions().filter(item =>
-      complete.some(relation =>
-        exactId(relation.partenaire?.id) === item.id
-      )
+
+    const partnerMap = new Map(
+      (state.vivier?.partenaires || [])
+        .filter(item => exactId(item?.id))
+        .map(item => [exactId(item.id), item])
     );
 
-    const header = TIME_SLOTS.map(time => `
-      <th class="pn-planning-time-head">${escapeHtml(time)}</th>
-    `).join("");
+    const involvedIds = new Set();
+    complete.forEach(relation => {
+      const requesterId = exactId(relation.partenaire?.id);
+      const targetId = exactId(relation.organisation?.id);
+      if (partnerMap.has(requesterId)) involvedIds.add(requesterId);
+      if (partnerMap.has(targetId)) involvedIds.add(targetId);
+    });
 
-    const body = EVENT_DATES.map(dateItem => {
-      const relationsDuJour = complete.filter(relation =>
-        exactId(relationDraft(relation).date) === dateItem.value
-      );
-
-      const occupancy = new Map();
-      relationsDuJour.forEach(relation => {
-        const partnerId = exactId(relation.partenaire?.id);
-        const time = exactId(relationDraft(relation).heure);
-        if (!partnerId || !time) return;
-
-        const key = `${partnerId}\u0000${time}`;
-        if (!occupancy.has(key)) occupancy.set(key, []);
-        occupancy.get(key).push(relation);
-      });
-
-      const partnersDuJour = partners.filter(partner =>
-        relationsDuJour.some(relation =>
-          exactId(relation.partenaire?.id) === partner.id
+    const partners = [...involvedIds]
+      .map(id => partnerMap.get(id))
+      .filter(Boolean)
+      .sort((x, y) =>
+        nomRdvCourt(nomAffiche(x)).localeCompare(
+          nomRdvCourt(nomAffiche(y)),
+          "fr",
+          { sensitivity: "base" }
         )
       );
 
-      return `
-        <tr class="pn-planning-day-row">
-          <th class="pn-planning-day" colspan="${TIME_SLOTS.length + 1}">
-            ${escapeHtml(dateItem.label)}
-          </th>
-        </tr>
-        ${partnersDuJour.map(partner => `
-          <tr>
-            <th class="pn-planning-room">${escapeHtml(nomRdvCourt(partner.label))}</th>
-            ${TIME_SLOTS.map(time => {
-              const meetings = occupancy.get(`${partner.id}\u0000${time}`) || [];
+    const header = TIME_SLOTS.map(time =>
+      `<th class="pn-planning-time-head">${escapeHtml(time)}</th>`
+    ).join("");
 
-              if (!meetings.length) {
+    const partnerBlocks = partners.map(partner => {
+      const partnerId = exactId(partner.id);
+
+      const rows = EVENT_DATES.map(dateItem => {
+        const items = [];
+
+        complete.forEach(relation => {
+          if (exactId(relationDraft(relation).date) !== dateItem.value) return;
+
+          const requesterId = exactId(relation.partenaire?.id);
+          const targetId = exactId(relation.organisation?.id);
+
+          if (requesterId === partnerId) {
+            items.push({
+              relation,
+              direction: "outgoing",
+              counterpart: nomRdvCourt(
+                relation.organisation?.nom ||
+                relation.organisation?.id ||
+                "Organisation"
+              )
+            });
+          }
+
+          if (targetId === partnerId && requesterId !== partnerId) {
+            items.push({
+              relation,
+              direction: "incoming",
+              counterpart: nomRdvCourt(nomAffiche(relation.partenaire))
+            });
+          }
+        });
+
+        return `
+          <tr>
+            <th class="pn-planning-room">${escapeHtml(dateItem.label)}</th>
+            ${TIME_SLOTS.map(time => {
+              const slotItems = items.filter(item =>
+                exactId(relationDraft(item.relation).heure) === time
+              );
+
+              if (!slotItems.length) {
                 return '<td class="pn-planning-slot is-free"></td>';
               }
 
-              const conflict = meetings.length > 1;
-
               return `
-                <td class="pn-planning-slot${conflict ? " is-conflict" : ""}">
-                  ${conflict
-                    ? `<div class="pn-calendar-conflict">
-                         <i class="fas fa-triangle-exclamation"></i>
-                         ×${meetings.length}
-                       </div>`
-                    : ""}
-                  ${meetings.map(relation => {
-                    const draft = relationDraft(relation);
+                <td class="pn-planning-slot${slotItems.length > 1 ? " is-conflict" : ""}">
+                  ${slotItems.map(item => {
+                    const draft = relationDraft(item.relation);
                     const room = /^Salle Conciergerie\s+/i.test(draft.salle || "")
                       ? String(draft.salle).replace(/^Salle Conciergerie\s+/i, "Salle ")
                       : (draft.salle || "");
 
-                    return `<div class="pn-calendar-meeting">
-                      <strong>${escapeHtml(nomRdvCourt(relation.organisation?.nom || relation.organisation?.id || "Organisation"))}</strong>
+                    const incomingStyle = item.direction === "incoming"
+                      ? ' style="background:#E8F1FF;border-color:#8BB7F0;"'
+                      : "";
+
+                    return `<div class="pn-calendar-meeting"${incomingStyle}>
+                      <strong>${escapeHtml(item.counterpart)}</strong>
                       <span>${escapeHtml(room)}</span>
                     </div>`;
                   }).join("")}
                 </td>`;
             }).join("")}
-          </tr>
-        `).join("")}
-      `;
+          </tr>`;
+      }).join("");
+
+      return `
+        <tr class="pn-planning-day-row">
+          <th class="pn-planning-day" colspan="${TIME_SLOTS.length + 1}">
+            ${escapeHtml(nomRdvCourt(nomAffiche(partner)))}
+          </th>
+        </tr>
+        ${rows}`;
     }).join("");
 
     return `
       <div class="pn-planning-help">
         <strong>Planning par partenaire</strong>
-        <span>Même lecture que le planning global : les partenaires sont en lignes et les créneaux horaires en colonnes.</span>
+        <span>Chaque partenaire est regroupé une seule fois, avec les 3 dates en lignes.</span>
+        <span style="margin-left:12px"><b style="color:#347022">Vert</b> : demandé par le partenaire · <b style="color:#245B9E">Bleu</b> : demandé par un autre partenaire.</span>
       </div>
       <div class="pn-planning-wrap">
         <table class="pn-planning-table">
           <thead>
             <tr>
-              <th class="pn-planning-room-head">Jour / partenaire</th>
+              <th class="pn-planning-room-head">Partenaire / date</th>
               ${header}
             </tr>
           </thead>
-          <tbody>${body}</tbody>
+          <tbody>${partnerBlocks}</tbody>
         </table>
       </div>`;
   }
