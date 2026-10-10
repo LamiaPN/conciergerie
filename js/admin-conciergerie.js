@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-conciergerie.js
-   VERSION : v81 — sélection d'un partenaire dans le calendrier
+   VERSION : v82 — contacts RDV rapide rafraîchis à l'ouverture
    RÔLE    : Planning Conciergerie — sélections uniquement.
 
    RÈGLES :
@@ -2511,8 +2511,26 @@
     fillQuickContactSelect(el.quickOrganisationContact, el.quickOrganisation?.value, true);
   }
 
+  async function refreshQuickContactsFromServer() {
+    const contacts = await API.getContactsAdmin(state.adminToken);
+    state.contactsByOrganisation = new Map();
+
+    (Array.isArray(contacts) ? contacts : []).forEach(contact => {
+      const orgId = exactId(contact.organisation_id);
+      if (!orgId) return;
+      if (!state.contactsByOrganisation.has(orgId)) state.contactsByOrganisation.set(orgId, []);
+      state.contactsByOrganisation.get(orgId).push(contact);
+    });
+  }
+
   async function openQuickMeetingModal() {
     if (!el.quickModal) return;
+
+    try {
+      await refreshQuickContactsFromServer();
+    } catch (error) {
+      console.warn("Impossible de rafraîchir les contacts du RDV rapide :", error);
+    }
 
     try {
       API.resetCache?.();
