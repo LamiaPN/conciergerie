@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-planning-export.js
-   VERSION : v65 — export PDF d'un partenaire sélectionné
+   VERSION : v66 — export PDF contacts groupés
    RÔLE    : Export imprimable/PDF du planning Conciergerie complet.
    FORMAT  : 3 pages A4 paysage — 1 jour par page × toutes les salles.
    ════════════════════════════════════════════════════════════════════════ */
@@ -714,6 +714,7 @@
       return `${base}_Calendrier.pdf`;
     }
 
+    if (mode === "contact") return `${base}_Par_contact.pdf`;
     if (mode === "partenaire") return `${base}_Vue_par_partenaire.pdf`;
     if (mode === "organisation") return `${base}_Vue_par_organisation.pdf`;
 
@@ -1269,6 +1270,170 @@
     doc.save(buildPdfName(context));
   }
 
+  async function generateContactPdf(context) {
+    const JsPDF = await ensureJsPdf();
+    const doc = new JsPDF({
+      orientation: "landscape",
+      unit: "mm",
+      format: "a4",
+      compress: true
+    });
+
+    const rows = Array.isArray(context?.contactRows) ? context.contactRows : [];
+    if (!rows.length) throw new Error("Aucun participant de rendez-vous à exporter.");
+
+    const pageW = doc.internal.pageSize.getWidth();
+    const pageH = doc.internal.pageSize.getHeight();
+    const margin = 8;
+    const contentTop = 31;
+    const contentBottom = pageH - 12;
+    const widths = [48, 58, 91, 52, 20];
+    const rowH = 7;
+    const tableHeadH = 7;
+    const groupH = 8;
+    const gap = 3;
+
+    const groups = [
+      "Partenaires Conciergerie",
+      "Nos partenaires",
+      "Liste de contacts"
+    ];
+
+    const generated = new Intl.DateTimeFormat("fr-CA", {
+      dateStyle: "medium",
+      timeStyle: "short"
+    }).format(new Date());
+
+    function drawHeader() {
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(6.5);
+      doc.setTextColor(120, 128, 120);
+      doc.text("MTL CONNECTE 2026 · CONCIERGERIE", margin, 9);
+
+      doc.setFontSize(15);
+      doc.setTextColor(20, 25, 20);
+      doc.text("Participants aux rendez-vous", margin, 17);
+
+      doc.setDrawColor(47, 125, 80);
+      doc.setLineWidth(0.6);
+      doc.line(margin, 21, pageW - margin, 21);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(6.8);
+      doc.setTextColor(105, 112, 105);
+      doc.text("13–15 octobre 2026", pageW - margin, 9, { align: "right" });
+      doc.text(`Généré le ${generated}`, pageW - margin, 14.5, { align: "right" });
+    }
+
+    function drawTableHead(y) {
+      const labels = ["Nom", "Organisation", "Email", "Téléphone", "RDV"];
+      let x = margin;
+
+      labels.forEach((label, index) => {
+        doc.setFillColor(246, 248, 249);
+        doc.setDrawColor(214, 219, 222);
+        doc.rect(x, y, widths[index], tableHeadH, "FD");
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(6);
+        doc.setTextColor(80, 88, 92);
+        doc.text(label.toUpperCase(), x + 2, y + 4.7);
+        x += widths[index];
+      });
+    }
+
+    function ensureSpace(y, needed) {
+      if (y + needed <= contentBottom) return y;
+      doc.addPage("a4", "landscape");
+      drawHeader();
+      return contentTop;
+    }
+
+    drawHeader();
+    let y = contentTop;
+
+    groups.forEach(groupName => {
+      const items = rows.filter(item => exact(item.groupe) === groupName);
+      if (!items.length) return;
+
+      y = ensureSpace(y, groupH + tableHeadH + rowH);
+
+      doc.setFillColor(238, 247, 241);
+      doc.setDrawColor(193, 214, 198);
+      doc.rect(margin, y, widths.reduce((sum, value) => sum + value, 0), groupH, "FD");
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(8.4);
+      doc.setTextColor(47, 125, 80);
+      doc.text(`${groupName} (${items.length})`, margin + 2, y + 5.5);
+      y += groupH;
+
+      drawTableHead(y);
+      y += tableHeadH;
+
+      items.forEach(item => {
+        y = ensureSpace(y, rowH + tableHeadH);
+
+        // Quand une page change au milieu d'un groupe, répéter l'entête du tableau.
+        if (y === contentTop) {
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(7.3);
+          doc.setTextColor(47, 125, 80);
+          doc.text(`${groupName} — suite`, margin, y + 4.8);
+          y += 7;
+          drawTableHead(y);
+          y += tableHeadH;
+        }
+
+        const values = [
+          exact(item.nom) || "—",
+          exact(item.organisation) || "—",
+          exact(item.email) || "—",
+          exact(item.telephone) || "—",
+          String(item.rdv ?? "")
+        ];
+
+        let x = margin;
+        values.forEach((value, index) => {
+          doc.setFillColor(255, 255, 255);
+          doc.setDrawColor(226, 229, 232);
+          doc.rect(x, y, widths[index], rowH, "FD");
+
+          doc.setFont("helvetica", index === 0 ? "bold" : "normal");
+          doc.setFontSize(index === 2 || index === 3 ? 5.8 : 6.1);
+          doc.setTextColor(index === 2 ? 70 : 45, index === 2 ? 145 : 50, index === 2 ? 45 : 50);
+
+          const text = doc.splitTextToSize(value, widths[index] - 4).slice(0, 1);
+          doc.text(text, x + 2, y + 4.7);
+          x += widths[index];
+        });
+
+        y += rowH;
+      });
+
+      y += gap;
+    });
+
+    const totalPages = doc.getNumberOfPages();
+    for (let page = 1; page <= totalPages; page += 1) {
+      doc.setPage(page);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(6.1);
+      doc.setTextColor(110, 116, 110);
+      doc.text(
+        "Nom · organisation · email · téléphone · nombre de RDV",
+        margin,
+        pageH - 5
+      );
+      doc.text(
+        `Conciergerie MTL connecte 2026 · page ${page}/${totalPages}`,
+        pageW - margin,
+        pageH - 5,
+        { align: "right" }
+      );
+    }
+
+    doc.save(buildPdfName(context));
+  }
+
   async function exportPlanningPdf() {
     const context = getExportContext();
     const button = document.querySelector("#conciergerieExportPdfBtn");
@@ -1290,6 +1455,12 @@
         API.getRencontresAdmin(adminToken),
         API.getReferentiels()
       ]);
+
+      if (exact(context?.mode) === "contact") {
+        await generateContactPdf(context);
+        showExportMessage("PDF des participants créé et téléchargé.");
+        return;
+      }
 
       let meetings = (Array.isArray(rencontres) ? rencontres : [])
         .filter(isCompleteMeeting)
