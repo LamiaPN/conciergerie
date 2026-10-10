@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-conciergerie.js
-   VERSION : v74 — planning global par jours, salles et créneaux
+   VERSION : v75 — compteurs RDV par date, salle et partenaire
    RÔLE    : Planning Conciergerie — sélections uniquement.
 
    RÈGLES :
@@ -822,7 +822,8 @@
 
       partners.set(id, {
         id,
-        label: nomRdvCourt(nomAffiche(relation.partenaire))
+        label: nomRdvCourt(nomAffiche(relation.partenaire)),
+        count: calendarPartnerCount(id)
       });
     });
 
@@ -922,6 +923,28 @@
       </div>`;
   }
 
+  function calendarDateCount(dateValue, complete = completeCalendarRelations()) {
+    return complete.filter(relation =>
+      exactId(relationDraft(relation).date) === exactId(dateValue)
+    ).length;
+  }
+
+  function calendarRoomCount(room, complete = completeCalendarRelations()) {
+    return complete.filter(relation =>
+      exactId(relationDraft(relation).salle) === exactId(room)
+    ).length;
+  }
+
+  function calendarPartnerCount(partnerId, complete = completeCalendarRelations()) {
+    const id = exactId(partnerId);
+    if (!id) return 0;
+
+    return complete.reduce((count, relation) => {
+      const requesterId = exactId(relation.partenaire?.id);
+      const targetId = exactId(relation.organisation?.id);
+      return count + ((requesterId === id || targetId === id) ? 1 : 0);
+    }, 0);
+  }
   function renderCalendarPlanningView(rooms) {
     const complete = completeCalendarRelations();
     const occupancies = new Map();
@@ -943,7 +966,7 @@
       return `
         <tr class="pn-planning-day-row">
           <th class="pn-planning-day" colspan="${TIME_SLOTS.length + 1}">
-            ${escapeHtml(dateItem.label)}
+            ${escapeHtml(dateItem.label)} (${calendarDateCount(dateItem.value, complete)})
           </th>
         </tr>
         ${rooms.map(room => `
@@ -1014,7 +1037,7 @@
 
       return `
         <tr>
-          <th class="pn-planning-room">${escapeHtml(dateItem.label)}</th>
+          <th class="pn-planning-room">${escapeHtml(dateItem.label)} (${calendarDateCount(dateItem.value, complete)})</th>
           ${TIME_SLOTS.map(time => {
             const meetings = byTime.get(time) || [];
 
@@ -1097,7 +1120,7 @@
 
       return `
         <tr>
-          <th class="pn-planning-room">${escapeHtml(dateItem.label)}</th>
+          <th class="pn-planning-room">${escapeHtml(dateItem.label)} (${calendarDateCount(dateItem.value, complete)})</th>
           ${TIME_SLOTS.map(time => {
             const meetings = byTime.get(time) || [];
 
@@ -1138,7 +1161,7 @@
                 /^Salle Conciergerie\s+/i.test(room)
                   ? room.replace(/^Salle Conciergerie\s+/i, "Salle ")
                   : room
-              )}
+              )} (${calendarRoomCount(room, complete)})
             </button>
           `).join("")}
         </div>
@@ -1228,7 +1251,7 @@
 
         return `
           <tr>
-            <th class="pn-planning-room">${escapeHtml(dateItem.label)}</th>
+            <th class="pn-planning-room">${escapeHtml(dateItem.label)} (${calendarDateCount(dateItem.value, complete)})</th>
             ${TIME_SLOTS.map(time => {
               const slotItems = items.filter(item =>
                 exactId(relationDraft(item.relation).heure) === time
@@ -1263,7 +1286,7 @@
       return `
         <tr class="pn-planning-day-row">
           <th class="pn-planning-day" colspan="${TIME_SLOTS.length + 1}">
-            ${escapeHtml(nomRdvCourt(nomAffiche(partner)))}
+            ${escapeHtml(nomRdvCourt(nomAffiche(partner)))} (${calendarPartnerCount(partnerId, complete)})
           </th>
         </tr>
         ${rows}`;
