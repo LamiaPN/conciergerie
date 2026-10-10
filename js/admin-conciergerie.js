@@ -1076,55 +1076,54 @@
 
     const complete = completeCalendarRelations();
 
-    const sections = EVENT_DATES.map(dateItem => {
-      const byDate = complete.filter(relation =>
-        exactId(relationDraft(relation).date) === dateItem.value
-        && exactId(relationDraft(relation).salle) === selectedRoom
-      );
+    const header = TIME_SLOTS.map(time => `
+      <th class="pn-planning-time-head">${escapeHtml(time)}</th>
+    `).join("");
 
+    const body = EVENT_DATES.map(dateItem => {
       const byTime = new Map();
-      byDate.forEach(relation => {
-        const time = exactId(relationDraft(relation).heure);
-        if (!byTime.has(time)) byTime.set(time, []);
-        byTime.get(time).push(relation);
-      });
+
+      complete
+        .filter(relation =>
+          exactId(relationDraft(relation).date) === dateItem.value
+          && exactId(relationDraft(relation).salle) === selectedRoom
+        )
+        .forEach(relation => {
+          const time = exactId(relationDraft(relation).heure);
+          if (!time) return;
+          if (!byTime.has(time)) byTime.set(time, []);
+          byTime.get(time).push(relation);
+        });
 
       return `
-        <section class="pn-room-day">
-          <div class="pn-room-day-title">${escapeHtml(dateItem.label)}</div>
-          <table class="pn-room-table">
-            <thead>
-              <tr>
-                <th>Heure</th>
-                <th>Partenaire</th>
-                <th>Organisation rencontrée</th>
-                <th>État</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${TIME_SLOTS.map(time => {
-                const meetings = byTime.get(time) || [];
-                if (!meetings.length) {
-                  return `
-                    <tr class="is-free">
-                      <td><strong>${escapeHtml(time)}</strong></td>
-                      <td colspan="2">Libre</td>
-                      <td><span class="pn-free-badge">Disponible</span></td>
-                    </tr>`;
-                }
+        <tr>
+          <th class="pn-planning-room">${escapeHtml(dateItem.label)}</th>
+          ${TIME_SLOTS.map(time => {
+            const meetings = byTime.get(time) || [];
 
-                return meetings.map((relation, index) => `
-                  <tr>
-                    <td><strong>${index === 0 ? escapeHtml(time) : ""}</strong></td>
-                    <td>${escapeHtml(nomAffiche(relation.partenaire))}</td>
-                    <td>${escapeHtml(nomRdvCourt(relation.organisation?.nom || relation.organisation?.id || "Organisation"))}</td>
-                    <td><span class="pn-rdv-badge">RDV</span></td>
-                  </tr>
-                `).join("");
-              }).join("")}
-            </tbody>
-          </table>
-        </section>`;
+            if (!meetings.length) {
+              return '<td class="pn-planning-slot is-free"></td>';
+            }
+
+            const conflict = meetings.length > 1;
+
+            return `
+              <td class="pn-planning-slot${conflict ? " is-conflict" : ""}">
+                ${conflict
+                  ? `<div class="pn-calendar-conflict">
+                       <i class="fas fa-triangle-exclamation"></i>
+                       ×${meetings.length}
+                     </div>`
+                  : ""}
+                ${meetings.map(relation => `
+                  <div class="pn-calendar-meeting">
+                    <strong>${escapeHtml(nomRdvCourt(nomAffiche(relation.partenaire)))}</strong>
+                    <span>${escapeHtml(nomRdvCourt(relation.organisation?.nom || relation.organisation?.id || "Organisation"))}</span>
+                  </div>
+                `).join("")}
+              </td>`;
+          }).join("")}
+        </tr>`;
     }).join("");
 
     return `
@@ -1135,13 +1134,31 @@
             <button type="button"
                     data-calendar-room="${escapeHtml(room)}"
                     class="${room === selectedRoom ? "active" : ""}">
-              ${escapeHtml(room)}
+              ${escapeHtml(
+                /^Salle Conciergerie\s+/i.test(room)
+                  ? room.replace(/^Salle Conciergerie\s+/i, "Salle ")
+                  : room
+              )}
             </button>
           `).join("")}
         </div>
       </div>
 
-      <div class="pn-room-view">${sections}</div>`;
+      <div class="pn-planning-help">
+        <strong>Planning par salle</strong>
+        <span>Les dates sont en lignes, les créneaux horaires en colonnes, et chaque cellule affiche le partenaire et l’organisation rencontrée.</span>
+      </div>
+      <div class="pn-planning-wrap">
+        <table class="pn-planning-table">
+          <thead>
+            <tr>
+              <th class="pn-planning-room-head">Date</th>
+              ${header}
+            </tr>
+          </thead>
+          <tbody>${body}</tbody>
+        </table>
+      </div>`;
   }
 
   function renderCalendarPartnerView() {
