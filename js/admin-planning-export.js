@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-planning-export.js
-   VERSION : v60 — nom PDF simplifié
+   VERSION : v61 — export selon la vue active + noms dynamiques
    RÔLE    : Export imprimable/PDF du planning Conciergerie complet.
    FORMAT  : 3 pages A4 paysage — 1 jour par page × toutes les salles.
    ════════════════════════════════════════════════════════════════════════ */
@@ -72,7 +72,7 @@
     button.type = "button";
     button.id = "conciergerieExportPdfBtn";
     button.className = "btn btn-outline btn-sm";
-    button.innerHTML = '<i class="fas fa-file-pdf"></i> Exporter le planning PDF';
+    button.innerHTML = '<i class="fas fa-file-pdf"></i> Exporter cette vue PDF';
     button.addEventListener("click", exportPlanningPdf);
 
     wrap.appendChild(button);
@@ -670,11 +670,81 @@
     return [name, email].filter(Boolean).join(" · ");
   }
 
+
+  function getExportContext() {
+    try {
+      if (typeof window.getConciergerieExportContext === "function") {
+        return window.getConciergerieExportContext() || {};
+      }
+    } catch (_) {}
+
+    return {
+      mode: "calendrier",
+      calendarView: "planning",
+      salle: "",
+      salles: []
+    };
+  }
+
+  function cleanFilePart(value) {
+    return String(value ?? "")
+      .trim()
+      .replace(/^Salle\s+/i, "")
+      .replace(/[^a-zA-ZÀ-ÿ0-9]+/g, "_")
+      .replace(/^_+|_+$/g, "");
+  }
+
+  function buildPdfName(context) {
+    const base = "Planning_Conciergerie_MTL_connecte_2026";
+    const mode = exact(context?.mode);
+    const calendarView = exact(context?.calendarView);
+    const room = exact(context?.salle);
+
+    if (mode === "calendrier" && calendarView === "salle" && room) {
+      return `${base}_${cleanFilePart(room)}.pdf`;
+    }
+
+    if (mode === "calendrier") {
+      if (calendarView === "partenaire") return `${base}_Par_partenaire.pdf`;
+      if (calendarView === "date") return `${base}_Par_date.pdf`;
+      if (calendarView === "salle") return `${base}_Par_salle.pdf`;
+      return `${base}_Calendrier.pdf`;
+    }
+
+    if (mode === "partenaire") return `${base}_Vue_par_partenaire.pdf`;
+    if (mode === "organisation") return `${base}_Vue_par_organisation.pdf`;
+
+    return `${base}.pdf`;
+  }
+
+  function buildPdfTitle(context) {
+    const mode = exact(context?.mode);
+    const calendarView = exact(context?.calendarView);
+    const room = exact(context?.salle);
+
+    if (mode === "calendrier" && calendarView === "salle" && room) {
+      return `MTL connecte 2026 - Conciergerie - ${room}`;
+    }
+
+    if (mode === "calendrier") {
+      if (calendarView === "partenaire") return "MTL connecte 2026 - Conciergerie - Par partenaire";
+      if (calendarView === "date") return "MTL connecte 2026 - Conciergerie - Par date";
+      if (calendarView === "salle") return "MTL connecte 2026 - Conciergerie - Par salle";
+      return "MTL connecte 2026 - Planning Conciergerie";
+    }
+
+    if (mode === "partenaire") return "MTL connecte 2026 - Conciergerie - Vue par partenaire";
+    if (mode === "organisation") return "MTL connecte 2026 - Conciergerie - Vue par organisation";
+
+    return "MTL connecte 2026 - Planning Conciergerie";
+  }
+
   async function generatePlanningPdf(
     rooms,
     meetings,
     vivier,
-    forms
+    forms,
+    context
   ) {
     const JsPDF = await ensureJsPdf();
     const doc = new JsPDF({
@@ -755,7 +825,7 @@
       doc.setTextColor(17, 17, 17);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(16);
-      doc.text("MTL connecte 2026 - Planning Conciergerie", margin, margin + 6);
+      doc.text(buildPdfTitle(context), margin, margin + 6);
 
       doc.setFontSize(13);
       doc.setTextColor(47, 125, 80);
@@ -920,10 +990,11 @@
 
     EVENT_DATES.forEach((date, index) => drawDayPage(date, index));
 
-    doc.save("Planning_Conciergerie_MTL_connecte_2026.pdf");
+    doc.save(buildPdfName(context));
   }
 
   async function exportPlanningPdf() {
+    const context = getExportContext();
     const button = document.querySelector("#conciergerieExportPdfBtn");
     const originalHtml = button?.innerHTML || "";
 
@@ -944,17 +1015,36 @@
         API.getReferentiels()
       ]);
 
-      const meetings = (Array.isArray(rencontres) ? rencontres : [])
+      let meetings = (Array.isArray(rencontres) ? rencontres : [])
         .filter(isCompleteMeeting)
         .filter(item =>
           EVENT_DATES.some(date => date.value === exact(item.date))
         );
 
+      if (
+        exact(context?.mode) === "calendrier" &&
+        exact(context?.calendarView) === "salle" &&
+        exact(context?.salle)
+      ) {
+        meetings = meetings.filter(
+          item => exact(item.salle) === exact(context.salle)
+        );
+      }
+
       if (!meetings.length) {
         throw new Error("Aucun rendez-vous complet à exporter.");
       }
 
-      const rooms = chooseRooms(referentiels, meetings);
+      let rooms = chooseRooms(referentiels, meetings);
+
+      if (
+        exact(context?.mode) === "calendrier" &&
+        exact(context?.calendarView) === "salle" &&
+        exact(context?.salle)
+      ) {
+        rooms = [exact(context.salle)];
+      }
+
       if (!rooms.length) {
         throw new Error("Aucune salle disponible pour générer le planning.");
       }
@@ -984,7 +1074,8 @@
         rooms,
         meetings,
         vivier,
-        forms
+        forms,
+        context
       );
 
       showExportMessage("PDF créé et téléchargé.");
