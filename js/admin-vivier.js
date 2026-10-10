@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-vivier.js
-   VERSION : v52 — colonne rencontres à assurer par partenaire
+   VERSION : v78 — contact principal intégré à la fiche organisation
    RÔLE    : Vue centrale du vivier et gestion privée des contacts.
 
    SÉCURITÉ :
@@ -249,6 +249,8 @@
               <div class="vivier-field full"><label>Localisation</label><input id="vivierOrgLocalisation" type="text"></div>
               <div class="vivier-field full"><label>Site web</label><input id="vivierOrgSite" type="url" placeholder="https://..."></div>
               <div class="vivier-field full"><label>Description</label><textarea id="vivierOrgDescription" rows="4"></textarea></div>
+              <div class="vivier-field"><label>Contact principal</label><input id="vivierOrgContactNom" type="text" placeholder="Nom de la personne"></div>
+              <div class="vivier-field"><label>Email du contact principal</label><input id="vivierOrgContactEmail" type="email" placeholder="nom@organisation.ca"></div>
             </div>
             <section class="vivier-contacts-section">
               <div class="vivier-contacts-head"><div><h4>Contacts</h4><span class="vivier-contact-sub">Ces données restent privées côté administration.</span></div><button class="btn btn-outline btn-sm" type="button" id="vivierAddContact"><i class="fas fa-user-plus"></i> Ajouter un contact</button></div>
@@ -475,6 +477,11 @@
     document.querySelector("#vivierOrgLocalisation").value = state.currentOrg.localisation || "";
     document.querySelector("#vivierOrgSite").value = state.currentOrg.site_web || "";
     document.querySelector("#vivierOrgDescription").value = state.currentOrg.description || "";
+
+    const principalContact = state.currentOrg.id ? contactFor(state.currentOrg.id) : null;
+    document.querySelector("#vivierOrgContactNom").value = principalContact?.nom || "";
+    document.querySelector("#vivierOrgContactEmail").value = principalContact?.email || "";
+
     document.querySelector("#vivierDeleteOrg").hidden = !/^loc-\d+$/.test(state.currentOrg.id || "");
     document.querySelector("#vivierAddContact").disabled = !state.currentOrg.id;
     document.querySelector("#vivierOrgStatus").textContent = state.currentOrg.id ? "" : "Enregistrez d'abord l'organisation avant d'ajouter un contact.";
@@ -492,6 +499,16 @@
     const nom = document.querySelector("#vivierOrgNom").value.trim();
     if (!nom) { status.textContent = "Le nom de l'organisation est requis."; status.className = "vivier-status error"; return; }
 
+    const contactNom = document.querySelector("#vivierOrgContactNom").value.trim();
+    const contactEmail = document.querySelector("#vivierOrgContactEmail").value.trim();
+    if ((contactNom && !contactEmail) || (!contactNom && contactEmail)) {
+      status.textContent = "Renseigne le nom et l'email du contact principal.";
+      status.className = "vivier-status error";
+      (contactNom ? document.querySelector("#vivierOrgContactEmail") : document.querySelector("#vivierOrgContactNom")).focus();
+      return;
+    }
+
+    const existingPrincipal = state.currentOrg?.id ? contactFor(state.currentOrg.id) : null;
     const expertise = [...document.querySelector("#vivierOrgExpertise").selectedOptions].map(option => option.value).filter(Boolean);
     const org = {
       id: document.querySelector("#vivierOrgId").value.trim(), nom,
@@ -511,9 +528,24 @@
       const id = exactId(result.id || org.id);
       document.querySelector("#vivierOrgId").value = id;
       state.currentOrg = { ...org, id, isPartner: state.partnerIds.has(id) };
+
+      if (contactNom && contactEmail) {
+        await saveContact({
+          contact_id: existingPrincipal?.contact_id || "",
+          organisation_id: id,
+          nom: contactNom,
+          fonction: existingPrincipal?.fonction || "",
+          email: contactEmail,
+          telephone: existingPrincipal?.telephone || "",
+          role: existingPrincipal?.role || "Contact principal",
+          principal: true,
+          source: existingPrincipal?.source || "Admin"
+        });
+      }
+
       document.querySelector("#vivierAddContact").disabled = false;
       document.querySelector("#vivierDeleteOrg").hidden = !/^loc-\d+$/.test(id);
-      status.textContent = "Organisation enregistrée."; status.className = "vivier-status ok";
+      status.textContent = contactNom ? "Organisation et contact principal enregistrés." : "Organisation enregistrée."; status.className = "vivier-status ok";
       await loadData(true);
       const refreshed = state.records.find(item => item.id === id) || state.currentOrg;
       state.currentOrg = refreshed;
