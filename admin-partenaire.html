@@ -417,6 +417,52 @@
   }
   .multi-filter-option.is-selected:hover { background:#58A038; }
 
+  /* ═══ Calendrier — planning global v80 ═══ */
+  .pn-planning-help{
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    padding:12px 16px;border-bottom:1px solid #DDE0DC;background:#FAFBFA;
+  }
+  .pn-planning-help strong{font-size:.82rem;color:#0B0D0C}
+  .pn-planning-help span{font-size:.75rem;color:#7b817b}
+  .pn-planning-wrap{width:100%;overflow:auto;background:#fff}
+  .pn-planning-table{
+    width:max-content;min-width:100%;border-collapse:collapse;table-layout:fixed;
+  }
+  .pn-planning-table th,.pn-planning-table td{
+    border-right:1px solid #DDE0DC;border-bottom:1px solid #DDE0DC;
+  }
+  .pn-planning-table thead th{
+    position:sticky;top:0;z-index:4;background:#FAFBFA;
+  }
+  .pn-planning-room-head{
+    position:sticky!important;left:0;z-index:6!important;min-width:150px;
+    padding:10px 12px;text-align:left;color:#6f756f;font-size:.7rem;
+    text-transform:uppercase;letter-spacing:.04em;
+  }
+  .pn-planning-time-head{
+    min-width:145px;padding:10px 8px;text-align:center;
+    color:#6f756f;font-size:.7rem;white-space:nowrap;
+  }
+  .pn-planning-day{
+    position:sticky;left:0;z-index:3;padding:9px 12px;text-align:left;
+    background:#F4F5F4;color:#0B0D0C;font:700 .86rem var(--font-title);
+    border-top:2px solid #C9CDC8;
+  }
+  .pn-planning-room{
+    position:sticky;left:0;z-index:2;min-width:150px;padding:10px 12px;
+    background:#fff;text-align:left;font:600 .78rem var(--font-main);color:#0B0D0C;
+  }
+  .pn-planning-slot{
+    min-width:145px;height:62px;padding:5px;vertical-align:top;background:#fff;
+  }
+  .pn-planning-slot.is-free{background:#fff}
+  .pn-planning-slot.is-conflict{background:#fff6f2}
+  .pn-planning-slot .pn-calendar-meeting{
+    padding:6px 7px;border-radius:6px;
+  }
+  .pn-planning-slot .pn-calendar-meeting strong{font-size:.72rem}
+  .pn-planning-slot .pn-calendar-meeting span{font-size:.68rem}
+
 </style>
 </head>
 <body>
@@ -911,7 +957,7 @@
 <script src="js/api.js?v=20261009-v78"></script>
 <script src="js/noms-courts.js?v=20261008-v71"></script>
 <script src="js/admin-partenaire.js?v=20261008-v71"></script>
-<script src="js/admin-conciergerie.js?v=20261009-v79"></script>
+<script src="js/admin-conciergerie.js?v=20261009-v80"></script>
 <script src="js/admin-import.js?v=20261008-v71"></script>
 <script src="js/admin-participants-import.js?v=20261008-v71"></script>
 <script src="js/admin-form-status.js?v=20261008-v71"></script>
