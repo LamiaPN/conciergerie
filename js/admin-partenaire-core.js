@@ -116,7 +116,9 @@
     orgNewTaille: $("#orgEditNewTaille"),
     orgLocalisation: $("#orgEditLocalisation"),
     orgSite: $("#orgEditSite"),
-    orgDescription: $("#orgEditDescription")
+    orgDescription: $("#orgEditDescription"),
+    orgContactNom: $("#orgEditContactNom"),
+    orgContactEmail: $("#orgEditContactEmail")
   };
 
   /* --- Noms courts (repli sur nom complet) --- */
@@ -1557,6 +1559,8 @@
     el.orgLocalisation.value = edition ? (org.localisation || "") : "";
     el.orgSite.value = edition ? (org.site_web || "") : "";
     el.orgDescription.value = edition ? (org.description || "") : "";
+    if (el.orgContactNom) el.orgContactNom.value = "";
+    if (el.orgContactEmail) el.orgContactEmail.value = "";
 
     const localEditable = edition && /^loc-\d+$/.test(String(org.id || "").trim());
     if (el.organisationDelete) el.organisationDelete.hidden = !localEditable;
@@ -1648,6 +1652,17 @@
   async function saveOrganisation() {
     const organisation = collectOrganisation();
     if (!organisation.nom) { toast("Le nom de l'organisation est requis.", true); el.orgNom.focus(); return; }
+
+    const contactPrincipal = {
+      nom: String(el.orgContactNom?.value || "").trim(),
+      email: String(el.orgContactEmail?.value || "").trim()
+    };
+
+    if ((contactPrincipal.nom && !contactPrincipal.email) || (!contactPrincipal.nom && contactPrincipal.email)) {
+      toast("Renseigne le nom et l'email du contact principal.", true);
+      (contactPrincipal.nom ? el.orgContactEmail : el.orgContactNom)?.focus();
+      return;
+    }
     for (const categorie of ["secteur", "type", "taille"]) {
       const cfg = referenceConfig[categorie];
       if (cfg.select().value === ADD_NEW_REFERENCE && !selectedReferenceValue(categorie)) {
@@ -1674,6 +1689,18 @@
       state.referentiels = await API.getReferentiels();
 
       const result = await API.saveOrganisation(state.adminToken, organisation);
+
+      const savedOrganisationId = String(result?.id || organisation.id || "").trim();
+      if (savedOrganisationId && contactPrincipal.nom && contactPrincipal.email) {
+        await API.saveContactAdmin(state.adminToken, {
+          organisation_id: savedOrganisationId,
+          nom: contactPrincipal.nom,
+          email: contactPrincipal.email,
+          principal: true,
+          source: "Admin"
+        });
+      }
+
       closeOrganisationModal();
       API.resetCache();
       state.vivier = await API.loadVivier();
@@ -1682,7 +1709,7 @@
       buildAxisFilters();
       updateSidebarActive();
       render();
-      toast(organisation.id ? "Organisation modifiée." : `Organisation ajoutée (${result.id}).`);
+      toast(organisation.id ? "Organisation modifiée." : `Organisation ajoutée (${result.id})${contactPrincipal.nom ? " avec contact principal" : ""}.`);
     } catch (err) {
       toast(err.message || "Échec de l'enregistrement de l'organisation.", true);
     } finally {
