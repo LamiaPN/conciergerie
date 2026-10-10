@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-conciergerie.js
-   VERSION : v83 — RDV rapide depuis toute organisation
+   VERSION : v84 — interversion demandeur / organisation sur un RDV
    RÔLE    : Planning Conciergerie — sélections uniquement.
 
    RÈGLES :
@@ -247,6 +247,7 @@
     el.content?.addEventListener("change", onCalendarPartnerChange);
     el.content?.addEventListener("click", onCalendarClick);
     el.content?.addEventListener("click", onSingleNotificationClick);
+    el.content?.addEventListener("click", onSwapMeetingClick);
 
     el.saveBtn?.addEventListener("click", saveDirtyMeetings);
     el.notifyBtn?.addEventListener("click", openNotificationModal);
@@ -1843,9 +1844,14 @@
         </td>
 
         <td>
-          <button class="btn btn-outline btn-sm conciergerie-send-one" type="button" data-send-rdv="${escapeHtml(relation.key)}">
-            <i class="fas fa-paper-plane"></i> Envoyer le RDV
-          </button>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn btn-outline btn-sm conciergerie-swap-one" type="button" data-swap-rdv="${escapeHtml(relation.key)}" title="Intervertir le demandeur et l'organisation">
+              <i class="fas fa-right-left"></i> Intervertir
+            </button>
+            <button class="btn btn-outline btn-sm conciergerie-send-one" type="button" data-send-rdv="${escapeHtml(relation.key)}">
+              <i class="fas fa-paper-plane"></i> Envoyer le RDV
+            </button>
+          </div>
         </td>
       </tr>`;
   }
@@ -2403,6 +2409,103 @@
       el.saveBtn.disabled =
         state.dirty.size === 0
         || state.conflicts.size > 0;
+    }
+  }
+
+  async function onSwapMeetingClick(event) {
+    const button = event.target.closest("[data-swap-rdv]");
+    if (!button) return;
+
+    const key = exactId(button.dataset.swapRdv);
+    const relation = state.relations.find(item => item.key === key);
+    const draft = state.drafts.get(key);
+    if (!relation || !draft) return;
+
+    const oldRequesterId = exactId(relation.partenaire?.id);
+    const oldTargetId = exactId(relation.organisation?.id);
+    if (!oldRequesterId || !oldTargetId) return;
+
+    const reverseKey = relationKey(oldTargetId, oldRequesterId);
+    const reverseExisting = state.relations.find(item =>
+      item.key === reverseKey && hasSavedRdv(item)
+    );
+
+    if (reverseExisting) {
+      showConciergerieToast("Un rendez-vous existe déjà dans le sens inverse.", "error");
+      return;
+    }
+
+    const original = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = '<span class="spinner"></span> Interversion…';
+
+    try {
+      const officialPartnerIds = new Set(
+        (state.vivier.partenaires || []).map(item => exactId(item?.id)).filter(Boolean)
+      );
+
+      // Maintenir les sélections cohérentes avec le nouveau sens du rendez-vous.
+      if (officialPartnerIds.has(oldRequesterId)) {
+        const oldSelections = await API.getSelectionsAdmin(oldRequesterId, state.adminToken);
+        const nextOldSelections = (Array.isArray(oldSelections) ? oldSelections : [])
+          .filter(id => exactId(id) !== oldTargetId);
+        await API.saveSelectionsAdmin(oldRequesterId, state.adminToken, nextOldSelections);
+      }
+
+      if (officialPartnerIds.has(oldTargetId)) {
+        const newSelections = await API.getSelectionsAdmin(oldTargetId, state.adminToken);
+        const nextNewSelections = [...new Set([
+          ...(Array.isArray(newSelections) ? newSelections : []),
+          oldRequesterId
+        ])];
+        await API.saveSelectionsAdmin(oldTargetId, state.adminToken, nextNewSelections);
+      }
+
+      // Même créneau, mais les deux côtés et leurs participants sont inversés.
+      const reversedMeeting = {
+        partenaire_id: oldTargetId,
+        organisation_id: oldRequesterId,
+        date: exactId(draft.date),
+        heure: exactId(draft.heure),
+        salle: exactId(draft.salle),
+        email_rdv: exactId(draft.participant_partenaire_email),
+        participant_partenaire_contact_id: exactId(draft.participant_organisation_contact_id),
+        participant_partenaire_nom: exactId(draft.participant_organisation_nom),
+        participant_partenaire_email: exactId(draft.participant_organisation_email),
+        participant_organisation_contact_id: exactId(draft.participant_partenaire_contact_id),
+        participant_organisation_nom: exactId(draft.participant_partenaire_nom),
+        participant_organisation_email: exactId(draft.participant_partenaire_email)
+      };
+
+      const deleteOldMeeting = {
+        partenaire_id: oldRequesterId,
+        organisation_id: oldTargetId,
+        date: "",
+        heure: "",
+        salle: "",
+        email_rdv: "",
+        participant_partenaire_contact_id: "",
+        participant_partenaire_nom: "",
+        participant_partenaire_email: "",
+        participant_organisation_contact_id: "",
+        participant_organisation_nom: "",
+        participant_organisation_email: ""
+      };
+
+      await API.saveRencontresAdmin(state.adminToken, [
+        deleteOldMeeting,
+        reversedMeeting
+      ]);
+
+      await loadAndRender();
+      showConciergerieToast("✓ Demandeur et organisation intervertis.");
+    } catch (error) {
+      showConciergerieToast(
+        error.message || "Impossible d'intervertir le rendez-vous.",
+        "error"
+      );
+      button.disabled = false;
+      button.innerHTML = original;
     }
   }
 
