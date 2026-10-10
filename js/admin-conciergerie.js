@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-conciergerie.js
-   VERSION : v84 — interversion demandeur / organisation sur un RDV
+   VERSION : v85 — vue participants / contacts
    RÔLE    : Planning Conciergerie — sélections uniquement.
 
    RÈGLES :
@@ -151,6 +151,7 @@
     el.rdvFilterGroup = el.rdvSegment?.closest(".conciergerie-filtergroup") || null;
     el.modeOrgCount = $("#modeOrgCount");
     el.modePartnerCount = $("#modePartnerCount");
+    el.modeContactCount = $("#modeContactCount");
     el.rdvAllCount = $("#rdvAllCount");
     el.rdvWithCount = $("#rdvWithCount");
     el.rdvWithoutCount = $("#rdvWithoutCount");
@@ -221,7 +222,7 @@
 
       const requestedMode = button.dataset.mode;
 
-      state.mode = ["organisation", "partenaire", "calendrier"].includes(requestedMode)
+      state.mode = ["organisation", "partenaire", "contact", "calendrier"].includes(requestedMode)
         ? requestedMode
         : "organisation";
 
@@ -808,6 +809,136 @@
     ).size;
   }
 
+  function participantRows(relations = state.relations) {
+    const rows = new Map();
+
+    const addParticipant = (relation, draft, side) => {
+      const isPartnerSide = side === "partenaire";
+      const contactId = exactId(
+        isPartnerSide
+          ? draft.participant_partenaire_contact_id
+          : draft.participant_organisation_contact_id
+      );
+      const email = exactId(
+        isPartnerSide
+          ? draft.participant_partenaire_email
+          : draft.participant_organisation_email
+      );
+      const name = exactId(
+        isPartnerSide
+          ? draft.participant_partenaire_nom
+          : draft.participant_organisation_nom
+      );
+      if (!contactId && !email && !name) return;
+
+      const contacts = isPartnerSide
+        ? (relation.contactsPartenaire || [])
+        : (relation.contactsOrganisation || []);
+      const contact = contacts.find(item =>
+        (contactId && exactId(item.contact_id) === contactId)
+        || (email && exactId(item.email).toLowerCase() === email.toLowerCase())
+      ) || null;
+
+      const organisation = isPartnerSide ? relation.partenaire : relation.organisation;
+      const organisationId = exactId(organisation?.id);
+      const organisationName = nomRdvCourt(nomAffiche(organisation) || organisation?.nom || organisationId);
+      const finalEmail = email || exactId(contact?.email);
+      const finalName = name || exactId(contact?.nom);
+      const phone = exactId(contact?.telephone);
+      const key = contactId || finalEmail.toLowerCase() || `${organisationId}::${finalName.toLowerCase()}`;
+
+      if (!key) return;
+
+      const existing = rows.get(key);
+      if (existing) {
+        existing.rdv += 1;
+        if (!existing.telephone && phone) existing.telephone = phone;
+        if (!existing.email && finalEmail) existing.email = finalEmail;
+        return;
+      }
+
+      rows.set(key, {
+        contactId,
+        nom: finalName || "—",
+        organisation: organisationName || "—",
+        email: finalEmail || "",
+        telephone: phone || "",
+        rdv: 1
+      });
+    };
+
+    (relations || []).forEach(relation => {
+      const draft = state.drafts.get(relation.key) || relation.rdv || {};
+      if (!isCompleteMeeting(draft)) return;
+      addParticipant(relation, draft, "partenaire");
+      addParticipant(relation, draft, "organisation");
+    });
+
+    return [...rows.values()].sort((a, b) => {
+      const orgCompare = String(a.organisation || "").localeCompare(
+        String(b.organisation || ""),
+        "fr",
+        { sensitivity: "base" }
+      );
+      if (orgCompare) return orgCompare;
+      return String(a.nom || "").localeCompare(
+        String(b.nom || ""),
+        "fr",
+        { sensitivity: "base" }
+      );
+    });
+  }
+
+  function renderByContact() {
+    const participants = participantRows(state.relations);
+
+    if (!participants.length) {
+      el.content.innerHTML = `
+        <div class="conciergerie-empty">
+          <i class="fas fa-address-card"></i>
+          <strong>Aucun participant de rendez-vous pour le moment.</strong>
+        </div>`;
+      el.content.hidden = false;
+      return;
+    }
+
+    el.content.innerHTML = `
+      <article class="conciergerie-group">
+        <div class="conciergerie-group-head">
+          <div>
+            <h3>Participants aux rendez-vous <span class="count">(${participants.length})</span></h3>
+            <p>Contacts associés aux rendez-vous planifiés.</p>
+          </div>
+        </div>
+        <div class="conciergerie-table-wrap">
+          <table class="conciergerie-table">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Organisation</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>RDV</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${participants.map(item => `
+                <tr>
+                  <td><strong>${escapeHtml(item.nom)}</strong></td>
+                  <td>${escapeHtml(item.organisation)}</td>
+                  <td>${item.email ? `<a href="mailto:${escapeHtml(item.email)}">${escapeHtml(item.email)}</a>` : "—"}</td>
+                  <td>${item.telephone ? `<a href="tel:${escapeHtml(item.telephone)}">${escapeHtml(item.telephone)}</a>` : "—"}</td>
+                  <td>${item.rdv}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      </article>`;
+
+    el.content.hidden = false;
+  }
+
   function updateAllCounts() {
     const all = state.relations;
     const status = partnerRdvStatus(all);
@@ -832,6 +963,11 @@
     if (el.modePartnerCount) {
       el.modePartnerCount.textContent =
         String(uniquePartnerCount(all));
+    }
+
+    if (el.modeContactCount) {
+      el.modeContactCount.textContent =
+        String(participantRows(all).length);
     }
 
     if (el.rdvAllCount) {
@@ -875,17 +1011,18 @@
       });
 
     const calendarMode = state.mode === "calendrier";
+    const contactMode = state.mode === "contact";
 
     if (el.view) {
       el.view.classList.toggle("calendar-mode", calendarMode);
     }
 
     if (el.rdvFilterGroup) {
-      el.rdvFilterGroup.hidden = calendarMode;
+      el.rdvFilterGroup.hidden = calendarMode || contactMode;
     }
 
     if (el.savebar) {
-      el.savebar.hidden = calendarMode;
+      el.savebar.hidden = calendarMode || contactMode;
     }
   }
 
@@ -895,6 +1032,11 @@
 
     if (state.mode === "calendrier") {
       renderCalendar();
+      return;
+    }
+
+    if (state.mode === "contact") {
+      renderByContact();
       return;
     }
 
