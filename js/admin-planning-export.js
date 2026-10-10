@@ -1,7 +1,8 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-planning-export.js
+   VERSION : v57 — A4 paysage, 1 jour par page, chargement optimisé
    RÔLE    : Export imprimable/PDF du planning Conciergerie complet.
-   FORMAT  : 1 page A2 paysage — 3 jours × 2 salles.
+   FORMAT  : 3 pages A4 paysage — 1 jour par page × 2 salles.
    ════════════════════════════════════════════════════════════════════════ */
 (() => {
   "use strict";
@@ -111,14 +112,24 @@
 
   async function loadFormsSequential(ids, adminToken) {
     const forms = new Map();
+    const uniqueIds = [...new Set(ids.map(exact).filter(Boolean))];
+    const batchSize = 5;
 
-    for (const id of ids) {
-      try {
-        const form = await API.getFormulaireAdmin(id, adminToken);
-        forms.set(id, form || null);
-      } catch (_) {
-        forms.set(id, null);
-      }
+    for (let index = 0; index < uniqueIds.length; index += batchSize) {
+      const batch = uniqueIds.slice(index, index + batchSize);
+
+      const results = await Promise.all(
+        batch.map(async id => {
+          try {
+            const form = await API.getFormulaireAdmin(id, adminToken);
+            return [id, form || null];
+          } catch (_) {
+            return [id, null];
+          }
+        })
+      );
+
+      results.forEach(([id, form]) => forms.set(id, form));
     }
 
     return forms;
@@ -354,8 +365,8 @@
 <title>Planning Conciergerie - MTL connecte 2026</title>
 <style>
   @page {
-    size: A2 landscape;
-    margin: 7mm;
+    size: A4 landscape;
+    margin: 5mm 7mm;
   }
 
   * {
@@ -372,7 +383,7 @@
 
   body {
     width: 100%;
-    font-size: 8px;
+    font-size: 8.5px;
   }
 
   .page {
@@ -403,31 +414,39 @@
 
   .header-meta {
     text-align: right;
-    font-size: 7px;
+    font-size: 8px;
     color: #555;
   }
 
   .days {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 6px;
-    align-items: start;
+    display: block;
+    width: 100%;
   }
 
   .day {
+    width: 100%;
     min-width: 0;
-    break-inside: avoid;
+    height: 188mm;
+    overflow: hidden;
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .day:last-child {
+    break-after: auto;
+    page-break-after: auto;
   }
 
   .day h2 {
-    margin: 0;
-    padding: 5px 4px;
-    text-align: center;
-    font-size: 10px;
+    margin: 0 0 2mm;
+    padding: 2mm 2mm;
+    text-align: left;
+    font-size: 15px;
     line-height: 1.1;
-    border: 1px solid #999;
-    border-bottom: 0;
-    background: #f2f2f2;
+    border-bottom: 2px solid #2f7d50;
+    background: #fff;
   }
 
   table {
@@ -442,13 +461,23 @@
 
   thead th {
     background: #e8e8e8;
-    font-size: 7.5px;
-    padding: 3px 2px;
+    font-size: 8.5px;
+    padding: 4px 3px;
     text-align: center;
   }
 
+  thead th:nth-child(2) {
+    background: #2f7d50;
+    color: #fff;
+  }
+
+  thead th:nth-child(3) {
+    background: #2b68a6;
+    color: #fff;
+  }
+
   .time {
-    width: 29px;
+    width: 42px;
     text-align: center;
     vertical-align: top;
     padding: 3px 1px;
@@ -462,9 +491,11 @@
   }
 
   .slot {
-    height: 39px;
-    padding: 2px;
+    height: 34px;
+    max-height: 34px;
+    padding: 2px 3px;
     vertical-align: top;
+    overflow: hidden;
   }
 
   .slot.empty {
@@ -472,11 +503,22 @@
   }
 
   .meeting {
-    min-height: 34px;
-    padding: 2px 3px;
+    height: 29px;
+    max-height: 29px;
+    padding: 2px 4px;
     background: #f7f7f7;
-    border-left: 2px solid #555;
+    border-left: 3px solid #555;
     overflow: hidden;
+  }
+
+  td:nth-child(2) .meeting {
+    background: #eef7f1;
+    border-left-color: #2f8a58;
+  }
+
+  td:nth-child(3) .meeting {
+    background: #eef4fb;
+    border-left-color: #2f73b7;
   }
 
   .meeting + .meeting {
@@ -485,7 +527,7 @@
   }
 
   .company {
-    font-size: 7.3px;
+    font-size: 8px;
     line-height: 1.12;
     font-weight: 700;
     overflow-wrap: anywhere;
@@ -494,7 +536,7 @@
   .contact {
     display: block;
     margin-top: 1px;
-    font-size: 6.4px;
+    font-size: 7px;
     line-height: 1.08;
     color: #333;
     overflow-wrap: anywhere;
@@ -525,6 +567,21 @@
   }
 
   @media print {
+    html, body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .day,
+    table,
+    tr,
+    th,
+    td {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
     .no-print {
       display: none !important;
     }
@@ -533,23 +590,7 @@
 </head>
 <body>
   <main class="page">
-    <header class="header">
-      <div>
-        <h1>MTL connecte 2026 - Planning Conciergerie</h1>
-        <p>13, 14 et 15 octobre 2026 · ${rooms.map(escapeHtml).join(" · ")}</p>
-      </div>
-      <div class="header-meta">
-        ${meetings.length} rendez-vous planifiés<br>
-        Généré le ${escapeHtml(generated)}
-      </div>
-    </header>
-
     <div class="days">${days}</div>
-
-    <footer class="footer">
-      <span>Une case = un créneau de 30 minutes.</span>
-      <span>Planning interne - Conciergerie MTL connecte 2026</span>
-    </footer>
   </main>
 </body>
 </html>`;
