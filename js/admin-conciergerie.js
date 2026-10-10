@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-conciergerie.js
-   VERSION : v86 — groupes de contacts et export PDF de la vue contact
+   VERSION : v87 — regroupement contacts selon leur origine réelle
    RÔLE    : Planning Conciergerie — sélections uniquement.
 
    RÈGLES :
@@ -809,21 +809,41 @@
     ).size;
   }
 
-  function contactGroupFor(organisation, organisationId) {
+  function contactGroupFor(contact, organisation, organisationId) {
     const id = exactId(organisationId);
-    if (id.startsWith("contact-only::")) return "Liste de contacts";
+    const source = exactId(contact?.source);
+    const statut = exactId(organisation?.statut);
 
-    const conciergeValue = String(
-      organisation?.extra?.Conciergerie
-      ?? organisation?.extra?.conciergerie
-      ?? ""
-    ).trim().toLowerCase();
+    // 1. La liste importée doit rester identifiable comme telle,
+    // même si l'organisation existe aussi dans le vivier.
+    if (
+      source === "Participants MTL connecte 2026"
+      || id.startsWith("contact-only::")
+    ) {
+      return "Liste de contacts";
+    }
 
-    if (["checked", "true", "1", "oui", "yes"].includes(conciergeValue)) {
+    // 2. Les partenaires Conciergerie sont ceux de la liste
+    // vivier.partenaires, pas toutes les organisations cochées Conciergerie.
+    const conciergePartnerIds = new Set(
+      (state.vivier?.partenaires || [])
+        .map(item => exactId(item?.id || item?.partenaire_id))
+        .filter(Boolean)
+    );
+
+    if (conciergePartnerIds.has(id)) {
       return "Partenaires Conciergerie";
     }
 
-    return "Nos partenaires";
+    // 3. Nos partenaires = partenaires confirmés dans le vivier,
+    // hors partenaires Conciergerie déjà classés ci-dessus.
+    if (/^Partenaire confirmé$/i.test(statut)) {
+      return "Nos partenaires";
+    }
+
+    // Tout autre contact utilisé dans un RDV est rangé avec les contacts
+    // afin de ne pas le présenter à tort comme partenaire.
+    return "Liste de contacts";
   }
 
   function participantRows(relations = state.relations) {
@@ -859,7 +879,7 @@
       const organisation = isPartnerSide ? relation.partenaire : relation.organisation;
       const organisationId = exactId(organisation?.id);
       const organisationName = nomRdvCourt(nomAffiche(organisation) || organisation?.nom || organisationId);
-      const groupe = contactGroupFor(organisation, organisationId);
+      const groupe = contactGroupFor(contact, organisation, organisationId);
       const finalEmail = email || exactId(contact?.email);
       const finalName = name || exactId(contact?.nom);
       const phone = exactId(contact?.telephone);
