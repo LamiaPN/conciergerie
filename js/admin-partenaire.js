@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-partenaire.js
-   VERSION : v64 — validation admin avec nouvelle tentative réseau
+   VERSION : v65 — recharge du cœur admin avec contact principal
    RÔLE    : Accélère le contrôle du token avant le chargement du cœur admin.
 
    ┌─ SOMMAIRE ───────────────────────────────────────────────────────────┐
@@ -45,5 +45,5 @@
   };
 
   /* ═══ SECTION 2 — CHARGEMENT DU CŒUR ADMIN ═══════════════════════════ */
-  document.write('<script src="js/admin-partenaire-core.js?v=20260917-v60-core"><\/script>');
+  document.write('<script src="js/admin-partenaire-core.js?v=20261010-v61-core"><\/script>');
 })();
