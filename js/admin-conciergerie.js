@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-conciergerie.js
-   VERSION : v79 — correction disponibilités multi-valeurs et vue partenaire
+   VERSION : v80 — contexte d'export PDF selon la vue active
    RÔLE    : Planning Conciergerie — sélections uniquement.
 
    RÈGLES :
@@ -2748,4 +2748,26 @@
       parseAvailabilityValues
     };
   }
+
+  /* ═══ CONTEXTE D'EXPORT PDF ══════════════════════════════════════════ */
+  window.getConciergerieExportContext = function() {
+    const calendarView = ["planning", "date", "salle", "partenaire"].includes(state.calendarView)
+      ? state.calendarView
+      : "planning";
+
+    return {
+      mode: state.mode,
+      calendarView,
+      salle:
+        state.mode === "calendrier" && calendarView === "salle"
+          ? exactId(state.calendarRoom)
+          : "",
+      salles: [...state.calendarRooms],
+      partenaireId:
+        state.mode === "calendrier" && calendarView === "partenaire"
+          ? exactId(state.calendarPartnerId)
+          : ""
+    };
+  };
+
 })();
