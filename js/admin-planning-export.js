@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-planning-export.js
-   VERSION : v58 — PDF A4 paysage, 1 jour par page, toutes les salles
+   VERSION : v59 — PDF A4 paysage, 1 jour par page, couleurs 3 salles
    RÔLE    : Export imprimable/PDF du planning Conciergerie complet.
    FORMAT  : 3 pages A4 paysage — 1 jour par page × toutes les salles.
    ════════════════════════════════════════════════════════════════════════ */
@@ -804,6 +804,8 @@
           doc.setFillColor(47, 125, 80);
         } else if (roomIndex === 1) {
           doc.setFillColor(43, 104, 166);
+        } else if (roomIndex === 2) {
+          doc.setFillColor(154, 74, 166);
         } else {
           doc.setFillColor(100, 100, 100);
         }
@@ -859,6 +861,9 @@
             } else if (roomIndex === 1) {
               doc.setFillColor(238, 244, 251);
               doc.setDrawColor(47, 115, 183);
+            } else if (roomIndex === 2) {
+              doc.setFillColor(248, 239, 250);
+              doc.setDrawColor(154, 74, 166);
             } else {
               doc.setFillColor(247, 247, 247);
               doc.setDrawColor(110, 110, 110);
