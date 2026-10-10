@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-conciergerie.js
-   VERSION : v77 — propositions uniquement après enregistrement
+   VERSION : v78 — disponibilités grisées dans le calendrier par partenaire
    RÔLE    : Planning Conciergerie — sélections uniquement.
 
    RÈGLES :
@@ -1247,6 +1247,13 @@
   function renderCalendarPartnerView() {
     const complete = completeCalendarRelations();
 
+    const formulaireByPartnerId = new Map();
+    state.relations.forEach(relation => {
+      const partnerId = exactId(relation.partenaire?.id);
+      if (!partnerId || formulaireByPartnerId.has(partnerId)) return;
+      formulaireByPartnerId.set(partnerId, relation.formulaire || null);
+    });
+
     const partnerMap = new Map(
       (state.vivier?.partenaires || [])
         .filter(item => exactId(item?.id))
@@ -1278,6 +1285,9 @@
 
     const partnerBlocks = partners.map(partner => {
       const partnerId = exactId(partner.id);
+      const reservedAvailability = parseAvailabilityValues(
+        formulaireByPartnerId.get(partnerId)
+      );
 
       const rows = EVENT_DATES.map(dateItem => {
         const items = [];
@@ -1317,12 +1327,20 @@
                 exactId(relationDraft(item.relation).heure) === time
               );
 
+              const requiredWindow = availabilityLabelFor(dateItem.value, time);
+              const unavailable = Boolean(
+                reservedAvailability.size &&
+                requiredWindow &&
+                !reservedAvailability.has(requiredWindow)
+              );
+              const availabilityClass = unavailable ? " is-unavailable" : "";
+
               if (!slotItems.length) {
-                return '<td class="pn-planning-slot is-free"></td>';
+                return `<td class="pn-planning-slot is-free${availabilityClass}"></td>`;
               }
 
               return `
-                <td class="pn-planning-slot${slotItems.length > 1 ? " is-conflict" : ""}">
+                <td class="pn-planning-slot${slotItems.length > 1 ? " is-conflict" : ""}${availabilityClass}">
                   ${slotItems.map(item => {
                     const draft = relationDraft(item.relation);
                     const room = /^Salle Conciergerie\s+/i.test(draft.salle || "")
@@ -1356,7 +1374,7 @@
       <div class="pn-planning-help">
         <strong>Planning par partenaire</strong>
         <span>Chaque partenaire est regroupé une seule fois, avec les 3 dates en lignes.</span>
-        <span style="margin-left:12px"><b style="color:#347022">Vert</b> : demandé par le partenaire · <b style="color:#245B9E">Bleu</b> : demandé par un autre partenaire.</span>
+        <span style="margin-left:12px"><b style="color:#347022">Vert</b> : demandé par le partenaire · <b style="color:#245B9E">Bleu</b> : demandé par un autre partenaire · <b style="color:#7b817b">Gris</b> : partenaire indisponible.</span>
       </div>
       <div class="pn-planning-wrap">
         <table class="pn-planning-table">
