@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-conciergerie.js
-   VERSION : v76 — statuts RDV par partenaire + propositions supplémentaires
+   VERSION : v77 — propositions uniquement après enregistrement
    RÔLE    : Planning Conciergerie — sélections uniquement.
 
    RÈGLES :
@@ -642,26 +642,43 @@
     );
   }
 
+  function hasSavedRdv(relation) {
+    return isCompleteMeeting(relation?.rdv || {});
+  }
+
   function partnerRdvStatus(relations = state.relations) {
     const scheduledPartners = new Set();
 
+    // Un partenaire est considéré comme "figé" seulement lorsqu'au moins
+    // un de ses RDV a réellement été ENREGISTRÉ côté serveur.
+    // Les choix effectués dans les selects avant clic sur Enregistrer
+    // restent donc visibles pendant toute la préparation du planning.
     relations.forEach(relation => {
       const partnerId = exactId(relation.partenaire?.id);
-      if (partnerId && hasRdv(relation)) {
+      if (partnerId && hasSavedRdv(relation)) {
         scheduledPartners.add(partnerId);
       }
     });
 
     return {
       scheduledPartners,
-      withRdv: relations.filter(hasRdv),
+
+      // "Avec RDV" = uniquement les RDV réellement enregistrés.
+      withRdv: relations.filter(hasSavedRdv),
+
+      // "Sans RDV" = tous les choix des partenaires dont aucun RDV
+      // n'a encore été enregistré. Ils restent tous visibles pendant
+      // que l'on prépare plusieurs créneaux avant l'enregistrement.
       withoutRdv: relations.filter(relation => {
         const partnerId = exactId(relation.partenaire?.id);
         return partnerId && !scheduledPartners.has(partnerId);
       }),
+
+      // "Propositions" = choix non retenus d'un partenaire déjà figé.
+      // Ce basculement ne se fait qu'APRÈS enregistrement.
       proposals: relations.filter(relation => {
         const partnerId = exactId(relation.partenaire?.id);
-        return partnerId && scheduledPartners.has(partnerId) && !hasRdv(relation);
+        return partnerId && scheduledPartners.has(partnerId) && !hasSavedRdv(relation);
       })
     };
   }
@@ -681,10 +698,10 @@
       return status.proposals;
     }
 
-    // "Tous" = travail courant : RDV réellement planifiés +
-    // partenaires dont le planning n'a pas encore commencé.
-    // Les choix non retenus d'un partenaire déjà planifié sont rangés
-    // uniquement dans "Propositions".
+    // "Tous" = travail courant : RDV réellement enregistrés +
+    // tous les choix des partenaires dont le planning n'a pas encore
+    // été enregistré. Les choix non retenus ne passent dans
+    // "Propositions" qu'après clic sur "Enregistrer les rendez-vous".
     return [...status.withRdv, ...status.withoutRdv];
   }
 
@@ -1449,7 +1466,7 @@
     if (state.rdvFilter === "without") {
       title = "Aucun partenaire sans rendez-vous";
       text =
-        "Tous les partenaires concernés ont déjà au moins un rendez-vous planifié.";
+        "Tous les partenaires concernés ont déjà au moins un rendez-vous enregistré.";
     }
 
     if (state.rdvFilter === "proposals") {
