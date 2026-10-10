@@ -992,69 +992,72 @@
   }
 
   function renderCalendarDateView(rooms) {
-    const selectedDate = EVENT_DATES.some(
-      item => item.value === state.calendarDate
-    )
-      ? state.calendarDate
-      : EVENT_DATES[0].value;
+    const complete = completeCalendarRelations();
 
-    state.calendarDate = selectedDate;
-
-    const occupancy = buildCalendarOccupancy(
-      completeCalendarRelations(),
-      selectedDate,
-      rooms
-    );
-
-    const header = rooms.map(room => `
-      <th>${escapeHtml(room)}</th>
+    const header = TIME_SLOTS.map(time => `
+      <th class="pn-planning-time-head">${escapeHtml(time)}</th>
     `).join("");
 
-    const body = TIME_SLOTS.map(time => `
-      <tr>
-        <td class="pn-calendar-time"><strong>${escapeHtml(time)}</strong></td>
-        ${rooms.map(room => {
-          const meetings = occupancy.get(calendarCellKey(room, time)) || [];
-          if (!meetings.length) {
-            return `<td><div class="pn-calendar-free"></div></td>`;
-          }
+    const body = EVENT_DATES.map(dateItem => {
+      const byTime = new Map();
 
-          const conflict = meetings.length > 1;
-          return `
-            <td>
-              <div class="pn-calendar-cell${conflict ? " is-conflict" : ""}">
+      complete
+        .filter(relation =>
+          exactId(relationDraft(relation).date) === dateItem.value
+        )
+        .forEach(relation => {
+          const time = exactId(relationDraft(relation).heure);
+          if (!time) return;
+          if (!byTime.has(time)) byTime.set(time, []);
+          byTime.get(time).push(relation);
+        });
+
+      return `
+        <tr>
+          <th class="pn-planning-room">${escapeHtml(dateItem.label)}</th>
+          ${TIME_SLOTS.map(time => {
+            const meetings = byTime.get(time) || [];
+
+            if (!meetings.length) {
+              return '<td class="pn-planning-slot is-free"></td>';
+            }
+
+            const conflict = meetings.length > 1;
+
+            return `
+              <td class="pn-planning-slot${conflict ? " is-conflict" : ""}">
                 ${conflict
                   ? `<div class="pn-calendar-conflict">
                        <i class="fas fa-triangle-exclamation"></i>
-                       Conflit ×${meetings.length}
+                       ×${meetings.length}
                      </div>`
                   : ""}
-                ${meetings.map(calendarMeetingCard).join("")}
-              </div>
-            </td>`;
-        }).join("")}
-      </tr>
-    `).join("");
+                ${meetings.map(relation => {
+                  const draft = relationDraft(relation);
+                  const room = /^Salle Conciergerie\s+/i.test(draft.salle || "")
+                    ? String(draft.salle).replace(/^Salle Conciergerie\s+/i, "Salle ")
+                    : (draft.salle || "");
+
+                  return `<div class="pn-calendar-meeting">
+                    <strong>${escapeHtml(nomRdvCourt(nomAffiche(relation.partenaire)))}</strong>
+                    <span>${escapeHtml(room)}</span>
+                  </div>`;
+                }).join("")}
+              </td>`;
+          }).join("")}
+        </tr>`;
+    }).join("");
 
     return `
-      <div class="pn-calendar-toolbar">
-        <span class="pn-calendar-label">Date :</span>
-        <div class="pn-calendar-pills">
-          ${EVENT_DATES.map(item => `
-            <button type="button"
-                    data-calendar-date="${escapeHtml(item.value)}"
-                    class="${item.value === selectedDate ? "active" : ""}">
-              ${escapeHtml(item.label)}
-            </button>
-          `).join("")}
-        </div>
+      <div class="pn-planning-help">
+        <strong>Planning par date</strong>
+        <span>Les dates sont en lignes, les créneaux horaires en colonnes, et chaque cellule affiche le partenaire prévu.</span>
       </div>
-
-      <div class="pn-calendar-table-wrap">
-        <table class="pn-calendar-table">
+      <div class="pn-planning-wrap">
+        <table class="pn-planning-table">
           <thead>
             <tr>
-              <th class="pn-calendar-time-head">Heure</th>
+              <th class="pn-planning-room-head">Date</th>
               ${header}
             </tr>
           </thead>
