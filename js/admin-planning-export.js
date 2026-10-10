@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-planning-export.js
-   VERSION : v61 — export selon la vue active + noms dynamiques
+   VERSION : v62 — vrai PDF calendrier par partenaire
    RÔLE    : Export imprimable/PDF du planning Conciergerie complet.
    FORMAT  : 3 pages A4 paysage — 1 jour par page × toutes les salles.
    ════════════════════════════════════════════════════════════════════════ */
@@ -705,6 +705,9 @@
     }
 
     if (mode === "calendrier") {
+      if (calendarView === "partenaire" && exact(context?.partenaireNom)) {
+        return `${base}_${cleanFilePart(context.partenaireNom)}.pdf`;
+      }
       if (calendarView === "partenaire") return `${base}_Par_partenaire.pdf`;
       if (calendarView === "date") return `${base}_Par_date.pdf`;
       if (calendarView === "salle") return `${base}_Par_salle.pdf`;
@@ -737,6 +740,228 @@
     if (mode === "organisation") return "MTL connecte 2026 - Conciergerie - Vue par organisation";
 
     return "MTL connecte 2026 - Planning Conciergerie";
+  }
+
+
+  async function generatePartnerPlanningPdf(
+    meetings,
+    vivier,
+    context
+  ) {
+    const JsPDF = await ensureJsPdf();
+    const doc = new JsPDF({
+      orientation: "landscape",
+      unit: "mm",
+      format: "a4",
+      compress: true
+    });
+
+    const pageW = doc.internal.pageSize.getWidth();
+    const pageH = doc.internal.pageSize.getHeight();
+    const margin = 7;
+    const titleY = 12;
+    const tableTop = 29;
+    const footerY = pageH - 6;
+    const dateW = 27;
+    const slots = buildTimeSlots();
+    const slotW = (pageW - margin * 2 - dateW) / slots.length;
+    const headH = 9;
+    const rowH = 48;
+
+    const partners = Array.isArray(vivier?.partenaires) ? vivier.partenaires : [];
+    const organisations = Array.isArray(vivier?.organisations) ? vivier.organisations : [];
+    const partnerById = new Map(partners.map(item => [exact(item.id), item]));
+    const organisationById = new Map(organisations.map(item => [exact(item.id), item]));
+
+    const involvedIds = new Set();
+    meetings.forEach(meeting => {
+      const requesterId = exact(meeting.partenaire_id);
+      const targetId = exact(meeting.organisation_id);
+      if (partnerById.has(requesterId)) involvedIds.add(requesterId);
+      if (partnerById.has(targetId)) involvedIds.add(targetId);
+    });
+
+    let partnerIds = [...involvedIds];
+    const selectedPartnerId = exact(context?.partenaireId);
+    if (selectedPartnerId && involvedIds.has(selectedPartnerId)) {
+      partnerIds = [selectedPartnerId];
+    }
+
+    partnerIds.sort((a, b) => {
+      const nameA = pdfShortName(partnerDisplayName(partnerById.get(a)) || a);
+      const nameB = pdfShortName(partnerDisplayName(partnerById.get(b)) || b);
+      return nameA.localeCompare(nameB, "fr", { sensitivity: "base" });
+    });
+
+    if (!partnerIds.length) {
+      throw new Error("Aucun partenaire avec rendez-vous à exporter.");
+    }
+
+    const generated = new Intl.DateTimeFormat("fr-CA", {
+      dateStyle: "medium",
+      timeStyle: "short"
+    }).format(new Date());
+
+    function partnerMeetings(partnerId) {
+      const items = [];
+
+      meetings.forEach(meeting => {
+        const requesterId = exact(meeting.partenaire_id);
+        const targetId = exact(meeting.organisation_id);
+
+        if (requesterId === partnerId) {
+          const target = organisationById.get(targetId) || partnerById.get(targetId) || {};
+          items.push({
+            meeting,
+            direction: "outgoing",
+            counterpart: pdfShortName(exact(target.nom) || targetId || "Organisation")
+          });
+        }
+
+        if (targetId === partnerId && requesterId !== partnerId) {
+          const requester = partnerById.get(requesterId) || {};
+          items.push({
+            meeting,
+            direction: "incoming",
+            counterpart: pdfShortName(partnerDisplayName(requester) || requesterId || "Partenaire")
+          });
+        }
+      });
+
+      return items;
+    }
+
+    function drawPartnerPage(partnerId, pageIndex) {
+      if (pageIndex > 0) doc.addPage("a4", "landscape");
+
+      const partner = partnerById.get(partnerId) || {};
+      const partnerName = pdfShortName(partnerDisplayName(partner) || partnerId);
+      const items = partnerMeetings(partnerId);
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(15);
+      doc.setTextColor(17, 17, 17);
+      doc.text("MTL connecte 2026 - Conciergerie", margin, titleY);
+
+      doc.setFontSize(13);
+      doc.setTextColor(47, 125, 80);
+      doc.text(partnerName, margin, titleY + 8);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(85, 85, 85);
+      doc.text(
+        `${items.length} rendez-vous · Planning par partenaire`,
+        pageW - margin,
+        titleY,
+        { align: "right" }
+      );
+      doc.text(
+        `Page ${pageIndex + 1}/${partnerIds.length} · Généré le ${generated}`,
+        pageW - margin,
+        titleY + 7,
+        { align: "right" }
+      );
+
+      doc.setDrawColor(200, 205, 210);
+      doc.setLineWidth(0.18);
+
+      // En-tête
+      doc.setFillColor(245, 247, 245);
+      doc.rect(margin, tableTop, dateW, headH, "FD");
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(6.6);
+      doc.setTextColor(90, 96, 90);
+      doc.text("DATE", margin + 2, tableTop + 5.8);
+
+      slots.forEach((time, index) => {
+        const x = margin + dateW + index * slotW;
+        doc.setFillColor(250, 251, 250);
+        doc.rect(x, tableTop, slotW, headH, "FD");
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(5.9);
+        doc.setTextColor(90, 96, 90);
+        doc.text(time, x + slotW / 2, tableTop + 5.8, { align: "center" });
+      });
+
+      EVENT_DATES.forEach((dateItem, dateIndex) => {
+        const y = tableTop + headH + dateIndex * rowH;
+        doc.setFillColor(250, 251, 250);
+        doc.rect(margin, y, dateW, rowH, "FD");
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(7.1);
+        doc.setTextColor(25, 25, 25);
+        doc.text(dateItem.label, margin + 2, y + 7);
+
+        slots.forEach((time, slotIndex) => {
+          const x = margin + dateW + slotIndex * slotW;
+          doc.setFillColor(255, 255, 255);
+          doc.rect(x, y, slotW, rowH, "FD");
+
+          const slotItems = items.filter(item =>
+            exact(item.meeting.date) === dateItem.value &&
+            exact(item.meeting.heure) === time
+          );
+
+          if (!slotItems.length) return;
+
+          const itemH = rowH / slotItems.length;
+
+          slotItems.forEach((item, itemIndex) => {
+            const cy = y + itemIndex * itemH;
+            const room = exact(item.meeting.salle)
+              .replace(/^Salle Conciergerie\s+/i, "Salle ");
+
+            if (item.direction === "incoming") {
+              doc.setFillColor(232, 241, 255);
+              doc.setDrawColor(91, 149, 226);
+            } else {
+              doc.setFillColor(235, 247, 231);
+              doc.setDrawColor(103, 190, 74);
+            }
+
+            doc.rect(x + 0.5, cy + 0.8, slotW - 1, itemH - 1.6, "F");
+            doc.setLineWidth(0.6);
+            doc.line(x + 0.8, cy + 1.2, x + 0.8, cy + itemH - 1.2);
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(5.6);
+            doc.setTextColor(20, 20, 20);
+            const counterpart = doc.splitTextToSize(item.counterpart, slotW - 2.6).slice(0, 2);
+            doc.text(counterpart, x + 1.6, cy + 5.2);
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(4.8);
+            doc.setTextColor(90, 90, 90);
+            doc.text(room || "Salle non renseignée", x + 1.6, cy + itemH - 3.0);
+          });
+        });
+      });
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(6.2);
+      doc.setTextColor(100, 100, 100);
+      doc.text(
+        "Vert : demandé par le partenaire · Bleu : demandé par un autre partenaire",
+        margin,
+        footerY
+      );
+      doc.text(
+        "Planning interne - Conciergerie MTL connecte 2026",
+        pageW - margin,
+        footerY,
+        { align: "right" }
+      );
+    }
+
+    partnerIds.forEach((partnerId, index) => drawPartnerPage(partnerId, index));
+
+    if (partnerIds.length === 1) {
+      const onlyPartner = partnerById.get(partnerIds[0]) || {};
+      context.partenaireNom = pdfShortName(partnerDisplayName(onlyPartner) || partnerIds[0]);
+    }
+
+    doc.save(buildPdfName(context));
   }
 
   async function generatePlanningPdf(
@@ -1070,13 +1295,24 @@
 
       const forms = await loadFormsSequential([...partnerIds], adminToken);
 
-      await generatePlanningPdf(
-        rooms,
-        meetings,
-        vivier,
-        forms,
-        context
-      );
+      if (
+        exact(context?.mode) === "calendrier" &&
+        exact(context?.calendarView) === "partenaire"
+      ) {
+        await generatePartnerPlanningPdf(
+          meetings,
+          vivier,
+          context
+        );
+      } else {
+        await generatePlanningPdf(
+          rooms,
+          meetings,
+          vivier,
+          forms,
+          context
+        );
+      }
 
       showExportMessage("PDF créé et téléchargé.");
     } catch (error) {
