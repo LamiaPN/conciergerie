@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-conciergerie.js
-   VERSION : v73 — calendrier synchronisé avec les modifications RDV en cours
+   VERSION : v74 — planning global par jours, salles et créneaux
    RÔLE    : Planning Conciergerie — sélections uniquement.
 
    RÈGLES :
@@ -60,7 +60,7 @@
     rooms: [...DEFAULT_ROOMS],
     calendarRooms: [],
     calendarDate: EVENT_DATES[0].value,
-    calendarView: "date",
+    calendarView: "planning",
     calendarRoom: DEFAULT_ROOMS[0],
     calendarPartnerId: "",
     singleNotificationKey: "",
@@ -824,7 +824,7 @@
     const viewButton = event.target.closest("[data-calendar-view]");
     if (viewButton) {
       const view = exactId(viewButton.dataset.calendarView);
-      if (["date", "salle", "partenaire"].includes(view)) {
+      if (["planning", "date", "salle", "partenaire"].includes(view)) {
         state.calendarView = view;
         renderCalendar();
       }
@@ -906,6 +906,75 @@
           || relation.organisation?.id
           || "Organisation"
         )}</span>
+      </div>`;
+  }
+
+  function renderCalendarPlanningView(rooms) {
+    const complete = completeCalendarRelations();
+    const occupancies = new Map();
+
+    EVENT_DATES.forEach(dateItem => {
+      occupancies.set(
+        dateItem.value,
+        buildCalendarOccupancy(complete, dateItem.value, rooms)
+      );
+    });
+
+    const header = TIME_SLOTS.map(time => `
+      <th class="pn-planning-time-head">${escapeHtml(time)}</th>
+    `).join("");
+
+    const body = EVENT_DATES.map(dateItem => {
+      const occupancy = occupancies.get(dateItem.value) || new Map();
+
+      return `
+        <tr class="pn-planning-day-row">
+          <th class="pn-planning-day" colspan="${TIME_SLOTS.length + 1}">
+            ${escapeHtml(dateItem.label)}
+          </th>
+        </tr>
+        ${rooms.map(room => `
+          <tr>
+            <th class="pn-planning-room">${escapeHtml(room)}</th>
+            ${TIME_SLOTS.map(time => {
+              const meetings = occupancy.get(calendarCellKey(room, time)) || [];
+
+              if (!meetings.length) {
+                return '<td class="pn-planning-slot is-free"></td>';
+              }
+
+              const conflict = meetings.length > 1;
+              return `
+                <td class="pn-planning-slot${conflict ? " is-conflict" : ""}">
+                  ${conflict
+                    ? `<div class="pn-calendar-conflict">
+                         <i class="fas fa-triangle-exclamation"></i>
+                         ×${meetings.length}
+                       </div>`
+                    : ""}
+                  ${meetings.map(calendarMeetingCard).join("")}
+                </td>`;
+            }).join("")}
+          </tr>
+        `).join("")}
+      `;
+    }).join("");
+
+    return `
+      <div class="pn-planning-help">
+        <strong>Planning global</strong>
+        <span>Les jours sont regroupés verticalement, avec les salles en lignes et les créneaux horaires en colonnes.</span>
+      </div>
+      <div class="pn-planning-wrap">
+        <table class="pn-planning-table">
+          <thead>
+            <tr>
+              <th class="pn-planning-room-head">Jour / salle</th>
+              ${header}
+            </tr>
+          </thead>
+          <tbody>${body}</tbody>
+        </table>
       </div>`;
   }
 
@@ -1184,25 +1253,32 @@
       return;
     }
 
-    const view = ["date", "salle", "partenaire"].includes(state.calendarView)
+    const view = ["planning", "date", "salle", "partenaire"].includes(state.calendarView)
       ? state.calendarView
-      : "date";
+      : "planning";
 
     state.calendarView = view;
 
     const complete = completeCalendarRelations();
     const totalRdv = complete.length;
 
-    const content = view === "salle"
-      ? renderCalendarRoomView(rooms)
-      : view === "partenaire"
-        ? renderCalendarPartnerView()
-        : renderCalendarDateView(rooms);
+    const content = view === "planning"
+      ? renderCalendarPlanningView(rooms)
+      : view === "salle"
+        ? renderCalendarRoomView(rooms)
+        : view === "partenaire"
+          ? renderCalendarPartnerView()
+          : renderCalendarDateView(rooms);
 
     el.content.innerHTML = `
       <section class="pn-rdv-calendar" aria-label="Calendrier des rendez-vous">
         <div class="pn-calendar-top">
           <div class="pn-calendar-tabs">
+            <button type="button"
+                    data-calendar-view="planning"
+                    class="${view === "planning" ? "active" : ""}">
+              Planning global
+            </button>
             <button type="button"
                     data-calendar-view="date"
                     class="${view === "date" ? "active" : ""}">
