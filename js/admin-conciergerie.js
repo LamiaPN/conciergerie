@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-conciergerie.js
-   VERSION : v75 — compteurs RDV par date, salle et partenaire
+   VERSION : v76 — statuts RDV par partenaire + propositions supplémentaires
    RÔLE    : Planning Conciergerie — sélections uniquement.
 
    RÈGLES :
@@ -154,6 +154,7 @@
     el.rdvAllCount = $("#rdvAllCount");
     el.rdvWithCount = $("#rdvWithCount");
     el.rdvWithoutCount = $("#rdvWithoutCount");
+    el.rdvProposalCount = $("#rdvProposalCount");
 
     el.savebar = $("#conciergerieSavebar");
     el.saveStatus = $("#conciergerieSaveStatus");
@@ -641,18 +642,50 @@
     );
   }
 
+  function partnerRdvStatus(relations = state.relations) {
+    const scheduledPartners = new Set();
+
+    relations.forEach(relation => {
+      const partnerId = exactId(relation.partenaire?.id);
+      if (partnerId && hasRdv(relation)) {
+        scheduledPartners.add(partnerId);
+      }
+    });
+
+    return {
+      scheduledPartners,
+      withRdv: relations.filter(hasRdv),
+      withoutRdv: relations.filter(relation => {
+        const partnerId = exactId(relation.partenaire?.id);
+        return partnerId && !scheduledPartners.has(partnerId);
+      }),
+      proposals: relations.filter(relation => {
+        const partnerId = exactId(relation.partenaire?.id);
+        return partnerId && scheduledPartners.has(partnerId) && !hasRdv(relation);
+      })
+    };
+  }
+
   function filteredRelations(relations, filter) {
+    const status = partnerRdvStatus(relations);
+
     if (filter === "with") {
-      return relations.filter(hasRdv);
+      return status.withRdv;
     }
 
     if (filter === "without") {
-      return relations.filter(
-        relation => !hasRdv(relation)
-      );
+      return status.withoutRdv;
     }
 
-    return [...relations];
+    if (filter === "proposals") {
+      return status.proposals;
+    }
+
+    // "Tous" = travail courant : RDV réellement planifiés +
+    // partenaires dont le planning n'a pas encore commencé.
+    // Les choix non retenus d'un partenaire déjà planifié sont rangés
+    // uniquement dans "Propositions".
+    return [...status.withRdv, ...status.withoutRdv];
   }
 
   function relationDraft(relation) {
@@ -703,13 +736,14 @@
 
   function updateAllCounts() {
     const all = state.relations;
-    const withRdv = all.filter(hasRdv);
-    const withoutRdv = all.filter(
-      relation => !hasRdv(relation)
-    );
+    const status = partnerRdvStatus(all);
+    const withRdv = status.withRdv;
+    const withoutRdv = status.withoutRdv;
+    const proposals = status.proposals;
+    const current = [...withRdv, ...withoutRdv];
 
     if (el.orgCount) {
-      el.orgCount.textContent = `${withRdv.length} / ${all.length}`;
+      el.orgCount.textContent = `${withRdv.length} / ${current.length}`;
     }
 
     if (el.relationCount) {
@@ -728,7 +762,7 @@
 
     if (el.rdvAllCount) {
       el.rdvAllCount.textContent =
-        String(all.length);
+        String(current.length);
     }
 
     if (el.rdvWithCount) {
@@ -738,7 +772,12 @@
 
     if (el.rdvWithoutCount) {
       el.rdvWithoutCount.textContent =
-        String(withoutRdv.length);
+        String(uniquePartnerCount(withoutRdv));
+    }
+
+    if (el.rdvProposalCount) {
+      el.rdvProposalCount.textContent =
+        String(proposals.length);
     }
   }
 
@@ -795,7 +834,11 @@
       return;
     }
 
-    if (state.mode === "partenaire") {
+    if (
+      state.mode === "partenaire"
+      || state.rdvFilter === "without"
+      || state.rdvFilter === "proposals"
+    ) {
       renderByPartner(relations);
     } else {
       renderByOrganisation(relations);
@@ -1404,9 +1447,15 @@
     }
 
     if (state.rdvFilter === "without") {
-      title = "Aucun rendez-vous à préparer";
+      title = "Aucun partenaire sans rendez-vous";
       text =
-        "Toutes les relations sélectionnées ont un rendez-vous complet.";
+        "Tous les partenaires concernés ont déjà au moins un rendez-vous planifié.";
+    }
+
+    if (state.rdvFilter === "proposals") {
+      title = "Aucune proposition supplémentaire";
+      text =
+        "Aucune organisation non planifiée n'est actuellement conservée comme option de remplacement.";
     }
 
     el.content.innerHTML = `
