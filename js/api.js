@@ -654,8 +654,8 @@ const API = (() => {
   const current = document.currentScript;
   const script = document.createElement("script");
   script.src = current?.src
-    ? new URL("admin-planning-export.js?v=20260827-export31", current.src).toString()
-    : "js/admin-planning-export.js?v=20260827-export31";
+    ? new URL("admin-planning-export.js?v=20261010-export32", current.src).toString()
+    : "js/admin-planning-export.js?v=20261010-export32";
   script.defer = true;
   script.dataset.adminPlanningExportLoader = "true";
   document.head.appendChild(script);
