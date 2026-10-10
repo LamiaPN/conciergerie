@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-conciergerie.js
-   VERSION : v78 — disponibilités grisées dans le calendrier par partenaire
+   VERSION : v79 — correction disponibilités multi-valeurs et vue partenaire
    RÔLE    : Planning Conciergerie — sélections uniquement.
 
    RÈGLES :
@@ -1321,7 +1321,7 @@
 
         return `
           <tr>
-            <th class="pn-planning-room">${escapeHtml(dateItem.label)} (${calendarDateCount(dateItem.value, complete)})</th>
+            <th class="pn-planning-room">${escapeHtml(dateItem.label)}</th>
             ${TIME_SLOTS.map(time => {
               const slotItems = items.filter(item =>
                 exactId(relationDraft(item.relation).heure) === time
@@ -2062,9 +2062,36 @@
   }
 
   function parseAvailabilityValues(formulaire) {
+    const raw = formulaire?.disponibilites_conciergerie;
+
+    if (Array.isArray(raw)) {
+      return new Set(
+        raw
+          .map(value => String(value ?? "").trim())
+          .filter(Boolean)
+      );
+    }
+
+    const text = String(raw ?? "").trim();
+    if (!text) return new Set();
+
+    if (text.startsWith("[") && text.endsWith("]")) {
+      try {
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed)) {
+          return new Set(
+            parsed
+              .map(value => String(value ?? "").trim())
+              .filter(Boolean)
+          );
+        }
+      } catch (_) {}
+    }
+
+    const separator = text.includes(" | ") ? " | " : ",";
     return new Set(
-      String(formulaire?.disponibilites_conciergerie ?? "")
-        .split(",")
+      text
+        .split(separator)
         .map(value => value.trim())
         .filter(Boolean)
     );
