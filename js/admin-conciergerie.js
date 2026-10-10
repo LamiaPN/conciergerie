@@ -115,6 +115,23 @@
       || partenaire.id;
   }
 
+  /* Affichage compact réservé aux rendez-vous : garde le sigle avant
+     une parenthèse ou avant un tiret séparateur, sans modifier les données. */
+  function nomRdvCourt(value) {
+    let text = exactId(value);
+    if (!text) return "";
+
+    const paren = text.indexOf("(");
+    if (paren > 0) text = text.slice(0, paren).trim();
+
+    const match = text.match(/\s[-–—]\s/);
+    if (match && Number.isInteger(match.index) && match.index > 0) {
+      text = text.slice(0, match.index).trim();
+    }
+
+    return text;
+  }
+
   const el = {};
 
   function cacheDom() {
@@ -805,7 +822,7 @@
 
       partners.set(id, {
         id,
-        label: nomAffiche(relation.partenaire)
+        label: nomRdvCourt(nomAffiche(relation.partenaire))
       });
     });
 
@@ -900,12 +917,8 @@
   function calendarMeetingCard(relation) {
     return `
       <div class="pn-calendar-meeting">
-        <strong>${escapeHtml(nomAffiche(relation.partenaire))}</strong>
-        <span>${escapeHtml(
-          relation.organisation?.nom
-          || relation.organisation?.id
-          || "Organisation"
-        )}</span>
+        <strong>${escapeHtml(nomRdvCourt(nomAffiche(relation.partenaire)))}</strong>
+        <span>${escapeHtml(nomRdvCourt(relation.organisation?.nom || relation.organisation?.id || "Organisation"))}</span>
       </div>`;
   }
 
@@ -1100,11 +1113,7 @@
                   <tr>
                     <td><strong>${index === 0 ? escapeHtml(time) : ""}</strong></td>
                     <td>${escapeHtml(nomAffiche(relation.partenaire))}</td>
-                    <td>${escapeHtml(
-                      relation.organisation?.nom
-                      || relation.organisation?.id
-                      || "Organisation"
-                    )}</td>
+                    <td>${escapeHtml(nomRdvCourt(relation.organisation?.nom || relation.organisation?.id || "Organisation"))}</td>
                     <td><span class="pn-rdv-badge">RDV</span></td>
                   </tr>
                 `).join("");
@@ -1190,7 +1199,7 @@
         ? `
           <div class="pn-partner-sheet">
             <div class="pn-partner-head">
-              <h3>${escapeHtml(selectedPartner?.label || "Partenaire")}</h3>
+              <h3>${escapeHtml(nomRdvCourt(selectedPartner?.label || "Partenaire"))}</h3>
               <div class="pn-partner-summary">
                 <span>${meetings.length} RDV</span>
                 <span>${dayCount} jour${dayCount > 1 ? "s" : ""}</span>
@@ -1220,11 +1229,7 @@
                             <td><strong>${escapeHtml(dateLabel)}</strong></td>
                             <td>${escapeHtml(relationDraft(relation).heure || "—")}</td>
                             <td>${escapeHtml(relationDraft(relation).salle || "—")}</td>
-                            <td>${escapeHtml(
-                              relation.organisation?.nom
-                              || relation.organisation?.id
-                              || "Organisation"
-                            )}</td>
+                            <td>${escapeHtml(nomRdvCourt(relation.organisation?.nom || relation.organisation?.id || "Organisation"))}</td>
                           </tr>`;
                       }).join("")
                     : `<tr><td colspan="4" class="pn-empty-row">Aucun rendez-vous planifié.</td></tr>`}
@@ -1412,10 +1417,7 @@
         return `
           <article class="conciergerie-org-card">
             <header class="conciergerie-org-head">
-              <h3>${escapeHtml(
-                group.organisation.nom
-                || group.organisation.id
-              )}</h3>
+              <h3>${escapeHtml(nomRdvCourt(group.organisation.nom || group.organisation.id))}</h3>
               <span>${count} partenaire${count > 1 ? "s" : ""}</span>
             </header>
 
@@ -1507,9 +1509,7 @@
         return `
           <article class="conciergerie-org-card">
             <header class="conciergerie-org-head">
-              <h3>${escapeHtml(
-                nomAffiche(group.partenaire)
-              )}</h3>
+              <h3>${escapeHtml(nomRdvCourt(nomAffiche(group.partenaire)))}</h3>
               <span>${count} organisation${count > 1 ? "s" : ""}</span>
             </header>
 
@@ -1551,7 +1551,7 @@
     return `
       <tr data-relation-key="${escapeHtml(relation.key)}">
         <td class="conciergerie-partner">
-          ${escapeHtml(firstColumn)}
+          ${escapeHtml(nomRdvCourt(firstColumn))}
         </td>
 
         <td>
