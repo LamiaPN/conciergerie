@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-planning-export.js
-   VERSION : v62 — vrai PDF calendrier par partenaire
+   VERSION : v63 — PDF partenaire matin/après-midi lisible
    RÔLE    : Export imprimable/PDF du planning Conciergerie complet.
    FORMAT  : 3 pages A4 paysage — 1 jour par page × toutes les salles.
    ════════════════════════════════════════════════════════════════════════ */
@@ -759,14 +759,16 @@
     const pageW = doc.internal.pageSize.getWidth();
     const pageH = doc.internal.pageSize.getHeight();
     const margin = 7;
-    const titleY = 12;
-    const tableTop = 29;
+    const titleY = 11;
     const footerY = pageH - 6;
-    const dateW = 27;
-    const slots = buildTimeSlots();
-    const slotW = (pageW - margin * 2 - dateW) / slots.length;
-    const headH = 9;
-    const rowH = 48;
+    const dateW = 32;
+    const headH = 8;
+    const sectionTitleH = 7;
+    const rowH = 21;
+    const sectionGap = 8;
+
+    const morningSlots = buildTimeSlots().filter(time => time < "13:00");
+    const afternoonSlots = buildTimeSlots().filter(time => time >= "13:00");
 
     const partners = Array.isArray(vivier?.partenaires) ? vivier.partenaires : [];
     const organisations = Array.isArray(vivier?.organisations) ? vivier.organisations : [];
@@ -831,6 +833,95 @@
       return items;
     }
 
+    function drawSection(items, slots, top, label) {
+      const slotW = (pageW - margin * 2 - dateW) / Math.max(1, slots.length);
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(8.2);
+      doc.setTextColor(47, 125, 80);
+      doc.text(label, margin, top + 5);
+
+      const tableTop = top + sectionTitleH;
+
+      doc.setFillColor(245, 247, 245);
+      doc.setDrawColor(198, 204, 210);
+      doc.setLineWidth(0.18);
+      doc.rect(margin, tableTop, dateW, headH, "FD");
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(6.6);
+      doc.setTextColor(90, 96, 90);
+      doc.text("DATE", margin + 2, tableTop + 5.3);
+
+      slots.forEach((time, index) => {
+        const x = margin + dateW + index * slotW;
+        doc.setFillColor(250, 251, 250);
+        doc.rect(x, tableTop, slotW, headH, "FD");
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(6.4);
+        doc.setTextColor(90, 96, 90);
+        doc.text(time, x + slotW / 2, tableTop + 5.3, { align: "center" });
+      });
+
+      EVENT_DATES.forEach((dateItem, dateIndex) => {
+        const y = tableTop + headH + dateIndex * rowH;
+
+        doc.setFillColor(250, 251, 250);
+        doc.rect(margin, y, dateW, rowH, "FD");
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(7);
+        doc.setTextColor(25, 25, 25);
+        const dateLines = doc.splitTextToSize(dateItem.label, dateW - 4).slice(0, 2);
+        doc.text(dateLines, margin + 2, y + 6);
+
+        slots.forEach((time, slotIndex) => {
+          const x = margin + dateW + slotIndex * slotW;
+          doc.setFillColor(255, 255, 255);
+          doc.rect(x, y, slotW, rowH, "FD");
+
+          const slotItems = items.filter(item =>
+            exact(item.meeting.date) === dateItem.value &&
+            exact(item.meeting.heure) === time
+          );
+
+          if (!slotItems.length) return;
+
+          const itemH = rowH / slotItems.length;
+
+          slotItems.forEach((item, itemIndex) => {
+            const cy = y + itemIndex * itemH;
+            const room = exact(item.meeting.salle)
+              .replace(/^Salle Conciergerie\s+/i, "Salle ");
+
+            if (item.direction === "incoming") {
+              doc.setFillColor(232, 241, 255);
+              doc.setDrawColor(91, 149, 226);
+            } else {
+              doc.setFillColor(235, 247, 231);
+              doc.setDrawColor(103, 190, 74);
+            }
+
+            doc.rect(x + 0.5, cy + 0.6, slotW - 1, itemH - 1.2, "F");
+            doc.setLineWidth(0.6);
+            doc.line(x + 0.8, cy + 1.0, x + 0.8, cy + itemH - 1.0);
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(6.2);
+            doc.setTextColor(20, 20, 20);
+            const counterpart = doc.splitTextToSize(item.counterpart, slotW - 3).slice(0, 2);
+            doc.text(counterpart, x + 1.6, cy + 5.1);
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(5.1);
+            doc.setTextColor(90, 90, 90);
+            doc.text(room || "Salle non renseignée", x + 1.6, cy + itemH - 2.7);
+          });
+        });
+      });
+
+      return tableTop + headH + EVENT_DATES.length * rowH;
+    }
+
     function drawPartnerPage(partnerId, pageIndex) {
       if (pageIndex > 0) doc.addPage("a4", "landscape");
 
@@ -863,80 +954,19 @@
         { align: "right" }
       );
 
-      doc.setDrawColor(200, 205, 210);
-      doc.setLineWidth(0.18);
+      const morningBottom = drawSection(
+        items,
+        morningSlots,
+        27,
+        "Matin · 09:00 à 12:30"
+      );
 
-      // En-tête
-      doc.setFillColor(245, 247, 245);
-      doc.rect(margin, tableTop, dateW, headH, "FD");
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(6.6);
-      doc.setTextColor(90, 96, 90);
-      doc.text("DATE", margin + 2, tableTop + 5.8);
-
-      slots.forEach((time, index) => {
-        const x = margin + dateW + index * slotW;
-        doc.setFillColor(250, 251, 250);
-        doc.rect(x, tableTop, slotW, headH, "FD");
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(5.9);
-        doc.setTextColor(90, 96, 90);
-        doc.text(time, x + slotW / 2, tableTop + 5.8, { align: "center" });
-      });
-
-      EVENT_DATES.forEach((dateItem, dateIndex) => {
-        const y = tableTop + headH + dateIndex * rowH;
-        doc.setFillColor(250, 251, 250);
-        doc.rect(margin, y, dateW, rowH, "FD");
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(7.1);
-        doc.setTextColor(25, 25, 25);
-        doc.text(dateItem.label, margin + 2, y + 7);
-
-        slots.forEach((time, slotIndex) => {
-          const x = margin + dateW + slotIndex * slotW;
-          doc.setFillColor(255, 255, 255);
-          doc.rect(x, y, slotW, rowH, "FD");
-
-          const slotItems = items.filter(item =>
-            exact(item.meeting.date) === dateItem.value &&
-            exact(item.meeting.heure) === time
-          );
-
-          if (!slotItems.length) return;
-
-          const itemH = rowH / slotItems.length;
-
-          slotItems.forEach((item, itemIndex) => {
-            const cy = y + itemIndex * itemH;
-            const room = exact(item.meeting.salle)
-              .replace(/^Salle Conciergerie\s+/i, "Salle ");
-
-            if (item.direction === "incoming") {
-              doc.setFillColor(232, 241, 255);
-              doc.setDrawColor(91, 149, 226);
-            } else {
-              doc.setFillColor(235, 247, 231);
-              doc.setDrawColor(103, 190, 74);
-            }
-
-            doc.rect(x + 0.5, cy + 0.8, slotW - 1, itemH - 1.6, "F");
-            doc.setLineWidth(0.6);
-            doc.line(x + 0.8, cy + 1.2, x + 0.8, cy + itemH - 1.2);
-
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(5.6);
-            doc.setTextColor(20, 20, 20);
-            const counterpart = doc.splitTextToSize(item.counterpart, slotW - 2.6).slice(0, 2);
-            doc.text(counterpart, x + 1.6, cy + 5.2);
-
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(4.8);
-            doc.setTextColor(90, 90, 90);
-            doc.text(room || "Salle non renseignée", x + 1.6, cy + itemH - 3.0);
-          });
-        });
-      });
+      drawSection(
+        items,
+        afternoonSlots,
+        morningBottom + sectionGap,
+        "Après-midi · 13:00 à 16:30"
+      );
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(6.2);
