@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-conciergerie.js
-   VERSION : v85 — vue participants / contacts
+   VERSION : v86 — groupes de contacts et export PDF de la vue contact
    RÔLE    : Planning Conciergerie — sélections uniquement.
 
    RÈGLES :
@@ -809,6 +809,23 @@
     ).size;
   }
 
+  function contactGroupFor(organisation, organisationId) {
+    const id = exactId(organisationId);
+    if (id.startsWith("contact-only::")) return "Liste de contacts";
+
+    const conciergeValue = String(
+      organisation?.extra?.Conciergerie
+      ?? organisation?.extra?.conciergerie
+      ?? ""
+    ).trim().toLowerCase();
+
+    if (["checked", "true", "1", "oui", "yes"].includes(conciergeValue)) {
+      return "Partenaires Conciergerie";
+    }
+
+    return "Nos partenaires";
+  }
+
   function participantRows(relations = state.relations) {
     const rows = new Map();
 
@@ -842,6 +859,7 @@
       const organisation = isPartnerSide ? relation.partenaire : relation.organisation;
       const organisationId = exactId(organisation?.id);
       const organisationName = nomRdvCourt(nomAffiche(organisation) || organisation?.nom || organisationId);
+      const groupe = contactGroupFor(organisation, organisationId);
       const finalEmail = email || exactId(contact?.email);
       const finalName = name || exactId(contact?.nom);
       const phone = exactId(contact?.telephone);
@@ -863,6 +881,7 @@
         organisation: organisationName || "—",
         email: finalEmail || "",
         telephone: phone || "",
+        groupe,
         rdv: 1
       });
     };
@@ -874,7 +893,16 @@
       addParticipant(relation, draft, "organisation");
     });
 
+    const groupOrder = {
+      "Partenaires Conciergerie": 0,
+      "Nos partenaires": 1,
+      "Liste de contacts": 2
+    };
+
     return [...rows.values()].sort((a, b) => {
+      const groupCompare = (groupOrder[a.groupe] ?? 99) - (groupOrder[b.groupe] ?? 99);
+      if (groupCompare) return groupCompare;
+
       const orgCompare = String(a.organisation || "").localeCompare(
         String(b.organisation || ""),
         "fr",
@@ -902,42 +930,58 @@
       return;
     }
 
-    el.content.innerHTML = `
-      <article class="conciergerie-group">
-        <div class="conciergerie-group-head">
-          <div>
-            <h3>Participants aux rendez-vous <span class="count">(${participants.length})</span></h3>
-            <p>Contacts associés aux rendez-vous planifiés.</p>
+    const groups = [
+      "Partenaires Conciergerie",
+      "Nos partenaires",
+      "Liste de contacts"
+    ];
+
+    el.content.innerHTML = groups.map(groupName => {
+      const items = participants.filter(item => item.groupe === groupName);
+      if (!items.length) return "";
+
+      return `
+        <article class="conciergerie-group">
+          <div class="conciergerie-group-head">
+            <div>
+              <h3>${escapeHtml(groupName)} <span class="count">(${items.length})</span></h3>
+              <p>${groupName === "Partenaires Conciergerie"
+                ? "Participants issus des organisations engagées dans la Conciergerie."
+                : groupName === "Nos partenaires"
+                  ? "Participants issus des autres partenaires et organisations du vivier."
+                  : "Participants provenant de la liste de contacts importée."}</p>
+            </div>
           </div>
-        </div>
-        <div class="conciergerie-table-wrap">
-          <table class="conciergerie-table">
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Organisation</th>
-                <th>Email</th>
-                <th>Téléphone</th>
-                <th>RDV</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${participants.map(item => `
+          <div class="conciergerie-table-wrap">
+            <table class="conciergerie-table">
+              <thead>
                 <tr>
-                  <td><strong>${escapeHtml(item.nom)}</strong></td>
-                  <td>${escapeHtml(item.organisation)}</td>
-                  <td>${item.email ? `<a href="mailto:${escapeHtml(item.email)}">${escapeHtml(item.email)}</a>` : "—"}</td>
-                  <td>${item.telephone ? `<a href="tel:${escapeHtml(item.telephone)}">${escapeHtml(item.telephone)}</a>` : "—"}</td>
-                  <td>${item.rdv}</td>
+                  <th>Nom</th>
+                  <th>Organisation</th>
+                  <th>Email</th>
+                  <th>Téléphone</th>
+                  <th>RDV</th>
                 </tr>
-              `).join("")}
-            </tbody>
-          </table>
-        </div>
-      </article>`;
+              </thead>
+              <tbody>
+                ${items.map(item => `
+                  <tr>
+                    <td><strong>${escapeHtml(item.nom)}</strong></td>
+                    <td>${escapeHtml(item.organisation)}</td>
+                    <td>${item.email ? `<a href="mailto:${escapeHtml(item.email)}">${escapeHtml(item.email)}</a>` : "—"}</td>
+                    <td>${item.telephone ? `<a href="tel:${escapeHtml(item.telephone)}">${escapeHtml(item.telephone)}</a>` : "—"}</td>
+                    <td>${item.rdv}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        </article>`;
+    }).join("");
 
     el.content.hidden = false;
   }
+
 
   function updateAllCounts() {
     const all = state.relations;
@@ -3131,7 +3175,11 @@
       partenaireId:
         state.mode === "calendrier" && calendarView === "partenaire"
           ? exactId(state.calendarPartnerId)
-          : ""
+          : "",
+      contactRows:
+        state.mode === "contact"
+          ? participantRows(state.relations).map(item => ({ ...item }))
+          : []
     };
   };
 
