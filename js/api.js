@@ -404,6 +404,32 @@ const API = (() => {
     return Array.isArray(data.contacts) ? data.contacts : [];
   }
 
+  async function saveContactAdmin(adminToken, contact) {
+    if (!CONFIG.SHEET_API_URL) {
+      return {
+        ok: true,
+        demo: true,
+        contact: {
+          ...contact,
+          contact_id: contact.contact_id || "ctc-demo"
+        }
+      };
+    }
+
+    const data = await _fetchJSON(CONFIG.SHEET_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        action: "save_contact",
+        token: adminToken,
+        contact
+      })
+    });
+
+    if (data.error) throw new Error(data.error);
+    return data;
+  }
+
   async function getRencontresAdmin(adminToken) {
     if (!CONFIG.SHEET_API_URL) return [];
     const url = `${CONFIG.SHEET_API_URL}?action=admin_get_rencontres&token=${encodeURIComponent(adminToken)}`;
@@ -550,6 +576,7 @@ const API = (() => {
     addReferentiel,
     deleteReferentiel,
     getContactsAdmin,
+    saveContactAdmin,
     getRencontresAdmin,
     saveRencontresAdmin,
     sendNotification,
