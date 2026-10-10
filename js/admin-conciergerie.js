@@ -1040,6 +1040,7 @@
 
                   return `<div class="pn-calendar-meeting">
                     <strong>${escapeHtml(nomRdvCourt(nomAffiche(relation.partenaire)))}</strong>
+                    <span>${escapeHtml(nomRdvCourt(relation.organisation?.nom || relation.organisation?.id || "Organisation"))}</span>
                     <span>${escapeHtml(room)}</span>
                   </div>`;
                 }).join("")}
