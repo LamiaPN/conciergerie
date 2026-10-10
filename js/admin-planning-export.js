@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-planning-export.js
-   VERSION : v64 — fiches partenaires compactes, pagination dynamique
+   VERSION : v65 — export PDF d'un partenaire sélectionné
    RÔLE    : Export imprimable/PDF du planning Conciergerie complet.
    FORMAT  : 3 pages A4 paysage — 1 jour par page × toutes les salles.
    ════════════════════════════════════════════════════════════════════════ */
@@ -783,7 +783,7 @@
 
     let partnerIds = [...involvedIds];
     const selectedPartnerId = exact(context?.partenaireId);
-    if (selectedPartnerId && involvedIds.has(selectedPartnerId)) {
+    if (selectedPartnerId && partnerById.has(selectedPartnerId)) {
       partnerIds = [selectedPartnerId];
     }
 
