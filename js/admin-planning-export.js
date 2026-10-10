@@ -1,8 +1,8 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-planning-export.js
-   VERSION : v57 — A4 paysage, 1 jour par page, chargement optimisé
+   VERSION : v58 — PDF A4 paysage, 1 jour par page, toutes les salles
    RÔLE    : Export imprimable/PDF du planning Conciergerie complet.
-   FORMAT  : 3 pages A4 paysage — 1 jour par page × 2 salles.
+   FORMAT  : 3 pages A4 paysage — 1 jour par page × toutes les salles.
    ════════════════════════════════════════════════════════════════════════ */
 (() => {
   "use strict";
@@ -680,25 +680,24 @@
     const doc = new JsPDF({
       orientation: "landscape",
       unit: "mm",
-      format: "a2",
+      format: "a4",
       compress: true
     });
 
     const pageW = doc.internal.pageSize.getWidth();
     const pageH = doc.internal.pageSize.getHeight();
-    const margin = 8;
-    const gap = 5;
-    const titleH = 22;
-    const footerH = 8;
-    const dayW = (pageW - margin * 2 - gap * 2) / 3;
+    const margin = 7;
+    const titleH = 18;
+    const footerH = 7;
     const gridTop = margin + titleH;
     const gridBottom = pageH - margin - footerH;
     const dayTitleH = 9;
     const roomHeadH = 8;
     const slots = buildTimeSlots();
     const slotH = (gridBottom - gridTop - dayTitleH - roomHeadH) / slots.length;
-    const timeW = 14;
-    const contentW = dayW - timeW;
+    const timeW = 13;
+    const contentW = pageW - margin * 2 - timeW;
+    const roomW = contentW / Math.max(1, rooms.length);
 
     const partners = Array.isArray(vivier?.partenaires) ? vivier.partenaires : [];
     const organisations = Array.isArray(vivier?.organisations) ? vivier.organisations : [];
@@ -707,78 +706,138 @@
     const meetingMap = buildMeetingMap(meetings);
 
     const generated = new Intl.DateTimeFormat("fr-CA", {
-      dateStyle: "long",
+      dateStyle: "medium",
       timeStyle: "short"
     }).format(new Date());
 
-    function drawRoomPage(room, pageIndex) {
-      if (pageIndex > 0) doc.addPage("a2", "landscape");
+    function getMeetingData(meeting) {
+      const partnerId = exact(meeting.partenaire_id);
+      const organisationId = exact(meeting.organisation_id);
+      const partner = partnerById.get(partnerId) || {};
+      const organisation = organisationById.get(organisationId) || {};
 
-      const roomLabel = room.replace(/^Salle Conciergerie\s+/i, "Salle ");
-      const roomMeetings = meetings.filter(item => exact(item.salle) === exact(room));
+      const partnerContact = contactFromForm(forms.get(partnerId));
+      let organisationContact = contactFromOrganisation(organisation);
 
-      doc.setTextColor(17,17,17);
-      doc.setFont("helvetica","bold");
-      doc.setFontSize(18);
-      doc.text("MTL connecte 2026 - Planning Conciergerie", margin, margin + 7);
+      if (forms.has(organisationId)) {
+        const formContact = contactFromForm(forms.get(organisationId));
+        if (formContact.name || formContact.email) {
+          organisationContact = formContact;
+        }
+      }
 
-      doc.setFontSize(15);
-      doc.setTextColor(52,112,34);
-      doc.text(roomLabel, margin, margin + 15);
+      const meetingEmail = exact(meeting.email_rdv);
+      if (
+        !organisationContact.email &&
+        meetingEmail &&
+        meetingEmail !== partnerContact.email
+      ) {
+        organisationContact.email = meetingEmail;
+      }
 
-      doc.setFont("helvetica","normal");
-      doc.setFontSize(8.5);
-      doc.setTextColor(80,80,80);
+      return {
+        partnerName: pdfShortName(
+          partnerDisplayName(partner) || partnerId || "Partenaire"
+        ),
+        organisationName: pdfShortName(
+          exact(organisation.nom) || organisationId || "Organisation"
+        ),
+        partnerContact: buildPdfContact(partnerContact),
+        organisationContact: buildPdfContact(organisationContact)
+      };
+    }
+
+    function drawDayPage(date, pageIndex) {
+      if (pageIndex > 0) doc.addPage("a4", "landscape");
+
+      const dayMeetings = meetings.filter(item => exact(item.date) === date.value);
+
+      doc.setTextColor(17, 17, 17);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(16);
+      doc.text("MTL connecte 2026 - Planning Conciergerie", margin, margin + 6);
+
+      doc.setFontSize(13);
+      doc.setTextColor(47, 125, 80);
+      doc.text(date.label, margin, margin + 13);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.8);
+      doc.setTextColor(85, 85, 85);
       doc.text(
-        `${roomMeetings.length} rendez-vous · 13, 14 et 15 octobre 2026`,
+        `${dayMeetings.length} rendez-vous · ${rooms.join(" · ")}`,
         pageW - margin,
-        margin + 7,
+        margin + 6,
         { align: "right" }
       );
       doc.text(
-        `Page ${pageIndex + 1}/${rooms.length} · Généré le ${generated}`,
+        `Page ${pageIndex + 1}/${EVENT_DATES.length} · Généré le ${generated}`,
         pageW - margin,
-        margin + 14,
+        margin + 12.5,
         { align: "right" }
       );
 
-      EVENT_DATES.forEach((date, dayIndex) => {
-        const x0 = margin + dayIndex * (dayW + gap);
+      const x0 = margin;
+      const headY = gridTop + dayTitleH;
 
-        doc.setDrawColor(150,150,150);
-        doc.setLineWidth(0.22);
-        doc.setFillColor(242,242,242);
-        doc.rect(x0, gridTop, dayW, dayTitleH, "FD");
+      doc.setDrawColor(155, 155, 155);
+      doc.setLineWidth(0.18);
+      doc.setFillColor(242, 242, 242);
+      doc.rect(x0, gridTop, pageW - margin * 2, dayTitleH, "FD");
 
-        doc.setFont("helvetica","bold");
-        doc.setFontSize(11);
-        doc.setTextColor(20,20,20);
-        doc.text(date.label, x0 + dayW / 2, gridTop + 6.2, { align: "center" });
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(20, 20, 20);
+      doc.text(date.label, x0 + (pageW - margin * 2) / 2, gridTop + 6.1, { align: "center" });
 
-        const headY = gridTop + dayTitleH;
-        doc.setFillColor(232,232,232);
-        doc.rect(x0, headY, timeW, roomHeadH, "FD");
-        doc.setFontSize(7.5);
-        doc.text("Heure", x0 + timeW / 2, headY + 5.3, { align: "center" });
+      doc.setFillColor(37, 50, 68);
+      doc.rect(x0, headY, timeW, roomHeadH, "FD");
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(7.2);
+      doc.text("Heure", x0 + timeW / 2, headY + 5.2, { align: "center" });
 
-        doc.setFillColor(232,232,232);
-        doc.rect(x0 + timeW, headY, contentW, roomHeadH, "FD");
-        doc.setFontSize(8.5);
-        doc.text(roomLabel, x0 + timeW + contentW / 2, headY + 5.3, { align: "center" });
+      rooms.forEach((room, roomIndex) => {
+        const rx = x0 + timeW + roomIndex * roomW;
+        const isFirst = roomIndex === 0;
 
-        slots.forEach((time, slotIndex) => {
-          const y = headY + roomHeadH + slotIndex * slotH;
+        if (isFirst) {
+          doc.setFillColor(47, 125, 80);
+        } else if (roomIndex === 1) {
+          doc.setFillColor(43, 104, 166);
+        } else {
+          doc.setFillColor(100, 100, 100);
+        }
 
-          doc.setFillColor(250,250,250);
-          doc.rect(x0, y, timeW, slotH, "FD");
-          doc.setFont("helvetica","bold");
-          doc.setFontSize(7.6);
-          doc.setTextColor(35,35,35);
-          doc.text(time, x0 + timeW / 2, y + 4.8, { align: "center" });
+        doc.rect(rx, headY, roomW, roomHeadH, "FD");
+        doc.setTextColor(255, 255, 255);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(7.4);
+        doc.text(
+          pdfShortName(room),
+          rx + roomW / 2,
+          headY + 5.2,
+          { align: "center", maxWidth: roomW - 3 }
+        );
+      });
 
-          const rx = x0 + timeW;
-          doc.setFillColor(255,255,255);
-          doc.rect(rx, y, contentW, slotH, "FD");
+      slots.forEach((time, slotIndex) => {
+        const y = headY + roomHeadH + slotIndex * slotH;
+
+        doc.setFillColor(248, 249, 250);
+        doc.setDrawColor(205, 210, 214);
+        doc.rect(x0, y, timeW, slotH, "FD");
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(6.8);
+        doc.setTextColor(70, 76, 82);
+        doc.text(time, x0 + timeW / 2, y + slotH / 2 + 1.1, { align: "center" });
+
+        rooms.forEach((room, roomIndex) => {
+          const rx = x0 + timeW + roomIndex * roomW;
+
+          doc.setFillColor(255, 255, 255);
+          doc.setDrawColor(205, 210, 214);
+          doc.rect(rx, y, roomW, slotH, "FD");
 
           const cellMeetings = meetingMap.get(
             meetingKey(date.value, room, time)
@@ -786,105 +845,66 @@
 
           if (!cellMeetings.length) return;
 
-          const perMeetingH = Math.max(7, slotH / cellMeetings.length);
+          const perMeetingH = slotH / cellMeetings.length;
 
           cellMeetings.forEach((meeting, meetingIndex) => {
-            const partnerId = exact(meeting.partenaire_id);
-            const organisationId = exact(meeting.organisation_id);
-            const partner = partnerById.get(partnerId) || {};
-            const organisation = organisationById.get(organisationId) || {};
-
-            const partnerContact = contactFromForm(forms.get(partnerId));
-            let organisationContact = contactFromOrganisation(organisation);
-
-            if (forms.has(organisationId)) {
-              const formContact = contactFromForm(forms.get(organisationId));
-              if (formContact.name || formContact.email) {
-                organisationContact = formContact;
-              }
-            }
-
-            const meetingEmail = exact(meeting.email_rdv);
-            if (
-              !organisationContact.email &&
-              meetingEmail &&
-              meetingEmail !== partnerContact.email
-            ) {
-              organisationContact.email = meetingEmail;
-            }
-
-            const partnerName = pdfShortName(
-              partnerDisplayName(partner) || partnerId || "Partenaire"
-            );
-            const organisationName = pdfShortName(
-              exact(organisation.nom) || organisationId || "Organisation"
-            );
-
+            const data = getMeetingData(meeting);
             const cy = y + meetingIndex * perMeetingH;
-            const pad = 1.8;
-            const textW = contentW - pad * 2 - 1;
+            const padX = 1.5;
+            const textW = roomW - padX * 2 - 1.2;
 
-            doc.setDrawColor(88,145,60);
-            doc.setLineWidth(0.8);
-            doc.line(rx + 1, cy + 1, rx + 1, cy + perMeetingH - 1);
+            if (roomIndex === 0) {
+              doc.setFillColor(238, 247, 241);
+              doc.setDrawColor(47, 138, 88);
+            } else if (roomIndex === 1) {
+              doc.setFillColor(238, 244, 251);
+              doc.setDrawColor(47, 115, 183);
+            } else {
+              doc.setFillColor(247, 247, 247);
+              doc.setDrawColor(110, 110, 110);
+            }
 
-            let ty = cy + 4.1;
+            doc.rect(rx, cy, roomW, perMeetingH, "F");
+            doc.setLineWidth(0.65);
+            doc.line(rx + 0.9, cy + 0.7, rx + 0.9, cy + perMeetingH - 0.7);
 
-            doc.setFont("helvetica","bold");
-            doc.setFontSize(8.4);
-            doc.setTextColor(18,18,18);
-            const pLines = doc.splitTextToSize(partnerName, textW).slice(0, 1);
-            doc.text(pLines, rx + pad + 1, ty);
-            ty += 3.5;
+            let ty = cy + 3.2;
 
-            const pContact = buildPdfContact(partnerContact);
-            if (pContact && ty < cy + perMeetingH - 6.5) {
-              doc.setFont("helvetica","normal");
-              doc.setFontSize(6.1);
-              doc.setTextColor(78,78,78);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(6.6);
+            doc.setTextColor(18, 18, 18);
+            doc.text(
+              doc.splitTextToSize(
+                `${data.partnerName} ↔ ${data.organisationName}`,
+                textW
+              ).slice(0, 1),
+              rx + padX + 0.7,
+              ty
+            );
+
+            const contacts = [data.partnerContact, data.organisationContact]
+              .filter(Boolean)
+              .join(" · ");
+
+            if (contacts && perMeetingH >= 6.2) {
+              ty += 2.7;
+              doc.setFont("helvetica", "normal");
+              doc.setFontSize(5.2);
+              doc.setTextColor(88, 88, 88);
               doc.text(
-                doc.splitTextToSize(pContact, textW).slice(0,1),
-                rx + pad + 1,
+                doc.splitTextToSize(contacts, textW).slice(0, 1),
+                rx + padX + 0.7,
                 ty
               );
-              ty += 3.1;
-            }
-
-            if (ty < cy + perMeetingH - 3.5) {
-              doc.setFont("helvetica","bold");
-              doc.setFontSize(8.1);
-              doc.setTextColor(18,18,18);
-              const oLines = doc.splitTextToSize(organisationName, textW).slice(0,1);
-              doc.text(oLines, rx + pad + 1, ty);
-              ty += 3.4;
-            }
-
-            const oContact = buildPdfContact(organisationContact);
-            if (oContact && ty < cy + perMeetingH - 1) {
-              doc.setFont("helvetica","normal");
-              doc.setFontSize(5.9);
-              doc.setTextColor(88,88,88);
-              doc.text(
-                doc.splitTextToSize(oContact, textW).slice(0,1),
-                rx + pad + 1,
-                ty
-              );
-            }
-
-            if (meetingIndex < cellMeetings.length - 1) {
-              doc.setDrawColor(180,180,180);
-              doc.setLineDashPattern([1,1],0);
-              doc.line(rx + 1.5, cy + perMeetingH, rx + contentW - 1.5, cy + perMeetingH);
-              doc.setLineDashPattern([],0);
             }
           });
         });
       });
 
-      doc.setFont("helvetica","normal");
-      doc.setFontSize(7);
-      doc.setTextColor(100,100,100);
-      doc.text("Une case = un créneau de 30 minutes.", margin, pageH - margin + 1);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(6.3);
+      doc.setTextColor(100, 100, 100);
+      doc.text("Une ligne = un créneau de 30 minutes.", margin, pageH - margin + 1);
       doc.text(
         "Planning interne - Conciergerie MTL connecte 2026",
         pageW - margin,
@@ -893,11 +913,10 @@
       );
     }
 
-    rooms.forEach((room, index) => drawRoomPage(room, index));
+    EVENT_DATES.forEach((date, index) => drawDayPage(date, index));
 
-    doc.save("MTL_connecte_2026_Planning_Conciergerie_3_salles.pdf");
+    doc.save("MTL_connecte_2026_Planning_Conciergerie_A4_3_jours.pdf");
   }
-
 
   async function exportPlanningPdf() {
     const button = document.querySelector("#conciergerieExportPdfBtn");
