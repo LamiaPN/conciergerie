@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-conciergerie.js
-   VERSION : v80 — contexte d'export PDF selon la vue active
+   VERSION : v81 — sélection d'un partenaire dans le calendrier
    RÔLE    : Planning Conciergerie — sélections uniquement.
 
    RÈGLES :
@@ -877,14 +877,26 @@
     const partners = new Map();
 
     state.relations.forEach(relation => {
-      const id = exactId(relation.partenaire?.id);
-      if (!id) return;
+      const requesterId = exactId(relation.partenaire?.id);
+      if (requesterId) {
+        partners.set(requesterId, {
+          id: requesterId,
+          label: nomRdvCourt(nomAffiche(relation.partenaire)),
+          count: calendarPartnerCount(requesterId)
+        });
+      }
 
-      partners.set(id, {
-        id,
-        label: nomRdvCourt(nomAffiche(relation.partenaire)),
-        count: calendarPartnerCount(id)
-      });
+      const targetId = exactId(relation.organisation?.id);
+      const targetPartner = (state.vivier?.partenaires || [])
+        .find(item => exactId(item?.id) === targetId);
+
+      if (targetPartner && targetId) {
+        partners.set(targetId, {
+          id: targetId,
+          label: nomRdvCourt(nomAffiche(targetPartner)),
+          count: calendarPartnerCount(targetId)
+        });
+      }
     });
 
     return [...partners.values()].sort((a, b) =>
@@ -1268,7 +1280,7 @@
       if (partnerMap.has(targetId)) involvedIds.add(targetId);
     });
 
-    const partners = [...involvedIds]
+    let partners = [...involvedIds]
       .map(id => partnerMap.get(id))
       .filter(Boolean)
       .sort((x, y) =>
@@ -1278,6 +1290,11 @@
           { sensitivity: "base" }
         )
       );
+
+    if (state.calendarPartnerId) {
+      const selectedPartner = partnerMap.get(exactId(state.calendarPartnerId));
+      partners = selectedPartner ? [selectedPartner] : [];
+    }
 
     const header = TIME_SLOTS.map(time =>
       `<th class="pn-planning-time-head">${escapeHtml(time)}</th>`
@@ -1370,7 +1387,26 @@
         ${rows}`;
     }).join("");
 
+    const partnerOptions = calendarPartnerOptions();
+
     return `
+      <div class="pn-calendar-toolbar">
+        <span class="pn-calendar-label">Partenaire :</span>
+        <select id="calendarPartnerFilter" class="conciergerie-rdv-input" style="max-width:340px">
+          <option value="">Tous les partenaires</option>
+          ${partnerOptions.map(item => `
+            <option value="${escapeHtml(item.id)}"${item.id === state.calendarPartnerId ? " selected" : ""}>
+              ${escapeHtml(item.label)} (${item.count})
+            </option>
+          `).join("")}
+        </select>
+        <span class="pn-calendar-label">
+          ${state.calendarPartnerId
+            ? "L'export PDF imprimera uniquement ce partenaire."
+            : "L'export PDF imprimera tous les partenaires."}
+        </span>
+      </div>
+
       <div class="pn-planning-help">
         <strong>Planning par partenaire</strong>
         <span>Chaque partenaire est regroupé une seule fois, avec les 3 dates en lignes.</span>
