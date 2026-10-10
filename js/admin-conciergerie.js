@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════════
    FICHIER : admin-conciergerie.js
-   VERSION : v82 — contacts RDV rapide rafraîchis à l'ouverture
+   VERSION : v83 — RDV rapide depuis toute organisation
    RÔLE    : Planning Conciergerie — sélections uniquement.
 
    RÈGLES :
@@ -583,6 +583,62 @@
           }
         });
       });
+    });
+
+    // RDV rapide depuis une organisation non partenaire :
+    // reconstruire une relation depuis le rendez-vous sauvegardé.
+    (rencontres || []).forEach(item => {
+      const partenaireId = exactId(item.partenaire_id);
+      const organisationId = exactId(item.organisation_id);
+      const key = relationKey(partenaireId, organisationId);
+
+      if (!partenaireId || !organisationId || seen.has(key)) return;
+
+      const partenaire =
+        (vivier.partenaires || []).find(entry => exactId(entry?.id) === partenaireId)
+        || organisationById.get(partenaireId)
+        || null;
+
+      const organisation = organisationById.get(organisationId) || null;
+      if (!partenaire || !organisation) return;
+
+      const contactsPartenaire = state.contactsByOrganisation.get(partenaireId) || [];
+      const contactsOrganisation = state.contactsByOrganisation.get(organisationId) || [];
+
+      const contactPartenairePrincipal =
+        contactsPartenaire.find(contact => contact.principal === true || String(contact.principal || "").toUpperCase() === "TRUE")
+        || contactsPartenaire.find(contact => exactId(contact.email))
+        || null;
+
+      const contactOrganisationPrincipal =
+        contactsOrganisation.find(contact => contact.principal === true || String(contact.principal || "").toUpperCase() === "TRUE")
+        || contactsOrganisation.find(contact => exactId(contact.email))
+        || null;
+
+      relations.push({
+        key,
+        partenaire,
+        organisation,
+        formulaire: null,
+        contactsPartenaire,
+        contactsOrganisation,
+        contactPartenairePrincipal,
+        contactOrganisationPrincipal,
+        rdv: {
+          date: exactId(item.date),
+          heure: exactId(item.heure),
+          salle: exactId(item.salle),
+          email_rdv: exactId(item.email_rdv),
+          participant_partenaire_contact_id: exactId(item.participant_partenaire_contact_id),
+          participant_partenaire_nom: exactId(item.participant_partenaire_nom),
+          participant_partenaire_email: exactId(item.participant_partenaire_email),
+          participant_organisation_contact_id: exactId(item.participant_organisation_contact_id),
+          participant_organisation_nom: exactId(item.participant_organisation_nom),
+          participant_organisation_email: exactId(item.participant_organisation_email)
+        }
+      });
+
+      seen.add(key);
     });
 
     return relations;
@@ -2540,16 +2596,20 @@
       return;
     }
 
-    const partners = [...(state.vivier.partenaires || [])]
-      .filter(item => exactId(item?.id))
-      .sort((a,b) => nomAffiche(a).localeCompare(nomAffiche(b), "fr", { sensitivity:"base" }));
-
     const organisations = [...(state.vivier.organisations || [])]
       .filter(item => exactId(item?.id))
       .sort((a,b) => quickOrganisationLabel(a).localeCompare(quickOrganisationLabel(b), "fr", { sensitivity:"base" }));
 
-    el.quickPartner.innerHTML = quickOption("", "— Choisir un partenaire —")
-      + partners.map(item => quickOption(exactId(item.id), nomAffiche(item))).join("");
+    const requesterMap = new Map();
+    [...(state.vivier.organisations || []), ...(state.vivier.partenaires || [])]
+      .filter(item => exactId(item?.id))
+      .forEach(item => requesterMap.set(exactId(item.id), item));
+
+    const requesters = [...requesterMap.values()]
+      .sort((a,b) => quickOrganisationLabel(a).localeCompare(quickOrganisationLabel(b), "fr", { sensitivity:"base" }));
+
+    el.quickPartner.innerHTML = quickOption("", "— Choisir un partenaire / une organisation —")
+      + requesters.map(item => quickOption(exactId(item.id), quickOrganisationLabel(item))).join("");
     el.quickOrganisation.innerHTML = quickOption("", "— Choisir une organisation —")
       + organisations.map(item => quickOption(exactId(item.id), quickOrganisationLabel(item))).join("");
     el.quickDate.innerHTML = quickOption("", "—")
@@ -2607,10 +2667,16 @@
     if (el.quickStatus) el.quickStatus.textContent = "Création du rendez-vous…";
 
     try {
-      const selections = await API.getSelectionsAdmin(partenaireId, state.adminToken);
-      const nextSelections = [...new Set([...(Array.isArray(selections) ? selections : []), organisationId])];
-      if (!selections.includes(organisationId)) {
-        await API.saveSelectionsAdmin(partenaireId, state.adminToken, nextSelections);
+      const officialPartnerIds = new Set(
+        (state.vivier.partenaires || []).map(item => exactId(item?.id)).filter(Boolean)
+      );
+
+      if (officialPartnerIds.has(partenaireId)) {
+        const selections = await API.getSelectionsAdmin(partenaireId, state.adminToken);
+        const nextSelections = [...new Set([...(Array.isArray(selections) ? selections : []), organisationId])];
+        if (!selections.includes(organisationId)) {
+          await API.saveSelectionsAdmin(partenaireId, state.adminToken, nextSelections);
+        }
       }
 
       await API.saveRencontresAdmin(state.adminToken, [{
