@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<!--
+ FICHIER : fiche-organisation.html
+ RÔLE : Maquette autonome, sans transmission ni sauvegarde serveur.
+ SOMMAIRE :
+ 01 — En-tête et styles de la fiche
+ 02 — Présentation
+ 03 — Votre organisation
+ 04 — Présentez votre organisation
+ 05 — Vos objectifs
+ 06 — Votre projet au Québec
+ 07 — Récapitulatif et actions
+ 08 — Interactions et vérification locale
+-->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiche d'information – Organisation | MTL connecte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* 01 — Ajustements propres à la nouvelle fiche ; aucune modification du CSS partagé */
+.org-page{max-width:880px;margin:0 auto;padding:26px 22px 120px}
+.org-intro{margin:22px 0 28px}.org-intro h1{font-family:var(--font-title,Inter,sans-serif);font-size:clamp(1.85rem,4vw,2.65rem);line-height:1.18;margin:12px 0}.org-intro p{color:#53605a;max-width:700px}
+.org-tag{display:inline-flex;background:#e9f7e3;color:#376f25;padding:7px 14px;border-radius:100px;font-size:.82rem;font-weight:700}
+.org-section{background:white;border:1px solid #dde0dc;border-radius:18px;padding:28px;margin:18px 0;box-shadow:0 2px 10px rgba(0,0,0,.035)}
+.org-section h2{font-family:var(--font-title,Inter,sans-serif);font-size:1.35rem;margin:0 0 7px}.org-number{color:#58a038;margin-right:8px}
+.org-hint{font-size:.91rem;color:#65736b;margin:0 0 22px}
+.org-grid{display:grid;grid-template-columns:1fr 1fr;gap:19px}
+.org-field{display:flex;flex-direction:column;gap:7px;min-width:0}.org-wide{grid-column:1/-1}
+.org-field label{font-weight:650;font-size:.9rem;color:#1e2821}
+.org-field input,.org-field select,.org-field textarea{width:100%;min-width:0;min-height:45px;padding:11px 12px;border:1px solid #ccd5cc;border-radius:9px;background:#fff;color:#1c2620;font:inherit;line-height:1.45}
+.org-field textarea{min-height:112px;resize:vertical}
+.org-field input:focus,.org-field textarea:focus,.org-field select:focus{outline:2px solid #77bb5e;outline-offset:1px}
+.org-field small{color:#67736b}.org-field .org-req{color:#bc3b3b}
+.org-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:22px}
+.org-button{display:inline-flex;justify-content:center;align-items:center;gap:8px;padding:12px 20px;background:#58a038;color:#fff;border:0;border-radius:10px;font:600 .95rem Inter,sans-serif;cursor:pointer}
+.org-button.secondary{background:#edf3e9;color:#2f632b}.org-button:hover{filter:brightness(.95)}
+.org-recap{white-space:pre-wrap;font:inherit;line-height:1.7;overflow-wrap:anywhere;padding:18px;background:#f7f9f6;border:1px solid #dee7dc;border-radius:12px}
+.org-notice{padding:12px 14px;border-radius:9px;background:#eef5ea;color:#365b34;font-size:.88rem}
+.org-status{font-size:.88rem;color:#50624e;min-height:20px}
+@media(max-width:620px){.org-page{padding:16px 12px 120px}.org-grid{grid-template-columns:1fr}.org-section{padding:20px 16px}.org-wide{grid-column:auto}}
+</style>
+</head>
+<body>
+<main class="org-page">
+<!-- 02 — Présentation -->
+<header class="org-intro">
+<span class="org-tag">MTL connecte · Fiche d'information</span>
+<h1>Fiche d'information – Organisation</h1>
+<p>Nous souhaitons mieux connaître votre organisation, ses activités, ses objectifs et ses projets au Québec. Les informations recueillies nous aideront à préparer nos échanges et à identifier des possibilités de collaboration pertinentes.</p>
+<p class="org-notice" style="margin-top:16px">Version de démonstration : aucune donnée n’est envoyée ni enregistrée dans Google Sheets. Vous pouvez vérifier le récapitulatif et copier vos réponses.</p>
+</header>
+<form id="organisationForm" novalidate>
+<!-- 03 — Votre organisation -->
+<section class="org-section">
+<h2><span class="org-number">1.</span> Votre organisation</h2>
+<p class="org-hint">Présentez votre entreprise ou organisme et sa localisation.</p>
+<div class="org-grid">
+<div class="org-field org-wide"><label for="organisation">Organisation / Entreprise <span class="org-req">*</span></label><input required id="organisation" name="Organisation/Entreprise" autocomplete="organization"></div>
+<div class="org-field"><label for="pays">Pays <span class="org-req">*</span></label><input required id="pays" name="Pays" autocomplete="country-name"></div>
+<div class="org-field"><label for="ville">Ville <span class="org-req">*</span></label><input required id="ville" name="Ville" autocomplete="address-level2"></div>
+<div class="org-field org-wide"><label for="delegation">Nom de la délégation <small>(si applicable)</small></label><input id="delegation" name="Nom de la délégation "></div>
+<div class="org-field"><label for="type">Type d’organisation <span class="org-req">*</span></label><select required id="type" name="Type d’organisation"><option value="">Choisir…</option><option value="Administration / organisme public">Administration / organisme public</option>
+<option value="Agence de développement économique">Agence de développement économique</option>
+<option value="Association / OBNL">Association / OBNL</option>
+<option value="Centre de recherche">Centre de recherche</option>
+<option value="Chambre de commerce">Chambre de commerce</option>
+<option value="Collectivité locale / territoriale">Collectivité locale / territoriale</option>
+<option value="Entreprise">Entreprise</option>
+<option value="Établissement de santé">Établissement de santé</option>
+<option value="Incubateur / accélérateur">Incubateur / accélérateur</option>
+<option value="Organisation internationale">Organisation internationale</option>
+<option value="Startup">Startup</option>
+<option value="Université / établissement d&#39;enseignement">Université / établissement d&#39;enseignement</option>
+<option value="Autre">Autre</option></select></div>
+<div class="org-field"><label for="secteur">Secteur d’activité <span class="org-req">*</span></label><select required id="secteur" name="Secteur d'activité"><option value="">Choisir…</option><option value="Administration publique / services publics">Administration publique / services publics</option>
+<option value="Agriculture / agroalimentaire">Agriculture / agroalimentaire</option>
+<option value="Arts numériques / technologies immersives">Arts numériques / technologies immersives</option>
+<option value="Automatisation">Automatisation</option>
+<option value="Assurance ">Assurance </option>
+<option value="Commerce / distribution">Commerce / distribution</option>
+<option value="Commerce international / relations internationales">Commerce international / relations internationales</option>
+<option value="Communication / marketing">Communication / marketing</option>
+<option value="Culture / industries créatives">Culture / industries créatives</option>
+<option value="Cybersécurité">Cybersécurité</option>
+<option value="Deeptech">Deeptech</option>
+<option value="Défense">Défense</option>
+<option value="Design / architecture">Design / architecture</option>
+<option value="Développement économique / soutien aux entreprises">Développement économique / soutien aux entreprises</option>
+<option value="Développement territorial / collectivités">Développement territorial / collectivités</option>
+<option value="Données / analytique">Données / analytique</option>
+<option value="Éducation / formation / enseignement supérieur">Éducation / formation / enseignement supérieur</option>
+<option value="Emploi / ressources humaines / compétences">Emploi / ressources humaines / compétences</option>
+<option value="Énergie / environnement / climat">Énergie / environnement / climat</option>
+<option value="Entrepreneuriat / soutien aux startups et PME">Entrepreneuriat / soutien aux startups et PME</option>
+<option value="Événementiel">Événementiel</option>
+<option value="Finance / services financiers">Finance / services financiers</option>
+<option value="Immobilier / construction">Immobilier / construction</option>
+<option value="Inclusion numérique / impact social">Inclusion numérique / impact social</option>
+<option value="Industrie / ingénierie">Industrie / ingénierie</option>
+<option value="Infonuagique / hébergement">Infonuagique / hébergement</option>
+<option value="Intelligence artificielle">Intelligence artificielle</option>
+<option value="Jeux vidéo">Jeux vidéo</option>
+<option value="Logiciels / applications">Logiciels / applications</option>
+<option value="Médias / audiovisuel / cinéma">Médias / audiovisuel / cinéma</option>
+<option value="Mobilité / transport / aéronautique">Mobilité / transport / aéronautique</option>
+<option value="Recherche / innovation / technologies avancées">Recherche / innovation / technologies avancées</option>
+<option value="Santé / santé numérique">Santé / santé numérique</option>
+<option value="Services professionnels / conseil">Services professionnels / conseil</option>
+<option value="Services TI">Services TI</option>
+<option value="Souveraineté numérique">Souveraineté numérique</option>
+<option value="Télécommunications">Télécommunications</option>
+<option value="Tourisme / voyage / tourisme d&#39;affaires">Tourisme / voyage / tourisme d&#39;affaires</option>
+<option value="Autre">Autre</option></select></div>
+</div>
+</section>
+<!-- 04 — Présentez votre organisation -->
+<section class="org-section">
+<h2><span class="org-number">2.</span> Présentez votre organisation</h2>
+<p class="org-hint">Quelques informations pour mieux comprendre votre expertise.</p>
+<div class="org-grid">
+<div class="org-field org-wide"><label for="site">Site web</label><input type="url" id="site" name="Site web" placeholder="https://exemple.com"></div>
+<div class="org-field org-wide"><label for="description">Description de l’organisme <span class="org-req">*</span></label><textarea required id="description" name="Description de l'organisme" placeholder="Mission, activités, expertise…"></textarea></div>
+<div class="org-field org-wide"><label for="mots">Mots clés</label><input id="mots" name="Mots clés" placeholder="Ex. intelligence artificielle, innovation, export"></div>
+</div>
+</section>
+<!-- 05 — Vos objectifs -->
+<section class="org-section">
+<h2><span class="org-number">3.</span> Vos objectifs</h2>
+<p class="org-hint">Précisez les domaines et les partenariats qui vous intéressent.</p>
+<div class="org-grid">
+<div class="org-field org-wide"><label for="objectifs">Objectifs de participation</label><textarea id="objectifs" name="Objectifs de participation" placeholder="Que souhaitez-vous développer ou découvrir ?"></textarea></div>
+<div class="org-field org-wide"><label for="interets">Secteurs d’intérêt</label><textarea id="interets" name="Secteurs d'intérêt" placeholder="Quels domaines souhaitez-vous explorer ?"></textarea></div>
+<div class="org-field org-wide"><label for="partenaires">Type de partenaires recherchés</label><textarea id="partenaires" name="Type de partenaires recherchés" placeholder="Entreprises, institutions, organismes, etc."></textarea></div>
+</div>
+</section>
+<!-- 06 — Votre projet au Québec -->
+<section class="org-section">
+<h2><span class="org-number">4.</span> Votre projet au Québec</h2>
+<p class="org-hint">Cette section nous aide à comprendre vos perspectives de développement au Québec.</p>
+<div class="org-grid">
+<div class="org-field org-wide"><label for="produit">Produit, solution ou expertise que vous souhaitez déployer au Québec</label><textarea id="produit" name="Produit, solution ou expertise que vous souhaitez déployer au Québec"></textarea></div>
+<div class="org-field org-wide"><label for="avancement">Niveau d’avancement du projet</label><textarea id="avancement" name="Niveau d’avancement du projet" placeholder="Décrivez brièvement où en est votre projet."></textarea></div>
+<div class="org-field org-wide"><label for="notes">Notes / Commentaires</label><textarea id="notes" name="Notes/Commentaires" placeholder="Toute information complémentaire…"></textarea></div>
+</div>
+</section>
+<!-- 07 — Récapitulatif et actions -->
+<section class="org-section">
+<h2>Récapitulatif</h2>
+<p class="org-hint">Relisez les informations avant toute future transmission.</p>
+<div id="recap" class="org-recap" aria-live="polite">Vos réponses apparaîtront ici.</div>
+<div class="org-actions">
+<button type="button" class="org-button" id="copyForm">Copier mes réponses</button>
+<button type="button" class="org-button secondary" id="resetForm">Effacer la fiche</button>
+</div>
+<p id="formStatus" class="org-status" role="status" aria-live="polite"></p>
+</section>
+</form>
+</main>
+<script>
+/* 08 — Interactions locales uniquement ; aucune API, aucun stockage automatique. */
+(function () {
+  "use strict";
+  const form = document.getElementById("organisationForm");
+  const recap = document.getElementById("recap");
+  const status = document.getElementById("formStatus");
+  const fields = Array.from(form.querySelectorAll("input,select,textarea"));
+  function summary() {
+    return fields.map(field => {
+      const value = field.value.trim();
+      return value ? field.name.trim() + " : " + value : "";
+    }).filter(Boolean).join("\n\n");
+  }
+  function render() {
+    recap.textContent = summary() || "Vos réponses apparaîtront ici.";
+    status.textContent = "";
+  }
+  form.addEventListener("input", render);
+  form.addEventListener("change", render);
+  form.addEventListener("submit", event => event.preventDefault());
+  document.getElementById("copyForm").addEventListener("click", async () => {
+    const missing = fields.find(field => field.required && !field.value.trim());
+    if (missing) { missing.focus();status.textContent = "Veuillez compléter les champs obligatoires.";return; }
+    const site = document.getElementById("site");
+    if (site.value.trim() && !site.validity.valid) { site.focus();status.textContent = "Vérifiez l’adresse du site web.";return; }
+    try {
+      await navigator.clipboard.writeText(summary());
+      status.textContent = "Réponses copiées. Aucune donnée n’a été envoyée.";
+    } catch (_) {
+      status.textContent = "La copie est bloquée par le navigateur. Sélectionnez le texte du récapitulatif pour le copier.";
+    }
+  });
+  document.getElementById("resetForm").addEventListener("click", () => { form.reset();render(); });
+  render();
+})();
+</script>
+</body>
+</html>
