@@ -37,7 +37,12 @@
 .org-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:22px}
 .org-button{display:inline-flex;justify-content:center;align-items:center;gap:8px;padding:12px 20px;background:#58a038;color:#fff;border:0;border-radius:10px;font:600 .95rem Inter,sans-serif;cursor:pointer}
 .org-button.secondary{background:#edf3e9;color:#2f632b}.org-button:hover{filter:brightness(.95)}
-.org-recap{white-space:pre-wrap;font:inherit;line-height:1.7;overflow-wrap:anywhere;padding:18px;background:#f7f9f6;border:1px solid #dee7dc;border-radius:12px}
+.org-recap{background:var(--gris-light);border-radius:var(--radius-md);padding:14px 18px;font-size:.88rem;line-height:1.45;overflow-wrap:anywhere}
+.org-recap .recap-row{display:grid;grid-template-columns:minmax(150px,37%) minmax(0,1fr);gap:12px;align-items:start;padding:6px 0;border-bottom:1px dashed var(--gris-border)}
+.org-recap .recap-row:last-child{border-bottom:0}
+.org-recap .recap-row .k{color:var(--gris-text);min-width:0;font-weight:600}
+.org-recap .recap-row .v{color:var(--noir);white-space:pre-wrap}
+@media(max-width:620px){.org-recap .recap-row{grid-template-columns:1fr;gap:2px;padding:7px 0}}
 .org-notice{padding:12px 14px;border-radius:9px;background:#eef5ea;color:#365b34;font-size:.88rem}
 .org-status{font-size:.88rem;color:#50624e;min-height:20px}
 @media(max-width:620px){.org-page{padding:16px 12px 120px}.org-grid{grid-template-columns:1fr}.org-section{padding:20px 16px}.org-wide{grid-column:auto}}
@@ -167,7 +172,21 @@
     }).filter(Boolean).join("\n\n");
   }
   function render() {
-    recap.textContent = summary() || "Vos réponses apparaîtront ici.";
+    recap.replaceChildren();
+    const filled = fields.filter(field => field.value.trim());
+    if (!filled.length) recap.textContent = "Vos réponses apparaîtront ici.";
+    for (const field of filled) {
+      const row = document.createElement("div");
+      const key = document.createElement("span");
+      const value = document.createElement("span");
+      row.className = "recap-row";
+      key.className = "k";
+      value.className = "v";
+      key.textContent = field.name.trim();
+      value.textContent = field.value.trim();
+      row.append(key, value);
+      recap.append(row);
+    }
     status.textContent = "";
   }
   form.addEventListener("input", render);
