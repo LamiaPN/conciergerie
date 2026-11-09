@@ -5,12 +5,11 @@
  SOMMAIRE :
  01 — En-tête et styles de la fiche
  02 — Présentation
- 03 — Votre organisation
- 04 — Présentez votre organisation
- 05 — Vos objectifs
- 06 — Votre projet au Québec
- 07 — Récapitulatif et actions
- 08 — Interactions et vérification locale
+ 03 — Votre organisation (identité et présentation)
+ 04 — Vos objectifs
+ 05 — Votre projet au Québec
+ 06 — Récapitulatif et actions
+ 07 — Interactions et vérification locale
 -->
 <html lang="fr">
 <head>
@@ -51,7 +50,7 @@
 <span class="org-tag">MTL connecte · Fiche d'information</span>
 <h1>Fiche d'information – Organisation</h1>
 <p>Nous souhaitons mieux connaître votre organisation, ses activités, ses objectifs et ses projets au Québec. Les informations recueillies nous aideront à préparer nos échanges et à identifier des possibilités de collaboration pertinentes.</p>
-<p class="org-notice" style="margin-top:16px">Version de démonstration : aucune donnée n’est envoyée ni enregistrée dans Google Sheets. Vous pouvez vérifier le récapitulatif et copier vos réponses.</p>
+
 </header>
 <form id="organisationForm" novalidate>
 <!-- 03 — Votre organisation -->
@@ -115,21 +114,14 @@
 <option value="Télécommunications">Télécommunications</option>
 <option value="Tourisme / voyage / tourisme d&#39;affaires">Tourisme / voyage / tourisme d&#39;affaires</option>
 <option value="Autre">Autre</option></select></div>
-</div>
-</section>
-<!-- 04 — Présentez votre organisation -->
-<section class="org-section">
-<h2><span class="org-number">2.</span> Présentez votre organisation</h2>
-<p class="org-hint">Quelques informations pour mieux comprendre votre expertise.</p>
-<div class="org-grid">
 <div class="org-field org-wide"><label for="site">Site web</label><input type="url" id="site" name="Site web" placeholder="https://exemple.com"></div>
 <div class="org-field org-wide"><label for="description">Description de l’organisme <span class="org-req">*</span></label><textarea required id="description" name="Description de l'organisme" placeholder="Mission, activités, expertise…"></textarea></div>
 <div class="org-field org-wide"><label for="mots">Mots clés</label><input id="mots" name="Mots clés" placeholder="Ex. intelligence artificielle, innovation, export"></div>
 </div>
 </section>
-<!-- 05 — Vos objectifs -->
+<!-- 04 — Vos objectifs -->
 <section class="org-section">
-<h2><span class="org-number">3.</span> Vos objectifs</h2>
+<h2><span class="org-number">2.</span> Vos objectifs</h2>
 <p class="org-hint">Précisez les domaines et les partenariats qui vous intéressent.</p>
 <div class="org-grid">
 <div class="org-field org-wide"><label for="objectifs">Objectifs de participation</label><textarea id="objectifs" name="Objectifs de participation" placeholder="Que souhaitez-vous développer ou découvrir ?"></textarea></div>
@@ -137,9 +129,9 @@
 <div class="org-field org-wide"><label for="partenaires">Type de partenaires recherchés</label><textarea id="partenaires" name="Type de partenaires recherchés" placeholder="Entreprises, institutions, organismes, etc."></textarea></div>
 </div>
 </section>
-<!-- 06 — Votre projet au Québec -->
+<!-- 05 — Votre projet au Québec -->
 <section class="org-section">
-<h2><span class="org-number">4.</span> Votre projet au Québec</h2>
+<h2><span class="org-number">3.</span> Votre projet au Québec</h2>
 <p class="org-hint">Cette section nous aide à comprendre vos perspectives de développement au Québec.</p>
 <div class="org-grid">
 <div class="org-field org-wide"><label for="produit">Produit, solution ou expertise que vous souhaitez déployer au Québec</label><textarea id="produit" name="Produit, solution ou expertise que vous souhaitez déployer au Québec"></textarea></div>
@@ -147,10 +139,10 @@
 <div class="org-field org-wide"><label for="notes">Notes / Commentaires</label><textarea id="notes" name="Notes/Commentaires" placeholder="Toute information complémentaire…"></textarea></div>
 </div>
 </section>
-<!-- 07 — Récapitulatif et actions -->
+<!-- 06 — Récapitulatif et actions -->
 <section class="org-section">
 <h2>Récapitulatif</h2>
-<p class="org-hint">Relisez les informations avant toute future transmission.</p>
+<p class="org-hint">Cette zone vous permet de vérifier et copier vos réponses pour les tests. Aucune information n’est encore enregistrée ni envoyée.</p>
 <div id="recap" class="org-recap" aria-live="polite">Vos réponses apparaîtront ici.</div>
 <div class="org-actions">
 <button type="button" class="org-button" id="copyForm">Copier mes réponses</button>
@@ -161,7 +153,7 @@
 </form>
 </main>
 <script>
-/* 08 — Interactions locales uniquement ; aucune API, aucun stockage automatique. */
+/* 07 — Interactions locales uniquement ; aucune API, aucun stockage automatique. */
 (function () {
   "use strict";
   const form = document.getElementById("organisationForm");
