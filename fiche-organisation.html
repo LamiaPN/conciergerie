@@ -3,7 +3,7 @@
  FICHIER : fiche-organisation.html
  RÔLE : Maquette autonome, sans transmission ni sauvegarde serveur.
  SOMMAIRE :
- 01 — En-tête et styles de la fiche
+ 01 — En-tête et feuille de style commune
  02 — Présentation
  03 — Votre organisation (identité et présentation)
  04 — Vos objectifs
@@ -38,10 +38,10 @@
 <p class="welcome">Présentez votre entreprise ou organisme et sa localisation.</p>
 </div>
 <div class="grid2">
-<div class="field full"><label for="organisation">Organisation / Entreprise <span class="req">*</span></label><input required id="organisation" name="Organisation/Entreprise" autocomplete="organization"></div>
-<div class="field"><label for="pays">Pays <span class="req">*</span></label><input required id="pays" name="Pays" autocomplete="country-name"></div>
-<div class="field"><label for="ville">Ville <span class="req">*</span></label><input required id="ville" name="Ville" autocomplete="address-level2"></div>
-<div class="field full"><label for="delegation">Nom de la délégation <span class="optional">(si applicable)</span></label><input id="delegation" name="Nom de la délégation "></div>
+<div class="field full"><label for="organisation">Organisation / Entreprise <span class="req">*</span></label><input type="text" required id="organisation" name="Organisation/Entreprise" autocomplete="organization"></div>
+<div class="field"><label for="pays">Pays <span class="req">*</span></label><input type="text" required id="pays" name="Pays" autocomplete="country-name"></div>
+<div class="field"><label for="ville">Ville <span class="req">*</span></label><input type="text" required id="ville" name="Ville" autocomplete="address-level2"></div>
+<div class="field full"><label for="delegation">Nom de la délégation <span class="optional">(si applicable)</span></label><input type="text" id="delegation" name="Nom de la délégation "></div>
 <div class="field"><label for="type">Type d’organisation <span class="req">*</span></label><select required id="type" name="Type d’organisation"><option value="">Choisir…</option><option value="Administration / organisme public">Administration / organisme public</option>
 <option value="Agence de développement économique">Agence de développement économique</option>
 <option value="Association / OBNL">Association / OBNL</option>
@@ -96,7 +96,7 @@
 <option value="Autre">Autre</option></select></div>
 <div class="field full"><label for="site">Site web</label><input type="url" id="site" name="Site web" placeholder="https://exemple.com"></div>
 <div class="field full"><label for="description">Description de l’organisme <span class="req">*</span></label><textarea required id="description" name="Description de l'organisme" placeholder="Mission, activités, expertise…"></textarea></div>
-<div class="field full"><label for="mots">Mots clés</label><input id="mots" name="Mots clés" placeholder="Ex. intelligence artificielle, innovation, export"></div>
+<div class="field full"><label for="mots">Mots clés</label><input type="text" id="mots" name="Mots clés" placeholder="Ex. intelligence artificielle, innovation, export"></div>
 </div>
 </section>
 <!-- 04 — Vos objectifs -->
@@ -146,6 +146,7 @@
   const recap = document.getElementById("recap");
   const status = document.getElementById("formStatus");
   const fields = Array.from(form.querySelectorAll("input,select,textarea"));
+  const groupTitles = ["Votre organisation", "Vos objectifs", "Votre projet au Québec"];
   function summary() {
     return fields.map(field => {
       const value = field.value.trim();
@@ -154,20 +155,29 @@
   }
   function render() {
     recap.replaceChildren();
-    const filled = fields.filter(field => field.value.trim());
-    if (!filled.length) recap.textContent = "Vos réponses apparaîtront ici.";
-    for (const field of filled) {
-      const row = document.createElement("div");
-      const key = document.createElement("span");
-      const value = document.createElement("span");
-      row.className = "recap-row";
-      key.className = "k";
-      value.className = "v";
-      key.textContent = field.name.trim();
-      value.textContent = field.value.trim();
-      row.append(key, value);
-      recap.append(row);
+    const sections = Array.from(form.querySelectorAll(".form-section")).filter(section => section.querySelector("input,select,textarea"));
+    let count = 0;
+    for (let index = 0; index < sections.length; index++) {
+      const filled = Array.from(sections[index].querySelectorAll("input,select,textarea")).filter(field => field.value.trim());
+      if (!filled.length) continue;
+      const heading = document.createElement("div");
+      heading.className = "recap-sub";
+      heading.textContent = groupTitles[index];
+      recap.append(heading);
+      for (const field of filled) {
+        const row = document.createElement("div");
+        const key = document.createElement("span");
+        const value = document.createElement("span");
+        row.className = "recap-row";
+        key.className = "k";
+        value.textContent = field.value.trim();
+        key.textContent = field.name.trim();
+        row.append(key, value);
+        recap.append(row);
+        count++;
+      }
     }
+    if (!count) recap.textContent = "Vos réponses apparaîtront ici.";
     status.textContent = "";
   }
   form.addEventListener("input", render);
